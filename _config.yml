@@ -76,4 +76,4 @@ backup:
     type: git
     theme: landscape
     repository:
-       github: https://github.com/haoaa/hexo.git,master
+       github: git@github.com:haoaa/hexo.git,gh-pages
