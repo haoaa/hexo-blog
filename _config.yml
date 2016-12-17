@@ -63,7 +63,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: yilia
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -71,9 +71,4 @@ deploy:
   type: git
   repo: https://github.com/haoaa/hexo.git
   branch: gh-pages
-
-backup:
-    type: git
-    theme: landscape
-    repository:
-       github: git@github.com:haoaa/hexo.git,gh-pages
+ 
