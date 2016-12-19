@@ -19,8 +19,8 @@ widgets:
 
 # display widgets at the bottom of index pages (pagination == 2)
 index_widgets:
-# - category
-# - tagcloud
+ - category
+ - tagcloud
 # - archive
 
 # widget behavior
@@ -29,7 +29,7 @@ show_count: false
 
 # Miscellaneous
 google_analytics:
-favicon: /hexo/favicon.ico
+favicon: /hexo/assets/img/favicon.ico
 twitter:
 google_plus:
 fb_admins:
