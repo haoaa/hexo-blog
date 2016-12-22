@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>angular-day3 | Hello World!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="TODOMVC案例
+根据界面原型抽象数据成员（有哪些数据，每个数据的类型和结构）
+设计模块，控制器
+完成数据绑定
+编写交互逻辑
+
+过滤器
+一般用于服务端存储的数据转换为用户界面可以理解的数据
+123456时间过滤器:&amp;lt;span&amp;gt;&amp;#123;&amp;#123;&apos;1288323623006&apos; | date:&quot;MM/dd/yyyy &apos;at&apos; h:mma&quot;&amp;#125;&amp;#125;&amp;lt;/span&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="angular-day3">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2016/11/02/angular-day3/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="TODOMVC案例
+根据界面原型抽象数据成员（有哪些数据，每个数据的类型和结构）
+设计模块，控制器
+完成数据绑定
+编写交互逻辑
+
+过滤器
+一般用于服务端存储的数据转换为用户界面可以理解的数据
+123456时间过滤器:&amp;lt;span&amp;gt;&amp;#123;&amp;#123;&apos;1288323623006&apos; | date:&quot;MM/dd/yyyy &apos;at&apos; h:mma&quot;&amp;#125;&amp;#125;&amp;lt;/span&amp;">
+<meta property="og:updated_time" content="2016-12-22T10:26:20.361Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="angular-day3">
+<meta name="twitter:description" content="TODOMVC案例
+根据界面原型抽象数据成员（有哪些数据，每个数据的类型和结构）
+设计模块，控制器
+完成数据绑定
+编写交互逻辑
+
+过滤器
+一般用于服务端存储的数据转换为用户界面可以理解的数据
+123456时间过滤器:&amp;lt;span&amp;gt;&amp;#123;&amp;#123;&apos;1288323623006&apos; | date:&quot;MM/dd/yyyy &apos;at&apos; h:mma&quot;&amp;#125;&amp;#125;&amp;lt;/span&amp;">
+  
+    <link rel="alternate" href="/" title="Hello World!" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/hexo/assets/img/favicon.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/hexo/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/hexo/" id="logo">Hello World!</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/hexo/" id="subtitle">blah blah blah</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/hexo/">Home</a>
+        
+          <a class="main-nav-link" href="/hexo/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://haoaa.github.io/hexo"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-angular-day3" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/hexo/2016/11/02/angular-day3/" class="article-date">
+  <time datetime="2016-11-02T07:06:39.000Z" itemprop="datePublished">2016-11-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo/categories/fe-framework/">fe-framework</a>►<a class="article-category-link" href="/hexo/categories/fe-framework/angular/">angular</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      angular-day3
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="TODOMVC案例"><a href="#TODOMVC案例" class="headerlink" title="TODOMVC案例"></a>TODOMVC案例</h2><ul>
+<li>根据界面原型抽象数据成员（有哪些数据，每个数据的类型和结构）</li>
+<li>设计模块，控制器</li>
+<li>完成数据绑定</li>
+<li>编写交互逻辑</li>
+</ul>
+<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><ul>
+<li><p>一般用于服务端存储的数据转换为用户界面可以理解的数据</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">时间过滤器:</div><div class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span>&#123;&#123;'1288323623006' | date:"MM/dd/yyyy 'at' h:mma"&#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">货币:</div><div class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123;1000000.1242222222| currency : '￡':2&#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">json文本格式化输出</div><div class="line"><span class="tag">&lt;<span class="name">pre</span>&gt;</span>&#123;&#123;p1 | json:8&#125;&#125;<span class="tag">&lt;/<span class="name">pre</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>在js中使用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 如果在控制器中需要用到一个不存在的对象，都尝试使用注入的方式</span></div><div class="line">$scope.text = $filter(<span class="string">'limitTo'</span>)(<span class="string">'hahahahahahah'</span>, <span class="string">'10'</span>, <span class="number">5</span>);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<a id="more"></a>
+<ul>
+<li><p>limitTo 过滤器,限制数量，限制字符串或者遍历长度(个数,开始位置)</p>
+</li>
+<li><p>orderBy 按照特定字段排序，默认是正序，倒序则加上<code>-</code>号</p>
+</li>
+<li><p>filter 过滤器(看文档)</p>
+<ul>
+<li>检索特定内容，默认模糊匹配</li>
+<li><p>如果传入对象则匹配特定属性，如传入<code>{name:&#39;张三&#39;}</code>，则匹配那么属性中包含张三</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; filter_expression | filter : expression : comparator : anyPropertyKey&#125;&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>表达式可以是字符串,或对象或函数. 任意属性($)和字符串不限层级.</p>
+</li>
+<li><p>expression是function时,参数名依赖注入,value是每个被过滤的元素. function返回true则加入结果集合</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$scope.predicate =<span class="function"><span class="keyword">function</span> (<span class="params">value, index, array</span>) </span>&#123;</div><div class="line">		    <span class="built_in">console</span>.log(array);</div><div class="line">			<span class="keyword">return</span> index%<span class="number">2</span>==<span class="number">0</span>;</div><div class="line">		&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>comparator 设置是否严格匹配(默认否),comparator是functions的例子:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$scope.comparator = <span class="function"><span class="keyword">function</span> (<span class="params">actual, expected</span>) </span>&#123;</div><div class="line">   <span class="keyword">return</span> angular.equals(actual, expected);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="自定义过滤器"><a href="#自定义过滤器" class="headerlink" title="自定义过滤器"></a>自定义过滤器</h3><ul>
+<li><p>使用switch判断不同输入来输出不同数据</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">angular.module(<span class="string">'app'</span>, [])</div><div class="line">		  .filter(<span class="string">'checkmark'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">			  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">input, style</span>) </span>&#123;</div><div class="line">				  style = style || <span class="number">1</span>; <span class="comment">// 短路运算符</span></div><div class="line">				  <span class="keyword">switch</span> (style) &#123;</div><div class="line">					  <span class="keyword">case</span> <span class="number">1</span>:</div><div class="line">						  <span class="keyword">return</span> input ? <span class="string">'\u2713'</span> : <span class="string">'\u2718'</span>;</div><div class="line">					  <span class="keyword">case</span> <span class="number">2</span>:</div><div class="line">						  <span class="keyword">return</span> input ? <span class="string">'\u2720'</span> : <span class="string">'\u2729'</span>;</div><div class="line">				  &#125;</div><div class="line">			  &#125;;</div><div class="line">		  &#125;)</div><div class="line">		  .filter(<span class="string">'weight'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">			  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">input</span>) </span>&#123;</div><div class="line">				  <span class="keyword">if</span> (input &gt; <span class="number">100</span>) &#123;</div><div class="line">					  <span class="keyword">return</span> <span class="string">'太胖了'</span>;</div><div class="line">				  &#125; <span class="keyword">else</span> &#123;</div><div class="line">					  <span class="keyword">return</span> <span class="string">'太瘦了'</span>;</div><div class="line">				  &#125;</div><div class="line">			  &#125;;</div><div class="line">		  &#125;);</div></pre></td></tr></table></figure>
+<p>对应html</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"> <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; true | checkmark &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line"> <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; false | checkmark &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line"> <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; false | checkmark : 2 &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line"> <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; true | checkmark : 2 &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">placeholder</span>=<span class="string">"请输入你的体重"</span> <span class="attr">ng-model</span>=<span class="string">"weight"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">p</span>&gt;</span>你的体重：&#123;&#123;weight&#125;&#125; kg<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">p</span>&gt;</span>你&#123;&#123;weight|weight&#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h2 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h2><h3 id="NG-中路由是单独提供的功能模块-ngRoute-也是一个单独发型的文件"><a href="#NG-中路由是单独提供的功能模块-ngRoute-也是一个单独发型的文件" class="headerlink" title="NG 中路由是单独提供的功能模块 ngRoute, 也是一个单独发型的文件"></a>NG 中路由是单独提供的功能模块 ngRoute, 也是一个单独发型的文件</h3><blockquote>
+<p>注: 地址栏对象$location. $location.path()获取/xxx. 原始锚点:index.html#zhutou</p>
+</blockquote>
+<ul>
+<li>安装或者下载angular-route的包</li>
+<li>引入这个包</li>
+<li>在自己的模块中添加 ngRoute 依赖</li>
+<li>路由配置（配置路由规则）<ul>
+<li>规则指的就是 什么样的请求 找什么控制器</li>
+<li>[{url:’/sdf’,controller:’MainController’}]</li>
+</ul>
+</li>
+<li>编写对应的控制器和视图ng-view</li>
+</ul>
+<p><code>/students/zhangsan</code></p>
+<p><code>/:role/:name?</code>  以上路径符合这个规则, 其中<code>?</code>表示可空, 即<code>/students</code>也能匹配规则</p>
+<p>$routeParams可取得数据: <code>{role:students,name:zhangsan}</code></p>
+<h4 id="如果连入第三方文件时不写协议的话："><a href="#如果连入第三方文件时不写协议的话：" class="headerlink" title="如果连入第三方文件时不写协议的话："></a>如果连入第三方文件时不写协议的话：</h4><p>在链接cdn文件如:<code>http://apps.bdimg.com/libs/angular.js/1.4.7/angular.min.js</code><br>写成: <code>&lt;script src=&quot;//apps.bdimg.com/libs/angular.js/1.4.7/angular.min.js&quot;&gt;&lt;/script&gt;</code></p>
+<p>如果当前你的网站是HTTP的方式部署的话，请求对应为<br><code>http://apps.bdimg.com/libs/angular.js/1.4.7/angular.min.js</code><br>如果是HTTPS的话，请求对应为<br><code>https://apps.bdimg.com/libs/angular.js/1.4.7/angular.min.js</code></p>
+<ul>
+<li><p>Demo</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">  <span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#/a"</span>&gt;</span>A<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#/b"</span>&gt;</span>B<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">ng-view</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span> 路由视图</div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"//cdn.bootcss.com/angular.js/1.5.8/angular.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"//cdn.bootcss.com/angular.js/1.5.8/angular-route.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">id</span>=<span class="string">"a_tmpl"</span> <span class="attr">type</span>=<span class="string">"text/ng-template"</span>&gt;</span><span class="xml"></span></div><div class="line">    <span class="comment">&lt;!-- 只有type="text/javascript"的script节点才会被当做JS执行 --&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 写在HTML里减少请求数 --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123;title&#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line">    <span class="keyword">var</span> app = angular.module(<span class="string">'app'</span>, [<span class="string">'ngRoute'</span>]);</div><div class="line">    app.config([<span class="string">'$routeProvider'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$routeProvider</span>) </span>&#123;</div><div class="line">      $routeProvider</div><div class="line">      <span class="comment">// 某一类特定地址</span></div><div class="line">        .when(<span class="string">'/students/:name?'</span>, &#123;</div><div class="line">          <span class="attr">controller</span>: <span class="string">'StudentsController'</span>,</div><div class="line">          <span class="attr">templateUrl</span>: <span class="string">'a_tmpl'</span></div><div class="line">        &#125;)</div><div class="line">        .when(<span class="string">'/a'</span>, &#123;</div><div class="line">          <span class="attr">controller</span>: <span class="string">'AController'</span>,</div><div class="line">          <span class="attr">templateUrl</span>: <span class="string">'a_tmpl'</span></div><div class="line">        &#125;)</div><div class="line">        .when(<span class="string">'/b'</span>, &#123;</div><div class="line">          <span class="attr">controller</span>: <span class="string">'BController'</span>,</div><div class="line">          <span class="attr">templateUrl</span>: <span class="string">'a_tmpl'</span></div><div class="line">        &#125;)</div><div class="line">        <span class="comment">// 别的请求</span></div><div class="line">        .otherwise(&#123;</div><div class="line">          <span class="comment">// 跳转到上面的a</span></div><div class="line">          redirectTo: <span class="string">'/a'</span></div><div class="line">        &#125;);</div><div class="line">    &#125;]);</div><div class="line"></div><div class="line">    app.controller(<span class="string">'StudentsController'</span>, [<span class="string">'$scope'</span>, <span class="string">'$routeParams'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope, $routeParams</span>) </span>&#123;</div><div class="line">      $scope.title = <span class="string">'你好'</span> + $routeParams[<span class="string">'name'</span>] + <span class="string">'这是A控制器'</span>;</div><div class="line">    &#125;]);</div><div class="line"></div><div class="line">    app.controller(<span class="string">'AController'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope</span>) </span>&#123;</div><div class="line">      $scope.title = <span class="string">'这是A控制器'</span>;</div><div class="line">    &#125;]);</div><div class="line"></div><div class="line">    app.controller(<span class="string">'BController'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope</span>) </span>&#123;</div><div class="line">      $scope.title = <span class="string">'这是B控制器'</span>;</div><div class="line">    &#125;]);</div><div class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div></pre></td></tr></table></figure>
+<ul>
+<li>在控制器注入$routeParams[‘name’]用来获取匹配路径的参数</li>
+<li>redirectTo : ‘/a’ 重定向到其他规则</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h2><ul>
+<li>todomvc案例文件划分和数据持久化<ol>
+<li>为一个控制器创建一个模块,为服务创建一个模块</li>
+<li>主app引入控制器模块, 控制器引入服务的模块</li>
+<li>服务里保存数据和操作数据的方法</li>
+<li>在控制器里调用服务的方法<h3 id="内置服务"><a href="#内置服务" class="headerlink" title="内置服务"></a>内置服务</h3><h4 id="log服务"><a href="#log服务" class="headerlink" title="$log服务"></a>$log服务</h4></li>
+</ol>
+</li>
+</ul>
+<ul>
+<li>打印控制台日志</li>
+<li>启用或者关闭</li>
+</ul>
+<h4 id="timeout"><a href="#timeout" class="headerlink" title="$timeout"></a>$timeout</h4><h3 id="自定义服务"><a href="#自定义服务" class="headerlink" title="自定义服务"></a>自定义服务</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://haoaa.github.io/hexo/hexo/2016/11/02/angular-day3/" data-id="cix08qgjs0005aw0xw77mz25k" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo/tags/angular/">angular</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo/tags/js-framework/">js framework</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/hexo/2016/11/03/angular-day4/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          angular-day4
+        
+      </div>
+    </a>
+  
+  
+    <a href="/hexo/2016/10/30/angular-day2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">angular day2</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexo/categories/fe-framework/">fe-framework</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexo/categories/fe-framework/angular/">angular</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo/categories/fe-framework/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo/categories/fe-framework/ionic/">ionic</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexo/categories/nodejs/">nodejs</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo/categories/sass/">sass</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/angular/">angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/commonjs/">commonjs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/css/">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/hybrid-framework/">hybrid framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/ionic/">ionic</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/js-framework/">js framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/sass/">sass</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/script-js/">script.js</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/hexo/tags/angular/" style="font-size: 20px;">angular</a> <a href="/hexo/tags/blog/" style="font-size: 10px;">blog</a> <a href="/hexo/tags/commonjs/" style="font-size: 10px;">commonjs</a> <a href="/hexo/tags/css/" style="font-size: 10px;">css</a> <a href="/hexo/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/hexo/tags/hybrid-framework/" style="font-size: 10px;">hybrid framework</a> <a href="/hexo/tags/ionic/" style="font-size: 10px;">ionic</a> <a href="/hexo/tags/js-framework/" style="font-size: 20px;">js framework</a> <a href="/hexo/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/hexo/tags/sass/" style="font-size: 10px;">sass</a> <a href="/hexo/tags/script-js/" style="font-size: 10px;">script.js</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexo/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo/archives/2016/10/">十月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/hexo/2016/12/19/something-about-sass/">something-about-sass</a>
+          </li>
+        
+          <li>
+            <a href="/hexo/2016/12/14/hexo-tips/">hexo-tips</a>
+          </li>
+        
+          <li>
+            <a href="/hexo/2016/11/13/nodejs-1/">nodejs day1</a>
+          </li>
+        
+          <li>
+            <a href="/hexo/2016/11/09/ionic-day1/">ionic-day1</a>
+          </li>
+        
+          <li>
+            <a href="/hexo/2016/11/05/angular-day5/">angular-day5</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 浩齐<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/hexo/" class="mobile-nav-link">Home</a>
+  
+    <a href="/hexo/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/hexo/fancybox/jquery.fancybox.css">
+  <script src="/hexo/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/hexo/js/script.js"></script>
+
+  </div>
+</body>
+</html>
