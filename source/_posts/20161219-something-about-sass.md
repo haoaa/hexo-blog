@@ -191,3 +191,10 @@ https://github.com/sass/node-sass/releases/download/v3.4.2/win32-x64-46_binding.
 
 [![IMAGE ALT TEXT HERE](https://i.ytimg.com/vi/wz3kElLbEHE/hqdefault.jpg?custom=true&w=246&h=138&stc=true&jpg444=true&jpgq=90&sp=68&sigh=Y0kBJRz4j1x6OcRl3-jtIKAJHhU)
      ](https://youtu.be/wz3kElLbEHE)
+
+---
+### sass练习demo  
+
+- `git clone https://github.com/haoaa/sass_demo.git .`
+
+- [sass_demo](https://github.com/haoaa/sass_demo.git)
