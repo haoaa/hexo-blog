@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>js-code-collection | Hello World!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="js可分析性片段代码1. 深度比较
+mobx.umd.js:1558
+对象的深比较
+1234567891011121314151617181920212223242526272829303132function deepEquals(a, b) &amp;#123;    if (a === null &amp;amp;&amp;amp; b === null)        return true;    if (a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js-code-collection">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2016/12/22/js-code-collection/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="js可分析性片段代码1. 深度比较
+mobx.umd.js:1558
+对象的深比较
+1234567891011121314151617181920212223242526272829303132function deepEquals(a, b) &amp;#123;    if (a === null &amp;amp;&amp;amp; b === null)        return true;    if (a">
+<meta property="og:updated_time" content="2016-12-22T11:16:14.628Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js-code-collection">
+<meta name="twitter:description" content="js可分析性片段代码1. 深度比较
+mobx.umd.js:1558
+对象的深比较
+1234567891011121314151617181920212223242526272829303132function deepEquals(a, b) &amp;#123;    if (a === null &amp;amp;&amp;amp; b === null)        return true;    if (a">
+  
+    <link rel="alternate" href="/" title="Hello World!" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/hexo/assets/img/favicon.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/hexo/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/hexo/" id="logo">Hello World!</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/hexo/" id="subtitle">blah blah blah</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/hexo/">Home</a>
+        
+          <a class="main-nav-link" href="/hexo/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://haoaa.github.io/hexo"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-js-code-collection" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/hexo/2016/12/22/js-code-collection/" class="article-date">
+  <time datetime="2016-12-22T11:12:38.000Z" itemprop="datePublished">2016-12-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/hexo/categories/js-snippet/">js snippet</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      js-code-collection
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="js可分析性片段代码"><a href="#js可分析性片段代码" class="headerlink" title="js可分析性片段代码"></a>js可分析性片段代码</h1><h2 id="1-深度比较"><a href="#1-深度比较" class="headerlink" title="1. 深度比较"></a>1. 深度比较</h2><ul>
+<li>mobx.umd.js:1558</li>
+<li><p>对象的深比较</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">deepEquals</span>(<span class="params">a, b</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (a === <span class="literal">null</span> &amp;&amp; b === <span class="literal">null</span>)</div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">    <span class="keyword">if</span> (a === <span class="literal">undefined</span> &amp;&amp; b === <span class="literal">undefined</span>)</div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">    <span class="keyword">var</span> aIsArray = <span class="built_in">Array</span>.isArray(a) || isObservableArray(a);</div><div class="line">    <span class="keyword">if</span> (aIsArray !== (<span class="built_in">Array</span>.isArray(b) || isObservableArray(b))) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (aIsArray) &#123;</div><div class="line">        <span class="keyword">if</span> (a.length !== b.length)</div><div class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = a.length; i &gt;= <span class="number">0</span>; i--)</div><div class="line">            <span class="keyword">if</span> (!deepEquals(a[i], b[i]))</div><div class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> a === <span class="string">"object"</span> &amp;&amp; <span class="keyword">typeof</span> b === <span class="string">"object"</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (a === <span class="literal">null</span> || b === <span class="literal">null</span>)</div><div class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">        <span class="keyword">if</span> (<span class="built_in">Object</span>.keys(a).length !== <span class="built_in">Object</span>.keys(b).length)</div><div class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> prop <span class="keyword">in</span> a) &#123;</div><div class="line">            <span class="keyword">if</span> (!b.hasOwnProperty(prop))</div><div class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">            <span class="keyword">if</span> (!deepEquals(a[prop], b[prop]))</div><div class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> a === b;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://haoaa.github.io/hexo/hexo/2016/12/22/js-code-collection/" data-id="cixbsgut10005hg0xet6ysi1d" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo/tags/code-collection/">code collection</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/hexo/tags/js/">js</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/hexo/2016/12/24/webpack-day1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          webpack-day1
+        
+      </div>
+    </a>
+  
+  
+    <a href="/hexo/2016/12/19/something-about-sass/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">something-about-sass</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexo/categories/fe-framework/">fe-framework</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexo/categories/fe-framework/angular/">angular</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo/categories/fe-framework/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo/categories/fe-framework/ionic/">ionic</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexo/categories/js-snippet/">js snippet</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo/categories/nodejs/">nodejs</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo/categories/sass/">sass</a></li><li class="category-list-item"><a class="category-list-link" href="/hexo/categories/workflow/">workflow</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/angular/">angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/code-collection/">code collection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/commonjs/">commonjs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/css/">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/hybrid-framework/">hybrid framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/ionic/">ionic</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/js-framework/">js framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/sass/">sass</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/script-js/">script.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/hexo/tags/webpack/">webpack</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/hexo/tags/angular/" style="font-size: 20px;">angular</a> <a href="/hexo/tags/blog/" style="font-size: 10px;">blog</a> <a href="/hexo/tags/code-collection/" style="font-size: 10px;">code collection</a> <a href="/hexo/tags/commonjs/" style="font-size: 10px;">commonjs</a> <a href="/hexo/tags/css/" style="font-size: 10px;">css</a> <a href="/hexo/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/hexo/tags/hybrid-framework/" style="font-size: 10px;">hybrid framework</a> <a href="/hexo/tags/ionic/" style="font-size: 10px;">ionic</a> <a href="/hexo/tags/js/" style="font-size: 10px;">js</a> <a href="/hexo/tags/js-framework/" style="font-size: 20px;">js framework</a> <a href="/hexo/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/hexo/tags/sass/" style="font-size: 10px;">sass</a> <a href="/hexo/tags/script-js/" style="font-size: 10px;">script.js</a> <a href="/hexo/tags/webpack/" style="font-size: 10px;">webpack</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexo/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo/archives/2016/11/">十一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/hexo/archives/2016/10/">十月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/hexo/2016/12/27/angular-day6/">angular-day6</a>
+          </li>
+        
+          <li>
+            <a href="/hexo/2016/12/24/webpack-day1/">webpack-day1</a>
+          </li>
+        
+          <li>
+            <a href="/hexo/2016/12/22/js-code-collection/">js-code-collection</a>
+          </li>
+        
+          <li>
+            <a href="/hexo/2016/12/19/something-about-sass/">something-about-sass</a>
+          </li>
+        
+          <li>
+            <a href="/hexo/2016/12/14/hexo-tips/">hexo-tips</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 浩齐<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/hexo/" class="mobile-nav-link">Home</a>
+  
+    <a href="/hexo/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/hexo/fancybox/jquery.fancybox.css">
+  <script src="/hexo/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/hexo/js/script.js"></script>
+
+  </div>
+</body>
+</html>
