@@ -17,12 +17,12 @@ categories:
     ```javaScript
         angular.bootstrap(document.querySelector('[ng-app="myApp2"]'),['myApp2']);
     ```
+<!--more-->
 
     + 2.设置多个app组成一个app    
     ```javaScript
         angular.module('myApp', ['myApp1', 'myApp2']);
     ```
-<!--more-->
 ### 内置指令
 ###  1.ng-bind
   + 用法`<strong ng-bind="username"></strong>` ,

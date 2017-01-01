@@ -12,7 +12,7 @@ tags:
 
 - mobx.umd.js:1558
 - 对象的深比较
-
+<!--more-->
  ```js
 function deepEquals(a, b) {
     if (a === null && b === null)
@@ -23,6 +23,7 @@ function deepEquals(a, b) {
     if (aIsArray !== (Array.isArray(b) || isObservableArray(b))) {
         return false;
     }
+
     else if (aIsArray) {
         if (a.length !== b.length)
             return false;

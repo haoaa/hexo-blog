@@ -21,6 +21,8 @@ categories:
   	<script src="bower_components/angular-loader/angular-loader.js"></script>
  ```
 - script.js的用法
+<!--more-->
+
  ```javaScript
   $script([
  	 './bower_components/angular/angular.js',
@@ -37,7 +39,6 @@ categories:
   ```
 
   - 手动加载一个模块 `angular.bootstrap(document, ['moviecat']);`
-<!--more-->
 ### jsonp回调后移除标签
   - 原先设置回调函数 `$window[callbackName] = callback;`
   - 优化回调函数
