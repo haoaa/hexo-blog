@@ -15,7 +15,7 @@ Give webpack the entry point (app.js) and specify an output file (app.bundle.js)
 
 webpack will read and analyze the entry point and its dependencies (including transitive dependencies).   
 Then it will bundle them all into app.bundle.js.
-
+<!--more-->
 ![how webpack works](https://dtinth.github.io/webpack-docs-images/usage/how-it-works.png?imageView/0/w/720)
 
 > 打包后的bundle文件分析  

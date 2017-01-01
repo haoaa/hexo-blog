@@ -83,10 +83,10 @@ angular.module('hello').component('hello', {
 
 ### compile&link四阶段
 
-![compile^link](http://a3.qpic.cn/psb?/V13yxOsD2o6LYu/w2rOOaZL5HbA07*1PGqqWaOw.GZWGpiXbET6rbBtavQ!/b/dGcBAAAAAAAA&bo=VgUAA1YFAAMDACU!&rf=viewer_4&t=5)
+![](/hexo/assets/2016/compile&link_process.png)
 
-
-> [阿三视频讲解](https://youtu.be/1M3LZ1cu7rw) 
+---
+#### [youtube tutorial] 
 
 - compile  
   scope还没创建, instance dom没创建, 可以操作template DOM
