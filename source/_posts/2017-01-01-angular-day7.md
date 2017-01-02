@@ -72,6 +72,11 @@ var app1 = angular.module('app1', [])
 
 ### 3种绑定方式
 
+- one way ng-bind
+- two way ng-model
+- three way `\{\{::scopemember}}`
+
 ![](/hexo/assets/2017/one-way-bind.jpg)
 ![](/hexo/assets/2017/two-way-bind.jpg)
 ![](/hexo/assets/2017/one-time-bind.jpg)
+
