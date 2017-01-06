@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
    "scripts": {
-    "hello": "git add . && git commit -m ", 
+    "git": "git add . && git commit -m ",
+    "postgit": "git push origin master",
     "reload" : "hexo g -d",
     "postreload" : "hexo s",
     "pretest": "npm install",
