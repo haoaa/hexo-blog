@@ -4,6 +4,8 @@ date: 2016-12-27 09:03:34
 tags:
   - angular
   - js framework
+  - compile link
+  - scope
 categories:
   - fe-framework 
   - angular
@@ -32,7 +34,7 @@ This means that the code can get hold of the elements and register event handler
 
 ## How directives are compiled
 
-1. `$compile` traverses the DOM and matches directives.
+1. `$compile` traverses the DOM (children directives)and matches directives.
 
 2. Once all directives matching a DOM element have been identified, the compiler sorts the directives by their priority.
 
@@ -91,11 +93,12 @@ angular.module('hello').component('hello', {
 - compile  
   scope还没创建, instance dom没创建, 可以操作template DOM
 - controller  
-  scope创建, 不推荐操作instance dom
+  scope创建, 不推荐操作instance dom,因为child not ready.可以操作data for instance dom.
 - pre(link)  
-  template instance, child elements/directives not ready, instance is not linked to scope yet
+  template instance, child elements/directives not ready, instance is not linked to scope yet, safe to set child data.
 - post(link)  
-  scope and instance linked, child elements/directives ready, template available to manipulate and attach event
+  scope and instance linked, child elements/directives ready, template available to manipulate and attach event. Not safe to set child data.(its already done)
+  * if transclude is true, the inner content is replaced in this phase rather than prelink
 
 ### directive直接return的是link的post function
 
@@ -111,6 +114,14 @@ angular.module('hello').component('hello', {
 
   & bindings are ideal for binding callback functions to directive behaviors.
 
+### scope to inspect
+
+- false (default): No scope will be created for the directive. The directive will use its parent's scope.
+
+- true: A new child scope that prototypically inherits from its parent will be created for the directive's element. If multiple directives on the same element request a new scope, only one new scope is created.
+
+- {...} (an object hash): A new "isolate" scope is created for the directive's element. The 'isolate' scope differs from normal scope in that it does not prototypically inherit from its parent scope.   
+  This is useful when creating reusable components, which should not accidentally read or modify data in the parent scope.  
 ---
 ## [directive scope inspect](https://plnkr.co/edit/?p=preview)
 
@@ -119,7 +130,7 @@ angular.module('hello').component('hello', {
     return {
       restrict: 'E',
       transclude: true,
-      scope: {}, //声明了scope,下面link就使用directive的scope,否则就使用外层controller的scope.???
+      scope: {}, //声明了scope,下面link就使用directive的isolate scope,否则就inherite parent's scope.???
       templateUrl: 'my-dialog.html',
       link: function(scope) {
         scope.name = 'Jeff';
@@ -132,7 +143,7 @@ angular.module('hello').component('hello', {
 ## directive require 属性
 - ^^ :查找parent controller
 - ^ : 查找注入,parent 或 it's own controller
-- without any prefix, the directive would look on its own element only.
+- without any prefix, the directive would look on its own element's controller only.
 
 ---
 

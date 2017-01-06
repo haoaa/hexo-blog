@@ -10,10 +10,12 @@ tags:
 ---
 ## service
 
+> `$compile`包含`directive`所有属性的说明 [传送门](https://docs.angularjs.org/api/ng/service/$compile)
+
 ### service basic
 
 ![](/hexo/assets/2017/ng-service.jpg)
-
+<!--more-->
 ---
 
 ## service and factory比较 (provider behind the scene)
@@ -140,4 +142,32 @@ app.use('/',router);
 app.listen('2345',function(){
     console.log('start listening on 2345')
 });
+```
+
+## $templateCache - service in module ng
+
+The first time a template is used, it is loaded in the template cache for quick retrieval.   
+You can load templates directly into the cache in a script tag, or by consuming the $templateCache service directly.
+
+* Adding via the $templateCache service:
+
+ ```js
+var myApp = angular.module('myApp', []);
+myApp.run(function($templateCache) {
+  $templateCache.put('templateId.html', 'This is the content of the template');
+});
+```
+
+* To retrieve the template later, simply use it in your component:
+
+ ```js
+myApp.component('myComponent', {
+   templateUrl: 'templateId.html'
+});
+```
+
+- or get it via the $templateCache service:
+
+ ```js
+$templateCache.get('templateId.html')
 ```

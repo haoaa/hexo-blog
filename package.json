@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
    "scripts": {
-    "pregitpush": "git add . && git commit -m 'update'",
-    "gitpush": "git push origin master",
+    "hello": "git add . && git commit -m ", 
     "reload" : "hexo g -d",
     "postreload" : "hexo s",
     "pretest": "npm install",
