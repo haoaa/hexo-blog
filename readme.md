@@ -15,19 +15,22 @@ $ npm install
 $ hexo new something-about-sass
 ``` 
 ### **Step4:** backup
-- commit source
- ```
-$ npm run git -- "your commit comments goes here"
 
-```
-- deploy commond
+- commit source
+
  ```
-$ npm run reload 
-```
+ $ npm run git -- "your commit comments goes here"
+ ```
+- deploy commond
+
+ ```
+ $ npm run reload 
+ ```
 ---
 
 > pretty easy huh
 
 ![alt text](http://up.henan.china.cn/2016/1219/1482137264449.png)
+
 ---
 [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
