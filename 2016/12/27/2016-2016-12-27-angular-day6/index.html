@@ -16,8 +16,8 @@ Compile: traverse the DOM and collect">
 
 Compile: traverse the DOM and collect">
 <meta property="og:image" content="https://docs.angularjs.org/img/Two_Way_Data_Binding.png">
-<meta property="og:image" content="https://haoaa.github.io/hexo/hexo/assets/2016/compile&link_process.png">
-<meta property="og:updated_time" content="2017-01-06T06:34:42.099Z">
+<meta property="og:image" content="https://haoaa.github.io/hexo/assets/2016/compile&link_process.png">
+<meta property="og:updated_time" content="2017-01-07T08:00:31.016Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="angular-day6">
 <meta name="twitter:description" content="angular directiveconcept of compilerCompiler is an Angular service which traverses the DOM looking for attributes. The compilation process happens in two phases.
@@ -127,7 +127,7 @@ Compile: traverse the DOM and collect">
 <p><a href="http://www.jb51.net/article/58229.htm" target="_blank" rel="external">angularjs指令中的compile与link函数详解</a></p>
 <h2 id="angular-component"><a href="#angular-component" class="headerlink" title="angular component"></a>angular component</h2><p><a href="https://plnkr.co/edit/tpl:8rFfZljYNl3z1A4LKSL2" target="_blank" rel="external">check out origin</a></p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">angular.module(<span class="string">'hello'</span>).component(<span class="string">'hello'</span>, &#123;</div><div class="line">  <span class="attr">template</span>:  <span class="string">'&lt;h3&gt;&#123;&#123;$ctrl.greeting&#125;&#125; galaxy!&lt;/h3&gt;'</span> +</div><div class="line">             <span class="string">'&lt;button ng-click="$ctrl.toggleGreeting()"&gt;toggle greeting&lt;/button&gt;'</span>,</div><div class="line">             </div><div class="line">  <span class="attr">controller</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.greeting = <span class="string">'hello'</span>;</div><div class="line">    </div><div class="line">    <span class="keyword">this</span>.toggleGreeting = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">this</span>.greeting = (<span class="keyword">this</span>.greeting == <span class="string">'hello'</span>) ? <span class="string">'whats up'</span> : <span class="string">'hello'</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-<h3 id="compile-amp-link四阶段"><a href="#compile-amp-link四阶段" class="headerlink" title="compile&amp;link四阶段"></a>compile&amp;link四阶段</h3><p><img src="/hexo/assets/2016/compile&amp;link_process.png" alt=""></p>
+<h3 id="compile-amp-link四阶段"><a href="#compile-amp-link四阶段" class="headerlink" title="compile&amp;link四阶段"></a>compile&amp;link四阶段</h3><p><img src="/assets/2016/compile&amp;link_process.png" alt=""></p>
 <hr>
 <h4 id="youtube-tutorial"><a href="#youtube-tutorial" class="headerlink" title="[youtube tutorial]"></a>[youtube tutorial]</h4><ul>
 <li>compile<br>scope还没创建, instance dom没创建, 可以操作template DOM</li>
@@ -170,7 +170,7 @@ Compile: traverse the DOM and collect">
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://haoaa.github.io/hexo/2016/12/27/2016-2016-12-27-angular-day6/" data-id="cixlvrk080020nc0xcfqwpn6o" class="article-share-link">Share</a>
+      <a data-url="https://haoaa.github.io/hexo/2016/12/27/2016-2016-12-27-angular-day6/" data-id="cixmy0kg1002bek0x6apek1xs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angular/">angular</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/compile-link/">compile link</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js-framework/">js framework</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scope/">scope</a></li></ul>

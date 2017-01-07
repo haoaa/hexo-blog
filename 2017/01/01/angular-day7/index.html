@@ -31,13 +31,13 @@ data-binding markup
 
 process templates
 compile &amp;amp; li">
-<meta property="og:image" content="https://haoaa.github.io/hexo/hexo/assets/2017/angular-process.png">
-<meta property="og:image" content="https://haoaa.github.io/hexo/hexo/assets/2017/scope-nest.jpg">
-<meta property="og:image" content="https://haoaa.github.io/hexo/hexo/assets/2017/rootScope.jpg">
-<meta property="og:image" content="https://haoaa.github.io/hexo/hexo/assets/2017/one-way-bind.jpg">
-<meta property="og:image" content="https://haoaa.github.io/hexo/hexo/assets/2017/two-way-bind.jpg">
-<meta property="og:image" content="https://haoaa.github.io/hexo/hexo/assets/2017/one-time-bind.jpg">
-<meta property="og:updated_time" content="2017-01-07T06:38:23.865Z">
+<meta property="og:image" content="https://haoaa.github.io/hexo/assets/2017/angular-process.png">
+<meta property="og:image" content="https://haoaa.github.io/hexo/assets/2017/scope-nest.jpg">
+<meta property="og:image" content="https://haoaa.github.io/hexo/assets/2017/rootScope.jpg">
+<meta property="og:image" content="https://haoaa.github.io/hexo/assets/2017/one-way-bind.jpg">
+<meta property="og:image" content="https://haoaa.github.io/hexo/assets/2017/two-way-bind.jpg">
+<meta property="og:image" content="https://haoaa.github.io/hexo/assets/2017/one-time-bind.jpg">
+<meta property="og:updated_time" content="2017-01-07T08:00:31.013Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="angular-day7-controller-scope-databind">
 <meta name="twitter:description" content="ng progress
@@ -51,7 +51,7 @@ data-binding markup
 
 process templates
 compile &amp;amp; li">
-<meta name="twitter:image" content="https://haoaa.github.io/hexo/hexo/assets/2017/angular-process.png">
+<meta name="twitter:image" content="https://haoaa.github.io/hexo/assets/2017/angular-process.png">
   
     <link rel="alternate" href="/" title="Hello World!" type="application/atom+xml">
   
@@ -147,7 +147,7 @@ compile &amp;amp; li">
 <li>renders to view</li>
 </ol>
 <a id="more"></a>
-<p><img src="/hexo/assets/2017/angular-process.png" alt="angular-process"></p>
+<p><img src="/assets/2017/angular-process.png" alt="angular-process"></p>
 <h2 id="controller"><a href="#controller" class="headerlink" title="controller"></a>controller</h2><ul>
 <li>controller is js object which contain application logic.<ul>
 <li>defined as part of angular module</li>
@@ -161,21 +161,21 @@ compile &amp;amp; li">
 <p>修改模型的数据<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">angular.element($<span class="number">0</span>).scope().name = <span class="string">'Nick'</span></div><div class="line">angular.element($<span class="number">0</span>).scope().$digest()</div></pre></td></tr></table></figure></p>
 <h2 id="scope-nest"><a href="#scope-nest" class="headerlink" title="scope nest"></a>scope nest</h2><ul>
 <li>inner scope shadow the outer same name member.</li>
-<li>inner scope .<strong>proto</strong> == outer scope<br><img src="/hexo/assets/2017/scope-nest.jpg" alt=""></li>
+<li>inner scope .<strong>proto</strong> == outer scope<br><img src="/assets/2017/scope-nest.jpg" alt=""></li>
 </ul>
 <h2 id="最外层的-rootScope-run只会在模型创建时执行"><a href="#最外层的-rootScope-run只会在模型创建时执行" class="headerlink" title="最外层的$rootScope(run只会在模型创建时执行)"></a>最外层的$rootScope(run只会在模型创建时执行)</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> app1 = angular.module(<span class="string">'app1'</span>, [])</div><div class="line">		.run([<span class="string">'$rootScope'</span>,<span class="function"><span class="keyword">function</span> (<span class="params">$rootScope</span>) </span>&#123;</div><div class="line">			$rootScope.haha = <span class="string">'dyjamgo'</span>;</div><div class="line">		&#125;])</div><div class="line">		.run([<span class="string">'$rootScope'</span>,<span class="function"><span class="keyword">function</span> (<span class="params">$rootScope</span>) </span>&#123;</div><div class="line">			<span class="comment">// do other thing</span></div><div class="line">		&#125;]);</div></pre></td></tr></table></figure>
-<p><img src="/hexo/assets/2017/rootScope.jpg" alt=""></p>
+<p><img src="/assets/2017/rootScope.jpg" alt=""></p>
 <h2 id="data-binding"><a href="#data-binding" class="headerlink" title="data binding"></a>data binding</h2><h3 id="3种绑定方式"><a href="#3种绑定方式" class="headerlink" title="3种绑定方式"></a>3种绑定方式</h3><ul>
 <li>one way ng-bind</li>
 <li>two way ng-model</li>
 <li>three way <code>\{\{::scopemember}}</code></li>
 </ul>
-<p><img src="/hexo/assets/2017/one-way-bind.jpg" alt=""><br><img src="/hexo/assets/2017/two-way-bind.jpg" alt=""><br><img src="/hexo/assets/2017/one-time-bind.jpg" alt=""></p>
+<p><img src="/assets/2017/one-way-bind.jpg" alt=""><br><img src="/assets/2017/two-way-bind.jpg" alt=""><br><img src="/assets/2017/one-time-bind.jpg" alt=""></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://haoaa.github.io/hexo/2017/01/01/angular-day7/" data-id="cixlvrjyd0004nc0xtas8lgn5" class="article-share-link">Share</a>
+      <a data-url="https://haoaa.github.io/hexo/2017/01/01/angular-day7/" data-id="cixmy0kdr0000ek0x3vt73n1g" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/controller-scope/">controller&scope</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/data-bind/">data-bind</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ng-process/">ng-process</a></li></ul>
