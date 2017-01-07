@@ -1,5 +1,5 @@
 ---
-title: angular-day9
+title: angular-day9-directive-scope-compile&link
 date: 2017-01-03 22:31:16
 categories:
   - fe-framework 
@@ -25,7 +25,7 @@ tags:
 - creates a scope for each instantiated template(item)
 
 ---
-## scope 
+## directive scope 
 ### scope spec 
 
 > __The scope property can be false, true, or an object:__
@@ -39,7 +39,7 @@ If multiple directives on the same element request a new scope, only one new sco
 The 'isolate' scope differs from normal scope in that it does not prototypically inherit from its parent scope. 
 This is useful when creating reusable components, which should not accidentally read or modify data in the parent scope.
 
-### scope bind
+### directive scope bind
 - 获取的值是设置在指令属性上的,而非模板上的.
 
  ```js
@@ -52,7 +52,7 @@ This is useful when creating reusable components, which should not accidentally 
 * `<` or `<?attr` :　单向绑定, 依据$watch来判断, 如果绑定的是对象会出现`双向绑定的结果`
 * `&` or `&attr` : 绑定parent scope context的express 引用, usually function reference.
 
-### scope mix result
+### directive scope mix result
 `no scope + no scope`  => Two directives which don't require their own scope will use their parent's scope  
 `child scope + no scope`  => Both directives will share one single child scope  
 `child scope + child scope`  => Both directives will share one single child scope  
@@ -60,7 +60,7 @@ This is useful when creating reusable components, which should not accidentally 
 `isolated scope + child scope`  => Won't work! Only one scope can be related to one element. Therefore these directives cannot be applied to the same element.  
 `isolated scope + isolated scope`  => Won't work! Only one scope can be related to one element. Therefore these directives cannot be applied to the same element.  
 
-### demo code 
+### demo code FOR directives link&compile and scope
 demo.html
 
 ```js
