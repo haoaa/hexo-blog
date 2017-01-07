@@ -1,9 +1,10 @@
 ---
-title: angular-day7
+title: angular-day7-controller-scope-databind
 date: 2017-01-01 12:07:34
 tags:
-  - angular
-  - js framework
+  - ng-process 
+  - controller&scope
+  - data-bind
 categories:
   - fe-framework 
   - angular
@@ -22,7 +23,7 @@ categories:
 5. renders to view
 
 <!--more-->
-![angular-process](/hexo/assets/2017/angular-process.png)
+![angular-process](/assets/2017/angular-process.png)
 
 ## controller
 - controller is js object which contain application logic.
@@ -53,7 +54,7 @@ angular.element($0).scope().$digest()
 
 - inner scope shadow the outer same name member.
 - inner scope .__proto__ == outer scope
-![](/hexo/assets/2017/scope-nest.jpg)
+![](/assets/2017/scope-nest.jpg)
 
 ## 最外层的$rootScope(run只会在模型创建时执行)
 
@@ -66,7 +67,7 @@ var app1 = angular.module('app1', [])
 			// do other thing
 		}]);
 ```
-![](/hexo/assets/2017/rootScope.jpg)
+![](/assets/2017/rootScope.jpg)
 
 ## data binding
 
@@ -76,7 +77,7 @@ var app1 = angular.module('app1', [])
 - two way ng-model
 - three way `\{\{::scopemember}}`
 
-![](/hexo/assets/2017/one-way-bind.jpg)
-![](/hexo/assets/2017/two-way-bind.jpg)
-![](/hexo/assets/2017/one-time-bind.jpg)
+![](/assets/2017/one-way-bind.jpg)
+![](/assets/2017/two-way-bind.jpg)
+![](/assets/2017/one-time-bind.jpg)
 

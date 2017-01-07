@@ -14,7 +14,7 @@ tags:
 
 ### service basic
 
-![](/hexo/assets/2017/ng-service.jpg)
+![](/assets/2017/ng-service.jpg)
 <!--more-->
 ---
 
@@ -79,7 +79,7 @@ app.service('calcService',['$http','$log',function($http,$log){
 
 ## provider
 
-![](/hexo/assets/2017/provider.jpg)
+![](/assets/2017/provider.jpg)
 
 
 

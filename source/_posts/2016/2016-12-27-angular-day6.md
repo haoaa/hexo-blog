@@ -85,7 +85,7 @@ angular.module('hello').component('hello', {
 
 ### compile&link四阶段
 
-![](/hexo/assets/2016/compile&link_process.png)
+![](/assets/2016/compile&link_process.png)
 
 ---
 #### [youtube tutorial] 

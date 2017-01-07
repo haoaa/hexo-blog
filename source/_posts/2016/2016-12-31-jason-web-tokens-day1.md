@@ -14,9 +14,9 @@ tags:
 <!--more-->
 
 ### jwt-structure
-![](/hexo/assets/2016/jwt-progress.png) 
+![](/assets/2016/jwt-progress.png) 
 
-![](/hexo/assets/2016/jwt-structure.png) 
+![](/assets/2016/jwt-structure.png) 
 
 ---
 

@@ -78,5 +78,5 @@ Rectangle.prototype.constructor = Rectangle;
 var rect = new Rectangle();
 ```
 
-![](/hexo/assets/2016/prototype-chain.png)
+![](/assets/2016/prototype-chain.png)
 ---

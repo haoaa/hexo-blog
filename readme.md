@@ -1,4 +1,4 @@
-# This hexo repo handbook ish
+# This hexo repo handbook-ish
 
 ### **Step1:** Clone project
 ```
@@ -13,11 +13,18 @@ $ npm install
 ### **Step3:** write some md file under the `source/_posts`
 ```
 $ hexo new something-about-sass
+``` 
+### **Step4:** backup
+- commit source
+ ```
+$ npm run git -- "your commit comments goes here"
+
 ```
-### **Step4:** g&d
+- deploy commond
+ ```
+$ npm run reload 
 ```
-$ hexo g -d
-```
+---
 
 > pretty easy huh
 
