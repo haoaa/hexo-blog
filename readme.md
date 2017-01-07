@@ -26,6 +26,7 @@ $ hexo new something-about-sass
  ```
  $ npm run reload 
  ```
+
 ---
 
 > pretty easy huh
