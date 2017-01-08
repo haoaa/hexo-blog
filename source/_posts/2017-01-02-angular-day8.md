@@ -5,8 +5,9 @@ categories:
   - fe-framework 
   - angular
 tags:
-  - angular
-  - js framework
+  - service factory
+  - provider
+  - $templateCache
 ---
 ## service
 
