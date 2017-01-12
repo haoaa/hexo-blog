@@ -164,7 +164,7 @@ document.onselectstart = function (event){
 }
 ```
 
-## jq事件调整
+## 修正jq/zepto移动端事件
 
 ```js
 (function($) {  
