@@ -24,6 +24,12 @@ Then it will bundle them all into app.bundle.js.
 
 ---
 
+### 关于[使用CommonsChunkPlugin插件](https://segmentfault.com/a/1190000006814420#articleHeader5)的debug总结
+
+1. wp_require的是1,2是installedModules[moduleId]里面的1,2
+2. 只是installedModules[每次都会被替换掉]webpackJsonp([2],[function() /这个function是0/ 后面省略
+3. webpackJsonp([2]这个2是installedChunks的2, installedChunks的0是common模块
+
 ## webpack参数
 
 ```js
