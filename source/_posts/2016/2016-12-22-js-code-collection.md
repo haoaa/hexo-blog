@@ -279,3 +279,123 @@ document.onselectstart = function (event){
 })(window.jQuery || window.Zepto);  
 
 ```
+
+## 瀑布流逻辑
+
+1. 根据屏幕宽度和图片宽度计算列数(`column`)
+2. 遍历等宽盒子  
+  2.1 头4列加入到arrHeight里  
+  2.2 将之后的图接到高度最低的一列  
+  2.3 累加每个人列的高度  
+3. scroll到最低的列后,追加dom并重复步骤2
+
+### waterfall demo code
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box {
+            float: left;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="container">
+    <div class="box"><img src="images/P_000.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_001.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_002.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_003.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_004.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_005.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_006.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_007.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_008.jpg" alt=""/></div>
+    <div class="box"><img src="images/P_009.jpg" alt=""/></div>
+</div>
+</body>
+</html>
+<script>
+    window.onload = function () {
+        var container = document.getElementById("container");
+        var boxs = container.children;
+        var pageWidth = window.innerWidth;
+        var boxWidth = boxs[0].offsetWidth;
+        var column = Math.floor(pageWidth / boxWidth);
+        var arrHeight = [];
+        function waterfall() {
+            for (var i = 0; i < boxs.length; i++) {
+                if (i < column) {
+                    arrHeight[i] = boxs[i].offsetHeight;
+                } else {
+                    var minHeight = getMin(arrHeight).value;
+                    var minHeightIndex = getMin(arrHeight).index;
+                    boxs[i].style.position = "absolute";
+                    boxs[i].style.left = boxs[minHeightIndex].offsetLeft + "px";
+                    boxs[i].style.top =                                                                                                                   + "px";
+                    arrHeight[minHeightIndex] = minHeight + boxs[i].offsetHeight;
+                }
+            }
+        }
+        waterfall();
+        function bottomed() {
+            var scrollTop = window.pageYOffset;
+            var clientHeight = window.innerHeight;
+            var lastBoxTop = boxs[boxs.length - 1].offsetTop;
+            if ((scrollTop + clientHeight) > lastBoxTop) {
+                return true;
+            }
+        }
+        window.onscroll = function () {
+            if (bottomed()) {
+                var json = [
+                    {"src": "images/P_000.jpg"},
+                    {"src": "images/P_001.jpg"},
+                    {"src": "images/P_002.jpg"},
+                    {"src": "images/P_003.jpg"},
+                    {"src": "images/P_004.jpg"},
+                    {"src": "images/P_005.jpg"},
+                    {"src": "images/P_006.jpg"},
+                    {"src": "images/P_007.jpg"},
+                    {"src": "images/P_008.jpg"},
+                    {"src": "images/P_009.jpg"},
+                ]
+                for (var i = 0; i < json.length; i++) {
+                    var div = document.createElement("div");
+                    div.className = "box";
+                    var img = document.createElement("img");
+                    img.src = json[i].src;
+                    div.appendChild(img);
+                    container.appendChild(div);
+                }
+                waterfall();
+            }
+        }
+    }
+
+    function getMin(arr) {
+        var min = {};
+        min.index = 0;
+        min.value = arr[min.index];
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] < min.value) {
+                min.value = arr[i];
+                min.index = i;
+            }
+        }
+        return min;
+    }
+
+
+</script>
+```
