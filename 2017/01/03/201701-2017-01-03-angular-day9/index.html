@@ -1,0 +1,763 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="scope parameter,ng-if ng-repeat ng-show,directive scope," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/img/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="ng-directive &amp;amp; scope &amp;amp; compile &amp;amp; linkng-if
+if false template will not render to dom
+create a scope for itself
+evaluation expression based on the scope
+
+ng-show/hide
+it won’t create scope f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="angular-day9-directive-scope-compile&link">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2017/01/03/201701-2017-01-03-angular-day9/index.html">
+<meta property="og:site_name" content="Haoqi's blog-ish!">
+<meta property="og:description" content="ng-directive &amp;amp; scope &amp;amp; compile &amp;amp; linkng-if
+if false template will not render to dom
+create a scope for itself
+evaluation expression based on the scope
+
+ng-show/hide
+it won’t create scope f">
+<meta property="og:updated_time" content="2017-01-08T05:49:43.811Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="angular-day9-directive-scope-compile&link">
+<meta name="twitter:description" content="ng-directive &amp;amp; scope &amp;amp; compile &amp;amp; linkng-if
+if false template will not render to dom
+create a scope for itself
+evaluation expression based on the scope
+
+ng-show/hide
+it won’t create scope f">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2017/01/03/201701-2017-01-03-angular-day9/"/>
+
+
+
+
+
+  <title> angular-day9-directive-scope-compile&link | Haoqi's blog-ish! </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Haoqi's blog-ish!</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">blah blah blah</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/01/03/201701-2017-01-03-angular-day9/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="浩齐">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/assets/img/bloodycat.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Haoqi's blog-ish!">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Haoqi's blog-ish!" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                angular-day9-directive-scope-compile&link
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-03T22:31:16+08:00">
+                2017-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fe-framework/" itemprop="url" rel="index">
+                    <span itemprop="name">fe-framework</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fe-framework/angular/" itemprop="url" rel="index">
+                    <span itemprop="name">angular</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="ng-directive-amp-scope-amp-compile-amp-link"><a href="#ng-directive-amp-scope-amp-compile-amp-link" class="headerlink" title="ng-directive &amp; scope &amp; compile &amp; link"></a>ng-directive &amp; scope &amp; compile &amp; link</h2><h3 id="ng-if"><a href="#ng-if" class="headerlink" title="ng-if"></a>ng-if</h3><ul>
+<li>if false template will not render to dom</li>
+<li>create a scope for itself</li>
+<li>evaluation expression based on the scope</li>
+</ul>
+<h3 id="ng-show-hide"><a href="#ng-show-hide" class="headerlink" title="ng-show/hide"></a>ng-show/hide</h3><ul>
+<li>it won’t create scope for this directive</li>
+<li>evaluation expression based on parent’s scope<a id="more"></a>
+<h3 id="ng-repeat"><a href="#ng-repeat" class="headerlink" title="ng-repeat"></a>ng-repeat</h3></li>
+<li>creates a scope for each instantiated template(item)</li>
+</ul>
+<hr>
+<h2 id="directive-scope"><a href="#directive-scope" class="headerlink" title="directive scope"></a>directive scope</h2><h3 id="scope-spec"><a href="#scope-spec" class="headerlink" title="scope spec"></a>scope spec</h3><blockquote>
+<p><strong>The scope property can be false, true, or an object:</strong></p>
+</blockquote>
+<ul>
+<li><p><code>false</code> (default): No scope will be created for the directive. The directive will use its parent’s scope.</p>
+</li>
+<li><p><code>true</code> : A new child scope that prototypically inherits from its parent will be created for the directive’s element.<br>If multiple directives on the same element request a new scope, only one new scope is created.</p>
+</li>
+<li><p><code>{...}</code> (an object hash): A new “isolate” scope is created for the directive’s element. (still can access $parent, there’ll nothing on <code>__proto__</code>)<br>The ‘isolate’ scope differs from normal scope in that it does not prototypically inherit from its parent scope.<br>This is useful when creating reusable components, which should not accidentally read or modify data in the parent scope.</p>
+</li>
+</ul>
+<hr>
+<h2 id="directive-scope-bind-scope-parameter"><a href="#directive-scope-bind-scope-parameter" class="headerlink" title="directive scope bind(scope parameter)"></a>directive scope bind(scope parameter)</h2><ul>
+<li><p>获取的值是设置在指令属性上的,而非模板上的.</p>
+<ul>
+<li><code>reftoparent</code>是directive scope的, <code>item</code>是parent scope的</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;g-list tag='list-directive' reftoparent="items[0]"&gt;dattass111111&lt;/g-list&gt; // here </div><div class="line">template: '&lt;div &gt;&lt;span&gt;aaaaa&lt;/span&gt;&lt;/div&gt;' // not here</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><code>@</code> or <code>@attr</code> :　获取属性的值, 从attr上也可获取 <strong>The result is always a string, bind object use <code>&lt;</code> gesus</strong><ul>
+<li>string value to be passed to directive scope</li>
+<li>on way bind</li>
+<li>can be an interpolated string(ng-expression) eg. <code></code></li>
+</ul>
+</li>
+<li><code>=</code> or <code>=?attr</code> or <code>=*?attr</code> :　和parent scope的值双向绑定<ul>
+<li>object to be passed to directive scope eg. <code>b</code>  <code></code> is unacceptable</li>
+<li>two way bind(between parent and directive scope) </li>
+</ul>
+</li>
+<li><code>&lt;</code> or <code>&lt;?attr</code> :　单向绑定, 依据$watch来判断, 如果绑定的是对象会出现<code>双向绑定的结果</code><ul>
+<li>object to be passed to directive scope</li>
+<li>one way bind(between parent and directive scope)</li>
+</ul>
+</li>
+<li><code>&amp;</code> or <code>&amp;attr</code> : 绑定parent scope context的express 引用, usually function reference.<ul>
+<li>function to be accessible from directive scope</li>
+<li>and directive can execute it</li>
+</ul>
+</li>
+</ul>
+<h3 id="directive-scope-mix-result"><a href="#directive-scope-mix-result" class="headerlink" title="directive scope mix result"></a>directive scope mix result</h3><p><code>no scope + no scope</code>  =&gt; Two directives which don’t require their own scope will use their parent’s scope<br><code>child scope + no scope</code>  =&gt; Both directives will share one single child scope<br><code>child scope + child scope</code>  =&gt; Both directives will share one single child scope<br><code>isolated scope + no scope</code>  =&gt; The isolated directive will use it’s own created isolated scope. The other directive will use its parent’s scope<br><code>isolated scope + child scope</code>  =&gt; Won’t work! Only one scope can be related to one element. Therefore these directives cannot be applied to the same element.<br><code>isolated scope + isolated scope</code>  =&gt; Won’t work! Only one scope can be related to one element. Therefore these directives cannot be applied to the same element.  </p>
+<h3 id="demo-code-for-scope-parameter"><a href="#demo-code-for-scope-parameter" class="headerlink" title="demo code for scope parameter"></a>demo code for scope parameter</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"angular.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-app</span>=<span class="string">'myapp'</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">section</span> <span class="attr">ng-controller</span>=<span class="string">'ctrl'</span>&gt;</span></div><div class="line">        a: &#123;&#123;a&#125;&#125; b: &#123;&#123;b&#125;&#125; emp.name &#123;&#123;emp.name&#125;&#125; <span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"change()"</span>&gt;</span>change<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">msg</span> <span class="attr">aaa</span>=<span class="string">'&#123;&#123;a&#125;&#125;'</span> <span class="attr">b</span>=<span class="string">b</span> <span class="attr">changeb</span>=<span class="string">change(n,m)</span>&gt;</span><span class="tag">&lt;/<span class="name">msg</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">msg</span>  <span class="attr">aaa</span>=<span class="string">'&#123;&#123;a&#125;&#125;'</span> <span class="attr">b</span>=<span class="string">b</span> <span class="attr">emp</span>=<span class="string">emp</span>&gt;</span><span class="tag">&lt;/<span class="name">msg</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">section</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="javascript"></span></div><div class="line">    <span class="keyword">var</span> <span class="built_in">module</span> = angular.module(<span class="string">'myapp'</span>, [ ]);</div><div class="line"></div><div class="line">    <span class="built_in">module</span>.controller(<span class="string">'ctrl'</span>, [<span class="string">'$scope'</span>, <span class="string">'$parse'</span>, <span class="string">'$interpolate'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">$scope, $parse, $interpolate</span>) </span>&#123;</div><div class="line">        $scope.a = <span class="number">1</span>;</div><div class="line">        $scope.b = <span class="number">2</span>;</div><div class="line">        $scope.emp = &#123;<span class="attr">name</span>:<span class="string">'tommy'</span>,<span class="attr">age</span>:<span class="string">'22'</span>&#125;;</div><div class="line">        $scope.change = <span class="function"><span class="keyword">function</span> (<span class="params">n1, n2</span>) </span>&#123;</div><div class="line">            $scope.b = <span class="number">30</span> * n1 * n2;</div><div class="line">        &#125;;</div><div class="line">    &#125;]);</div><div class="line"></div><div class="line">    <span class="built_in">module</span>.directive(<span class="string">'msg'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> &#123;</div><div class="line">            <span class="attr">templateUrl</span>: <span class="string">'templateId.html'</span>,</div><div class="line">            <span class="attr">scope</span>: &#123;</div><div class="line">                <span class="attr">a</span> : <span class="string">'@aaa'</span>,</div><div class="line">                <span class="attr">b</span> : <span class="string">'='</span>,</div><div class="line">                <span class="attr">change</span> : <span class="string">'&amp;changeb'</span> ,</div><div class="line">                <span class="attr">employee</span> : <span class="string">'&lt;emp'</span>            </div><div class="line">            &#125;,</div><div class="line">            <span class="attr">controller</span>: <span class="function"><span class="keyword">function</span> (<span class="params">$scope, $element, $attrs</span>) </span>&#123;</div><div class="line">                <span class="comment">// $scope.c = 100;</span></div><div class="line">                $scope.changeObj = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">                    <span class="comment">// $scope.employee.name = 'cccc'; //two way bind? </span></div><div class="line">                     $scope.employee = &#123;<span class="attr">name</span>:<span class="string">'kong'</span>,<span class="attr">age</span>:<span class="number">30</span>&#125;;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    <span class="built_in">module</span>.run(<span class="function"><span class="keyword">function</span> (<span class="params">$templateCache</span>) </span>&#123;</div><div class="line">        $templateCache.put(<span class="string">'templateId.html'</span>, <span class="string">'&lt;div&gt;a = &#123;&#123;a&#125;&#125; b = &#123;&#123;b&#125;&#125;  &lt;/br&gt; emp.name &#123;&#123;employee.name&#125;&#125; '</span> +</div><div class="line">         <span class="string">'&lt;button ng-click="change(&#123;n:2,m:3&#125;)"&gt;directive&lt;/button&gt; &lt;button ng-click="changeObj()"&gt;changeEmpname&lt;/button&gt; &lt;/div&gt;'</span>);</div><div class="line">    &#125;);</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<hr>
+<h2 id="demo-code-FOR-directives-link-amp-compile-and-scope"><a href="#demo-code-FOR-directives-link-amp-compile-and-scope" class="headerlink" title="demo code FOR directives link&amp;compile and scope"></a>demo code FOR directives link&amp;compile and scope</h2><p>demo.html</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html lang="en"&gt;</div><div class="line">&lt;head&gt;</div><div class="line">	&lt;meta charset="UTF-8"&gt;</div><div class="line">	&lt;meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"&gt;</div><div class="line">	&lt;title&gt;Document&lt;/title&gt;</div><div class="line">	&lt;script src="angular.js"&gt;&lt;/script&gt;</div><div class="line">&lt;/head&gt;</div><div class="line">&lt;body ng-app='myApp'&gt;</div><div class="line">	&lt;div ng-controller="listController"&gt;</div><div class="line">		&lt;g-list tag='list-directive' reftoparent="items[0]"&gt;items belong outter controller&lt;/g-list&gt;</div><div class="line">		&lt;g-list tag='list-directive-els'  reftoparent="items[2]"&gt;dattass222222&lt;/g-list&gt;</div><div class="line"></div><div class="line">	&lt;/div&gt;</div><div class="line">&lt;/body&gt;</div><div class="line">&lt;script src="list.js"&gt;&lt;/script&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+<p>list.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params">angular</span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> <span class="built_in">module</span> = angular.module(<span class="string">'myApp'</span>, []);</div><div class="line">	<span class="keyword">var</span> jq = angular.element;</div><div class="line">	<span class="built_in">module</span>.controller(<span class="string">'listController'</span>, [<span class="string">'$window'</span>, <span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$w, $scope</span>) </span>&#123;</div><div class="line">		<span class="built_in">console</span>.log($w.offsetHeight);</div><div class="line">		$scope.items = [&#123;</div><div class="line">			<span class="string">"id"</span>: <span class="number">1</span></div><div class="line">		&#125;, &#123;</div><div class="line">			<span class="string">"id"</span>: <span class="number">2</span></div><div class="line">		&#125;, &#123;</div><div class="line">			<span class="string">"id"</span>: <span class="number">3</span></div><div class="line">		&#125;, &#123;</div><div class="line">			<span class="string">"id"</span>: <span class="number">4</span></div><div class="line">		&#125;];</div><div class="line">	&#125;]);</div><div class="line"></div><div class="line">	<span class="built_in">module</span>.directive(<span class="string">'gList'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="keyword">return</span> &#123;</div><div class="line">			<span class="attr">template</span>: <span class="string">'&lt;div &gt;&lt;span&gt;aaaaa&lt;/span&gt;&lt;/div&gt;'</span>, <span class="comment">// or // function(tElement, tAttrs) &#123; ... &#125;,</span></div><div class="line">			<span class="comment">// or</span></div><div class="line">			<span class="comment">// templateUrl: 'directive.html', // or // function(tElement, tAttrs) &#123; ... &#125;,</span></div><div class="line">			transclude: <span class="literal">false</span>, </div><div class="line">			<span class="attr">scope</span>: &#123;</div><div class="line">				<span class="attr">reftoparent</span> : <span class="string">'&lt;reftoparent'</span></div><div class="line">			&#125;,</div><div class="line">			<span class="attr">controller</span>: <span class="function"><span class="keyword">function</span>(<span class="params">$scope, $element, $attrs, $transclude</span>) </span>&#123; </div><div class="line">				<span class="built_in">console</span>.log(<span class="string">"controller: "</span> + $element[<span class="number">0</span>].innerHTML);</div><div class="line"></div><div class="line">			&#125;,</div><div class="line">			<span class="comment">// controllerAs: 'ctlas',</span></div><div class="line">			<span class="built_in">require</span>: <span class="string">'?^listController'</span>, <span class="comment">// or // ['^parentDirectiveName', '?optionalDirectiveName', '?^optionalParent'],</span></div><div class="line">			compile: <span class="function"><span class="keyword">function</span> <span class="title">compile</span>(<span class="params">tElement, tAttrs, transclude</span>) </span>&#123;</div><div class="line">				tElement.append(jq(<span class="string">'&lt;i&gt;&#123;&#123;myattr&#125;&#125;italic&#123;&#123;reftoparent.id&#125;&#125;&lt;/i&gt;'</span>).append(tElement.contents()));</div><div class="line">				<span class="comment">// tElement[0].append('&lt;i&gt;italic&lt;/i&gt;');</span></div><div class="line">				<span class="built_in">console</span>.log(<span class="string">"compile: "</span> + tElement[<span class="number">0</span>].innerHTML);</div><div class="line">				<span class="keyword">return</span> &#123;</div><div class="line">					<span class="attr">pre</span>: <span class="function"><span class="keyword">function</span> <span class="title">preLink</span>(<span class="params">scope, iElement, iAttrs, controller</span>) </span>&#123;</div><div class="line">						<span class="built_in">console</span>.log(<span class="string">'prelink: '</span> + iElement[<span class="number">0</span>].innerHTML);</div><div class="line">						scope.$parent.items[<span class="number">0</span>].id =<span class="string">'9587'</span> + iAttrs.tag;</div><div class="line">						scope.myattr = iAttrs.tag;</div><div class="line">					&#125;,</div><div class="line">					<span class="attr">post</span>: <span class="function"><span class="keyword">function</span> <span class="title">postLink</span>(<span class="params">scope, iElement, iAttrs, controller</span>) </span>&#123;</div><div class="line">						<span class="built_in">console</span>.log(<span class="string">'postlink: '</span> + iElement[<span class="number">0</span>].innerHTML);</div><div class="line">					&#125;</div><div class="line">				&#125; </div><div class="line">				<span class="comment">// 1.transclude means template with ng-transclude directives . it's content </span></div><div class="line">				<span class="comment">// will replace with tag's content.</span></div><div class="line">				<span class="comment">// or</span></div><div class="line">				<span class="comment">// return function postLink(  ) &#123; ... &#125;</span></div><div class="line">			&#125;,</div><div class="line">			<span class="comment">// or</span></div><div class="line">			<span class="comment">// link: &#123;</span></div><div class="line">			<span class="comment">//  pre: function preLink(scope, iElement, iAttrs, controller) &#123; ... &#125;,</span></div><div class="line">			<span class="comment">//  post: function postLink(scope, iElement, iAttrs, controller) &#123; ... &#125;</span></div><div class="line">			<span class="comment">// &#125;</span></div><div class="line">			<span class="comment">// or</span></div><div class="line">			<span class="comment">// link: function postLink( ... ) &#123; ... &#125;</span></div><div class="line">		&#125;;</div><div class="line">	&#125;);</div><div class="line">&#125;)(angular);</div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/scope-parameter/" rel="tag"># scope parameter</a>
+          
+            <a href="/tags/ng-if-ng-repeat-ng-show/" rel="tag"># ng-if ng-repeat ng-show</a>
+          
+            <a href="/tags/directive-scope/" rel="tag"># directive scope</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/02/201701-2017-01-02-angular-day8/" rel="next" title="angular-day8-service-provider-factory">
+                <i class="fa fa-chevron-left"></i> angular-day8-service-provider-factory
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/06/201701-2017-01-06-angular-day10/" rel="prev" title="angular-day10-$watch-$apply-$digest">
+                angular-day10-$watch-$apply-$digest <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/img/bloodycat.jpg"
+               alt="浩齐" />
+          <p class="site-author-name" itemprop="name">浩齐</p>
+          <p class="site-description motion-element" itemprop="description">some kind of blog</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ng-directive-amp-scope-amp-compile-amp-link"><span class="nav-number">1.</span> <span class="nav-text">ng-directive & scope & compile & link</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ng-if"><span class="nav-number">1.1.</span> <span class="nav-text">ng-if</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ng-show-hide"><span class="nav-number">1.2.</span> <span class="nav-text">ng-show/hide</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ng-repeat"><span class="nav-number">1.3.</span> <span class="nav-text">ng-repeat</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#directive-scope"><span class="nav-number">2.</span> <span class="nav-text">directive scope</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#scope-spec"><span class="nav-number">2.1.</span> <span class="nav-text">scope spec</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#directive-scope-bind-scope-parameter"><span class="nav-number">3.</span> <span class="nav-text">directive scope bind(scope parameter)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#directive-scope-mix-result"><span class="nav-number">3.1.</span> <span class="nav-text">directive scope mix result</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#demo-code-for-scope-parameter"><span class="nav-number">3.2.</span> <span class="nav-text">demo code for scope parameter</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#demo-code-FOR-directives-link-amp-compile-and-scope"><span class="nav-number">4.</span> <span class="nav-text">demo code FOR directives link&compile and scope</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">浩齐</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
+      <!-- UY END -->
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

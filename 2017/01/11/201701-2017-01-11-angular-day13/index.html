@@ -1,0 +1,711 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="$route,$routeParams," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/img/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="basic usage123456789101112131415161718192021var app = angular.module(&apos;myapp&apos;, [&apos;ngRoute&apos;]);    app.config([&apos;$routeProvider&apos;, function($routeProvider)&amp;#123;     $routeProvider.when(&apos;/first-msg&apos;,&amp;#123;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="angular-day13-$route">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2017/01/11/201701-2017-01-11-angular-day13/index.html">
+<meta property="og:site_name" content="Haoqi's blog-ish!">
+<meta property="og:description" content="basic usage123456789101112131415161718192021var app = angular.module(&apos;myapp&apos;, [&apos;ngRoute&apos;]);    app.config([&apos;$routeProvider&apos;, function($routeProvider)&amp;#123;     $routeProvider.when(&apos;/first-msg&apos;,&amp;#123;">
+<meta property="og:updated_time" content="2017-01-22T15:25:34.832Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="angular-day13-$route">
+<meta name="twitter:description" content="basic usage123456789101112131415161718192021var app = angular.module(&apos;myapp&apos;, [&apos;ngRoute&apos;]);    app.config([&apos;$routeProvider&apos;, function($routeProvider)&amp;#123;     $routeProvider.when(&apos;/first-msg&apos;,&amp;#123;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2017/01/11/201701-2017-01-11-angular-day13/"/>
+
+
+
+
+
+  <title> angular-day13-$route | Haoqi's blog-ish! </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Haoqi's blog-ish!</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">blah blah blah</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/01/11/201701-2017-01-11-angular-day13/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="浩齐">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/assets/img/bloodycat.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Haoqi's blog-ish!">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Haoqi's blog-ish!" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                angular-day13-$route
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-11T22:26:53+08:00">
+                2017-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fe-framework/" itemprop="url" rel="index">
+                    <span itemprop="name">fe-framework</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fe-framework/angular/" itemprop="url" rel="index">
+                    <span itemprop="name">angular</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="basic-usage"><a href="#basic-usage" class="headerlink" title="basic usage"></a>basic usage</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> app = angular.module(<span class="string">'myapp'</span>, [<span class="string">'ngRoute'</span>]);</div><div class="line">   </div><div class="line"> app.config([<span class="string">'$routeProvider'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$routeProvider</span>)</span>&#123;</div><div class="line">     $routeProvider.when(<span class="string">'/first-msg'</span>,&#123;</div><div class="line">         <span class="attr">templateUrl</span>: <span class="string">'temp1.html'</span>,</div><div class="line">         <span class="attr">controller</span>: <span class="string">'ctrl'</span></div><div class="line">     &#125;)</div><div class="line">     .when(<span class="string">'/second-msg'</span>,&#123;</div><div class="line">         <span class="attr">templateUrl</span>: <span class="string">'temp2.html'</span>,</div><div class="line">         <span class="attr">controller</span>: <span class="string">'ctrl'</span>,</div><div class="line">         <span class="attr">caseInsensitiveMatch</span>: <span class="literal">true</span></div><div class="line">     &#125;)</div><div class="line">     .when(<span class="string">'/'</span>,&#123;</div><div class="line">         <span class="attr">redirectTo</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">             <span class="keyword">return</span> <span class="string">'/first-msg'</span></div><div class="line">         &#125;</div><div class="line">     &#125;)</div><div class="line">     .otherwise(&#123;</div><div class="line">         <span class="attr">template</span>: <span class="string">'your lost!'</span></div><div class="line">     &#125;)</div><div class="line"> &#125;]);</div></pre></td></tr></table></figure>
+<h2 id="routeParams"><a href="#routeParams" class="headerlink" title="routeParams"></a>routeParams</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> app = angular.module(<span class="string">'myapp'</span>, [<span class="string">'ngRoute'</span>]);</div><div class="line">   </div><div class="line"> app.config([<span class="string">'$routeProvider'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$routeProvider</span>)</span>&#123;</div><div class="line">       $routeProvider.when(<span class="string">'/sum/:a/:b?'</span>,&#123;</div><div class="line">           <span class="attr">templateUrl</span>: <span class="string">'temp1.html'</span>,</div><div class="line">           <span class="attr">controller</span>: <span class="string">'ctrl'</span></div><div class="line">       &#125;) </div><div class="line">       .when(<span class="string">'/dosum/:a?/:b?'</span>,&#123; <span class="comment">//optional parameter</span></div><div class="line">           templateUrl: <span class="string">'temp3.html'</span>,</div><div class="line">           <span class="attr">controller</span>: <span class="string">'ctrl2'</span></div><div class="line">       &#125;) </div><div class="line">       .otherwise(&#123;</div><div class="line">           <span class="attr">template</span>: <span class="string">'your lost!'</span></div><div class="line">       &#125;)</div><div class="line">   &#125;]);</div><div class="line">app.controller(<span class="string">'ctrl'</span>, [<span class="string">'$scope'</span>,<span class="string">'$routeParams'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope,$routeParams</span>) </span>&#123;</div><div class="line">	$scope.a= $routeParams.a <span class="number">-0</span> + $routeParams.b *<span class="number">1</span></div><div class="line">&#125;])</div><div class="line">.controller(<span class="string">'ctrl2'</span>, [<span class="string">'$scope'</span>,<span class="string">'$routeParams'</span>,<span class="string">'$interpolate'</span>,<span class="string">'$location'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope,$routeParams,$interpolate,$location</span>) </span>&#123;</div><div class="line">	$scope.a =<span class="number">0</span>;</div><div class="line">	$scope.b =<span class="number">0</span>;</div><div class="line"></div><div class="line">       $scope.dosum =<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">           <span class="keyword">var</span> url = $interpolate(<span class="string">'/dosum/&#123;&#123;a&#125;&#125;/&#123;&#123;b&#125;&#125;'</span>)($scope);</div><div class="line">           $location.path(url);</div><div class="line">       &#125;</div><div class="line">&#125;])</div></pre></td></tr></table></figure>
+<p>temp3.html<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">do sum</div><div class="line">a: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">ng-model</span>=<span class="string">'a'</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">b: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">ng-model</span>=<span class="string">'b'</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"dosum()"</span>&gt;</span>dosum<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h2 id="route"><a href="#route" class="headerlink" title="$route"></a>$route</h2><ul>
+<li>$route.reload();</li>
+<li>$route.updateParams({a:$scope.a, b:$scope.b});</li>
+</ul>
+<h2 id="routeEvent"><a href="#routeEvent" class="headerlink" title="routeEvent"></a>routeEvent</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">app.run([<span class="string">'$rootScope'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$rootScope</span>)</span>&#123;</div><div class="line">    $routeScope.on(<span class="string">'$routeChangeStart'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">e,cur,pre</span>)</span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'routeChangeStart'</span>);</div><div class="line">    &#125;);</div><div class="line">    $routeScope.on(<span class="string">'$routeChangeSuccess'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">e,cur,pre</span>)</span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'routeChangeSuccess'</span>);</div><div class="line">    &#125;);</div><div class="line">    </div><div class="line">&#125;]);</div></pre></td></tr></table></figure>
+<h3 id="locationChangeStart-locationChangeSuccess"><a href="#locationChangeStart-locationChangeSuccess" class="headerlink" title="$locationChangeStart, $locationChangeSuccess"></a>$locationChangeStart, $locationChangeSuccess</h3><h2 id="Resolve"><a href="#Resolve" class="headerlink" title="Resolve"></a>Resolve</h2><table>
+<thead>
+<tr>
+<th>No resolving</th>
+<th>Resolving</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jump to the route first</td>
+<td>get data first</td>
+</tr>
+<tr>
+<td>get data later</td>
+<td>then jump to route and pass data</td>
+</tr>
+</tbody>
+</table>
+<h3 id="demo"><a href="#demo" class="headerlink" title="demo"></a>demo</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">.when('/calc/add/:a/:b', &#123;</div><div class="line">    templateUrl : 'calcResult.htm',</div><div class="line">    controller: 'calcAddController',</div><div class="line">    resolve:&#123;</div><div class="line">        webServiceResult: function(dataService, $route)&#123;</div><div class="line">            var a = $route.params.a;</div><div class="line">            var b = $route.params.b;</div><div class="line">            return dataService.add(a,b);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line">## ui-router</div><div class="line"></div><div class="line">### basic usage</div><div class="line">```html</div><div class="line">&lt;div class="row" style="height:500px"&gt;</div><div class="line">    &lt;div class="col-sm-3 well" style="height:100%"&gt;</div><div class="line">        &lt;ul&gt;</div><div class="line">            &lt;li&gt;&lt;a href="#/first-msg"&gt;first-msg&lt;/a&gt;&lt;/li&gt;</div><div class="line">            &lt;li&gt;&lt;a href="#/second-msg"&gt;second-msg&lt;/a&gt;&lt;/li&gt;</div><div class="line">            &lt;li&gt;&lt;a ui-sref='root()'&gt;root&lt;/a&gt;&lt;/li&gt;</div><div class="line">            &lt;li&gt;&lt;a href="#/third-msg"&gt;third-msg&lt;/a&gt;&lt;/li&gt;</div><div class="line">        &lt;/ul&gt;    </div><div class="line">    &lt;/div&gt;</div><div class="line">    &lt;div ui-view class="col-sm-9 well" style="height:100%"&gt;</div><div class="line">        </div><div class="line">    &lt;/div&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">app.config([<span class="string">'$stateProvider'</span>, <span class="string">'$urlRouterProvider'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$stateProvider,$urlRouterProvider</span>)</span>&#123;</div><div class="line">        $stateProvider</div><div class="line">        .state(<span class="string">'firstMessage'</span>,&#123;</div><div class="line">            <span class="attr">url</span>: <span class="string">'/first-msg'</span>,</div><div class="line">            <span class="comment">// templateUrl: 'msg1.html',</span></div><div class="line">            template: <span class="string">'message 1\'s template b &#123;&#123;b&#125;&#125;'</span>,</div><div class="line">            <span class="attr">controller</span>: <span class="string">'msg1'</span></div><div class="line">        &#125;) </div><div class="line">        .state(<span class="string">'secondMessage'</span>,&#123;</div><div class="line">            <span class="attr">url</span>: <span class="string">'/second-msg'</span>,</div><div class="line">            <span class="attr">templateUrl</span>: <span class="string">'msg2.html'</span>,</div><div class="line">            <span class="attr">controller</span>: <span class="string">'msg2'</span></div><div class="line">        &#125;) </div><div class="line">        .state(<span class="string">'root'</span>,&#123;</div><div class="line">            <span class="attr">url</span>: <span class="string">'/'</span>,</div><div class="line">            <span class="attr">template</span> : <span class="string">'root template!'</span>,</div><div class="line">        &#125;) </div><div class="line">        <span class="comment">// .state('defaul',&#123;</span></div><div class="line">        <span class="comment">//     url: '*path',</span></div><div class="line">        <span class="comment">//     template: 'no route found!!',</span></div><div class="line">        <span class="comment">//     controller: 'msg2'</span></div><div class="line">        <span class="comment">// &#125;) </span></div><div class="line">        $urlRouterProvider.otherwise(<span class="string">'/'</span>)</div><div class="line">    &#125;]);</div><div class="line">    app.controller(<span class="string">'msg1'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope</span>) </span>&#123;</div><div class="line">		$scope.a=<span class="number">1</span>;        </div><div class="line">		$scope.b=<span class="number">2</span>;</div><div class="line">    &#125;]);</div><div class="line">	app.controller(<span class="string">'msg2'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope</span>) </span>&#123;</div><div class="line">		$scope.c=<span class="number">2</span>;</div><div class="line">		$scope.d=<span class="number">3</span>;</div><div class="line">    &#125;]);</div></pre></td></tr></table></figure>
+<h3 id="route-parameter"><a href="#route-parameter" class="headerlink" title="route parameter"></a>route parameter</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"bootstrap.min.css"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></div><div class="line">        <span class="selector-class">.well</span>&#123;</div><div class="line">            <span class="attribute">margin</span>: <span class="number">0</span>;<span class="attribute">height</span>: <span class="number">100%</span>;</div><div class="line">        &#125; </div><div class="line">        *&#123;</div><div class="line">            <span class="attribute">box-sizing</span>: border-box;</div><div class="line">        &#125;</div><div class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"angular.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"angular-ui-router.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-app</span>=<span class="string">'myapp'</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span> <span class="attr">style</span>=<span class="string">"height:100px"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-sm-12 well"</span>&gt;</span></div><div class="line">            head</div><div class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span> <span class="attr">style</span>=<span class="string">"height:500px"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-sm-3 well"</span> <span class="attr">style</span>=<span class="string">"height:100%"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#/first-msg/3/6"</span>&gt;</span>first-msg #/first-msg/3/6<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#/second-msg/35/"</span>&gt;</span>second-msg<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">ui-sref</span>=<span class="string">'firstMessage(&#123;a:null,b:5&#125;)'</span>&gt;</span>first-msg<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">ui-sref-opt</span>=<span class="string">'&#123;inherit:false&#125;'</span> <span class="attr">ui-sref</span>=<span class="string">'firstMessage(&#123;a:20,b:null&#125;)'</span>&gt;</span>first-msg<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">ui-sref</span>=<span class="string">'secondMessage(&#123;a:22,b:33&#125;)'</span>&gt;</span>second-msg<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">ui-sref</span>=<span class="string">'root()'</span>&gt;</span>root<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line"></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#/third-msg?a=5"</span>&gt;</span>third-msg<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">ui-sref</span>=<span class="string">'thirdMessage(&#123;a:5,b:56&#125;)'</span>&gt;</span>third-msg 2<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">ui-sref</span>=<span class="string">'thirdMessage(&#123;a:5,b:[34,53,63]&#125;)'</span>&gt;</span>third-msg 3<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                </div><div class="line">            <span class="tag">&lt;/<span class="name">ul</span>&gt;</span>    </div><div class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">ui-view</span> <span class="attr">class</span>=<span class="string">"col-sm-9 well"</span> <span class="attr">style</span>=<span class="string">"height:100%"</span>&gt;</span></div><div class="line">            </div><div class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="javascript"></span></div><div class="line">	<span class="keyword">var</span> app = angular.module(<span class="string">'myapp'</span>, [<span class="string">'ui.router'</span>]);</div><div class="line">    </div><div class="line">    app.config([<span class="string">'$stateProvider'</span>, <span class="string">'$urlRouterProvider'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$stateProvider,$urlRouterProvider</span>)</span>&#123;</div><div class="line">        $stateProvider</div><div class="line">        .state(<span class="string">'firstMessage'</span>,&#123;</div><div class="line">            <span class="attr">url</span>: <span class="string">'/first-msg/:a/:b'</span>,</div><div class="line">            <span class="comment">// url: '/first-msg/&#123;a:[0-9]+&#125;/&#123;b&#125;',</span></div><div class="line">            template: <span class="string">'message 1\'s template&lt;br/&gt; a: &#123;&#123;a&#125;&#125; b: &#123;&#123;b&#125;&#125;'</span>,</div><div class="line">            <span class="attr">controller</span>: <span class="string">'msg1'</span></div><div class="line">        &#125;) </div><div class="line">        .state(<span class="string">'secondMessage'</span>,&#123;</div><div class="line">            <span class="attr">url</span>: <span class="string">'/second-msg/:a/:b'</span>,</div><div class="line">            <span class="attr">template</span>: <span class="string">'secondMessage 2\'s template&lt;br/&gt; a: &#123;&#123;a&#125;&#125; b: &#123;&#123;b&#125;&#125;'</span>,            </div><div class="line">            <span class="attr">controller</span>: <span class="string">'msg1'</span>,</div><div class="line">            <span class="attr">params</span>:&#123; <span class="comment">//default params value</span></div><div class="line">                a:&#123;<span class="attr">value</span>:<span class="string">"1"</span>,<span class="attr">squash</span>:<span class="string">'-'</span>&#125;,</div><div class="line">                <span class="attr">b</span>:&#123;<span class="attr">value</span>: <span class="string">"2"</span>,<span class="attr">squash</span>:<span class="literal">true</span>&#125;</div><div class="line">            &#125;</div><div class="line">        &#125;) </div><div class="line">        .state(<span class="string">'thirdMessage'</span>,&#123;</div><div class="line">            <span class="attr">url</span>: <span class="string">'/third-msg?a&amp;b'</span>,</div><div class="line">            <span class="attr">template</span>: <span class="string">'thirdMessage 3\'s template&lt;br/&gt; a: &#123;&#123;a&#125;&#125; b: &#123;&#123;b&#125;&#125;'</span>,            </div><div class="line">            <span class="attr">controller</span>: <span class="string">'msg1'</span>,</div><div class="line">            <span class="attr">params</span>:&#123; <span class="comment">//default params value</span></div><div class="line">                a:&#123;<span class="attr">value</span>:<span class="string">"1"</span>,<span class="attr">squash</span>:<span class="string">'-'</span>&#125;,</div><div class="line">                <span class="attr">b</span>:&#123;<span class="attr">value</span>: <span class="string">"2"</span>,<span class="attr">squash</span>:<span class="literal">true</span>&#125;</div><div class="line">            &#125;</div><div class="line">        &#125;) </div><div class="line">        .state(<span class="string">'root'</span>,&#123;</div><div class="line">            <span class="attr">url</span>: <span class="string">'/'</span>,</div><div class="line">            <span class="attr">template</span> : <span class="string">'root template!'</span>,</div><div class="line">        &#125;)  </div><div class="line">        $urlRouterProvider.otherwise(<span class="string">'/'</span>)</div><div class="line">    &#125;]);</div><div class="line">    app.controller(<span class="string">'msg1'</span>, [<span class="string">'$scope'</span>,<span class="string">'$stateParams'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope,$stateParams</span>) </span>&#123;</div><div class="line">		$scope.a=$stateParams.a;        </div><div class="line">		$scope.b=$stateParams.b;</div><div class="line">    &#125;]);</div><div class="line">	app.controller(<span class="string">'msg2'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope</span>) </span>&#123;</div><div class="line">		$scope.c=<span class="number">2</span>;</div><div class="line">		$scope.d=<span class="number">3</span>;</div><div class="line">		$scope.update = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">			$scope.a[<span class="number">1</span>].id =$scope.a[<span class="number">1</span>].id  +<span class="number">2</span>;</div><div class="line">			$scope.a.push(&#123;<span class="string">'id'</span>:<span class="number">3</span>&#125;)</div><div class="line">		&#125;</div><div class="line">		$scope.$watchCollection(<span class="string">"a"</span>,<span class="function"><span class="keyword">function</span> (<span class="params">a,old</span>) </span>&#123;</div><div class="line">			<span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(a) + <span class="string">' &lt;= '</span> + <span class="built_in">JSON</span>.stringify(old));</div><div class="line">		&#125;);</div><div class="line">	&#125;]);</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/route/" rel="tag"># $route</a>
+          
+            <a href="/tags/routeParams/" rel="tag"># $routeParams</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/08/201701-2017-01-08-angular-day12/" rel="next" title="angular-day12-$transclude">
+                <i class="fa fa-chevron-left"></i> angular-day12-$transclude
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/12/201701-2017-01-12-less-day1/" rel="prev" title="less-day1">
+                less-day1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/img/bloodycat.jpg"
+               alt="浩齐" />
+          <p class="site-author-name" itemprop="name">浩齐</p>
+          <p class="site-description motion-element" itemprop="description">some kind of blog</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#basic-usage"><span class="nav-number">1.</span> <span class="nav-text">basic usage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#routeParams"><span class="nav-number">2.</span> <span class="nav-text">routeParams</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#route"><span class="nav-number">3.</span> <span class="nav-text">$route</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#routeEvent"><span class="nav-number">4.</span> <span class="nav-text">routeEvent</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#locationChangeStart-locationChangeSuccess"><span class="nav-number">4.1.</span> <span class="nav-text">$locationChangeStart, $locationChangeSuccess</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Resolve"><span class="nav-number">5.</span> <span class="nav-text">Resolve</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#demo"><span class="nav-number">5.1.</span> <span class="nav-text">demo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#route-parameter"><span class="nav-number">5.2.</span> <span class="nav-text">route parameter</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">浩齐</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
+      <!-- UY END -->
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

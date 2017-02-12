@@ -1,0 +1,721 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="$interpolate, $parse, $eval,$scope," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/img/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="$interpolate, $parse, $eval
+$eval 调用 $parse
+$eval&amp;amp;$parse可修改数据, $Interpolate只读
+$interpolate解析包含表达式\{\{ \}\}的字符串, 可处理过滤器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="angular-day11-shared/inherited-$scope">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2017/01/07/201701-2017-01-07-angular-day11/index.html">
+<meta property="og:site_name" content="Haoqi's blog-ish!">
+<meta property="og:description" content="$interpolate, $parse, $eval
+$eval 调用 $parse
+$eval&amp;amp;$parse可修改数据, $Interpolate只读
+$interpolate解析包含表达式\{\{ \}\}的字符串, 可处理过滤器">
+<meta property="og:image" content="https://haoaa.github.io/hexo/assets/2017/inherited-scope.jpg">
+<meta property="og:updated_time" content="2017-01-09T02:11:06.858Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="angular-day11-shared/inherited-$scope">
+<meta name="twitter:description" content="$interpolate, $parse, $eval
+$eval 调用 $parse
+$eval&amp;amp;$parse可修改数据, $Interpolate只读
+$interpolate解析包含表达式\{\{ \}\}的字符串, 可处理过滤器">
+<meta name="twitter:image" content="https://haoaa.github.io/hexo/assets/2017/inherited-scope.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2017/01/07/201701-2017-01-07-angular-day11/"/>
+
+
+
+
+
+  <title> angular-day11-shared/inherited-$scope | Haoqi's blog-ish! </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Haoqi's blog-ish!</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">blah blah blah</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/01/07/201701-2017-01-07-angular-day11/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="浩齐">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/assets/img/bloodycat.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Haoqi's blog-ish!">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Haoqi's blog-ish!" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                angular-day11-shared/inherited-$scope
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-07T14:06:04+08:00">
+                2017-01-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fe-framework/" itemprop="url" rel="index">
+                    <span itemprop="name">fe-framework</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fe-framework/angular/" itemprop="url" rel="index">
+                    <span itemprop="name">angular</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="interpolate-parse-eval"><a href="#interpolate-parse-eval" class="headerlink" title="$interpolate, $parse, $eval"></a>$interpolate, $parse, $eval</h2><ul>
+<li>$eval 调用 $parse</li>
+<li>$eval&amp;$parse可修改数据, $Interpolate只读</li>
+<li>$interpolate解析包含表达式<code>\{\{ \}\}</code>的字符串, 可处理过滤器<a id="more"></a>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"angular.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-app</span>=<span class="string">'myapp'</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">section</span> <span class="attr">ng-controller</span>=<span class="string">'ctrl'</span>&gt;</span></div><div class="line">		a: 	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">ng-model</span>=<span class="string">'a'</span> <span class="attr">ng-change</span>=<span class="string">'update()'</span>&gt;</span> </div><div class="line">		b: &#123;&#123;b&#125;&#125; c: &#123;&#123;c&#125;&#125;</div><div class="line">		<span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"demoEval()"</span>&gt;</span>eval<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"demoParse()"</span>&gt;</span>parse<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"demoInterpolate()"</span>&gt;</span>Interpolate<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">section</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="javascript"></span></div><div class="line">	<span class="keyword">var</span> <span class="built_in">module</span> = angular.module(<span class="string">'myapp'</span>, []);</div><div class="line"> </div><div class="line">	<span class="built_in">module</span>.controller(<span class="string">'ctrl'</span>, [<span class="string">'$scope'</span>,<span class="string">'$parse'</span>, <span class="string">'$interpolate'</span>,  <span class="function"><span class="keyword">function</span>(<span class="params">$scope,$parse,$interpolate</span>) </span>&#123;</div><div class="line">		$scope.a=<span class="number">1</span>;</div><div class="line">		$scope.b=<span class="number">2</span>;</div><div class="line">		$scope.c=<span class="number">3</span>;</div><div class="line">		$scope.demoEval = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">			<span class="comment">// alert($scope.$eval("a"))</span></div><div class="line">			</div><div class="line">			<span class="comment">// alert($scope.$eval("a * c", &#123;</span></div><div class="line">			<span class="comment">// 	c:5, a:1</span></div><div class="line">			<span class="comment">// &#125;));</span></div><div class="line">			</div><div class="line">			$scope.$<span class="built_in">eval</span>(<span class="function"><span class="keyword">function</span>(<span class="params">scope, local</span>)</span>&#123;</div><div class="line">				alert(scope.a * local.b)</div><div class="line">			&#125;,&#123;</div><div class="line">				<span class="attr">a</span>:<span class="number">3</span>,<span class="attr">b</span>:<span class="number">4</span></div><div class="line">			&#125;);</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		$scope.demoParse = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">			<span class="keyword">var</span> f = $parse(<span class="string">'a * b'</span>);</div><div class="line">			<span class="comment">// alert(f($scope))</span></div><div class="line"></div><div class="line">			<span class="comment">// assign</span></div><div class="line">			$parse(<span class="string">'c'</span>).assign($scope, <span class="string">'33'</span>); <span class="comment">// digest process is kicked in</span></div><div class="line">			alert($parse(<span class="string">'a*b+c'</span>)(&#123;</div><div class="line">				<span class="attr">c</span>:<span class="number">5</span>,<span class="attr">a</span>:<span class="number">1</span>,<span class="attr">b</span>:<span class="number">2</span></div><div class="line">			&#125;))</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		$scope.demoInterpolate = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">			alert( $interpolate(<span class="string">"Result: &#123;&#123;a * b&#125;&#125; and plus: &#123;&#123;a+b|currency:$&#125;&#125;"</span>)(&#123;</div><div class="line">				<span class="attr">a</span>:<span class="number">3</span>,<span class="attr">b</span>:<span class="number">7</span></div><div class="line">			&#125;) )</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;]);</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<hr>
+<h2 id="shared-inherited-scope-in-controllers"><a href="#shared-inherited-scope-in-controllers" class="headerlink" title="shared/inherited scope(in controllers)"></a>shared/inherited scope(in controllers)</h2><p><img src="/assets/2017/inherited-scope.jpg" alt=""></p>
+<h3 id="shared-scope-parent-and-child-use-the-same-scope"><a href="#shared-scope-parent-and-child-use-the-same-scope" class="headerlink" title="shared scope: parent and child use the same scope"></a>shared scope: parent and child use the same scope</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"angular.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-app</span>=<span class="string">'myapp'</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">section</span> <span class="attr">ng-controller</span>=<span class="string">'ctrl'</span>&gt;</span></div><div class="line">        a: &#123;&#123;a&#125;&#125; b: &#123;&#123;b&#125;&#125; c: &#123;&#123;c&#125;&#125; <span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">msg</span>&gt;</span><span class="tag">&lt;/<span class="name">msg</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">msg</span>&gt;</span><span class="tag">&lt;/<span class="name">msg</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"change()"</span>&gt;</span>change<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">section</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="javascript"></span></div><div class="line">    <span class="keyword">var</span> <span class="built_in">module</span> = angular.module(<span class="string">'myapp'</span>, [ ]);</div><div class="line"></div><div class="line">    <span class="built_in">module</span>.controller(<span class="string">'ctrl'</span>, [<span class="string">'$scope'</span>, <span class="string">'$parse'</span>, <span class="string">'$interpolate'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">$scope, $parse, $interpolate</span>) </span>&#123;</div><div class="line">        $scope.a = <span class="number">1</span>;</div><div class="line">        $scope.b = <span class="number">2</span>;</div><div class="line">        $scope.change = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">            $scope.b = <span class="number">30</span>;</div><div class="line">        &#125;;</div><div class="line">    &#125;]);</div><div class="line"></div><div class="line">    <span class="built_in">module</span>.directive(<span class="string">'msg'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> &#123;</div><div class="line">            <span class="attr">templateUrl</span>: <span class="string">'templateId.html'</span>,</div><div class="line">            <span class="attr">scope</span>: <span class="literal">false</span>,</div><div class="line">            <span class="attr">controller</span>: <span class="function"><span class="keyword">function</span> (<span class="params">$scope, $element, $attrs</span>) </span>&#123;</div><div class="line">                $scope.c = <span class="number">100</span>;</div><div class="line">                $scope.change = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">                    $scope.b = <span class="string">'cccc'</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    <span class="built_in">module</span>.run(<span class="function"><span class="keyword">function</span> (<span class="params">$templateCache</span>) </span>&#123;</div><div class="line">        $templateCache.put(<span class="string">'templateId.html'</span>, <span class="string">'&lt;div&gt;a = &#123;&#123;a&#125;&#125; b = &#123;&#123;b&#125;&#125; '</span> +</div><div class="line">         <span class="string">'&lt;button ng-click="change()"&gt;directive&lt;/button&gt; &lt;/div&gt;'</span>);</div><div class="line">    &#125;);</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<hr>
+<h3 id="inherited-scope"><a href="#inherited-scope" class="headerlink" title="inherited scope"></a>inherited scope</h3><ul>
+<li><p>controller 嵌套 controller scope和 directive里scope=true是一样的</p>
+</li>
+<li><p>都是创建一个inherit parent的scope, child scope有parent scope的方法或属性会shadow parent scope的属性</p>
+</li>
+<li><p>child scope没有的会从parent scope查找</p>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"angular.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-app</span>=<span class="string">'myapp'</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">section</span> <span class="attr">ng-controller</span>=<span class="string">'ctrl'</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">ng-model</span>=<span class="string">"a"</span>&gt;</span>        </div><div class="line">        a: &#123;&#123;a&#125;&#125; b: &#123;&#123;b&#125;&#125; c: &#123;&#123;c&#125;&#125; <span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">        o.p &#123;&#123;o.p&#125;&#125; o.q &#123;&#123;o.q&#125;&#125;   <span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">ng-model</span>=<span class="string">"o.p"</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line"></div><div class="line">        <span class="comment">&lt;!--&lt;msg&gt;&lt;/msg&gt;</span></div><div class="line">        &lt;msg&gt;&lt;/msg&gt;--&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"change()"</span>&gt;</span>change<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line"></div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">section</span> <span class="attr">ng-controller</span>=<span class="string">'ctrl2'</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">ng-model</span>=<span class="string">"a"</span>&gt;</span> <span class="comment">&lt;!--auto create a for crtl2 scope --&gt;</span></div><div class="line">            a: &#123;&#123;a&#125;&#125; b: &#123;&#123;b&#125;&#125; c: &#123;&#123;c&#125;&#125;  d: &#123;&#123;d&#125;&#125; parent.a &#123;&#123;$parent.a&#125;&#125;<span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">            o.p &#123;&#123;o.p&#125;&#125; o.q &#123;&#123;o.q&#125;&#125;   <span class="tag">&lt;<span class="name">br</span>&gt;</span> </div><div class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">ng-model</span>=<span class="string">"o.p"</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="comment">&lt;!--won't auto create object o for crtl2 scope --&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"change()"</span>&gt;</span>change<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">section</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">section</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="javascript"></span></div><div class="line">    <span class="keyword">var</span> <span class="built_in">module</span> = angular.module(<span class="string">'myapp'</span>, []);</div><div class="line"></div><div class="line">    <span class="built_in">module</span>.controller(<span class="string">'ctrl'</span>, [<span class="string">'$scope'</span>, <span class="string">'$parse'</span>, <span class="string">'$interpolate'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">$scope, $parse, $interpolate</span>) </span>&#123;</div><div class="line">        $scope.a = <span class="number">1</span>;</div><div class="line">        $scope.b = <span class="number">2</span>;</div><div class="line">        $scope.o = &#123;</div><div class="line">            <span class="attr">p</span>:<span class="number">100</span>,</div><div class="line">            <span class="attr">q</span>:<span class="number">200</span></div><div class="line">        &#125;;</div><div class="line">        </div><div class="line">        $scope.change = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">            $scope.b = <span class="number">30</span>;</div><div class="line">        &#125;;</div><div class="line">    &#125;]);</div><div class="line">    <span class="built_in">module</span>.controller(<span class="string">'ctrl2'</span>, [<span class="string">'$scope'</span>, <span class="string">'$parse'</span>, <span class="string">'$interpolate'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">$scope, $parse, $interpolate</span>) </span>&#123;</div><div class="line">        $scope.c = <span class="number">3</span>;</div><div class="line">        $scope.d = <span class="number">4</span>;</div><div class="line">        <span class="comment">// $scope.o = &#123;</span></div><div class="line">        <span class="comment">//     p:2100,</span></div><div class="line">        <span class="comment">//     q:2200</span></div><div class="line">        <span class="comment">// &#125;;</span></div><div class="line">        $scope.change = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">            $scope.b = <span class="number">13</span>;</div><div class="line">        &#125;;</div><div class="line">    &#125;]);</div><div class="line">    <span class="built_in">module</span>.directive(<span class="string">'msg'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> &#123;</div><div class="line">            <span class="attr">template</span>: <span class="string">"msg :　&lt;dir&gt;a &#123;&#123;a&#125;&#125; b &#123;&#123;b&#125;&#125; &lt;button ng-click='change()'&gt;changeB&lt;/button&gt;&lt;/div&gt;"</span>,</div><div class="line">            <span class="comment">// templateUrl : 'msg.html',</span></div><div class="line">            scope: <span class="literal">true</span>,</div><div class="line">            <span class="attr">controller</span>: <span class="function"><span class="keyword">function</span> (<span class="params">$scope, $element, $attrs</span>) </span>&#123;</div><div class="line">                $scope.c = <span class="number">100</span>;</div><div class="line">                $scope.change = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">                    $scope.b = <span class="string">'cccc'</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    <span class="built_in">module</span>.run(<span class="function"><span class="keyword">function</span> (<span class="params">$templateCache</span>) </span>&#123;</div><div class="line">        $templateCache.put(<span class="string">'msg.html'</span>, <span class="string">'&lt;div&gt;a = &#123;&#123;a&#125;&#125; b = &#123;&#123;b&#125;&#125; '</span> +</div><div class="line">            <span class="string">'&lt;button ng-click="change()"&gt;directive&lt;/button&gt; &lt;/div&gt;'</span>);</div><div class="line">    &#125;);</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<hr>
+<h2 id="以下两种情况-模板声明使用shared-scope但是实际使用inherited-scope"><a href="#以下两种情况-模板声明使用shared-scope但是实际使用inherited-scope" class="headerlink" title="以下两种情况, 模板声明使用shared scope但是实际使用inherited scope"></a>以下两种情况, 模板声明使用shared scope但是实际使用inherited scope</h2><ul>
+<li>ng-include create it’s own inherited scope (like directive’s scope:true)</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">ng-include</span> <span class="attr">src</span> =<span class="string">'msg.html'</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<ul>
+<li>ng-repeat</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">msg</span> <span class="attr">ng-repeat</span>=<span class="string">'i in [1,2,3]'</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/interpolate-parse-eval/" rel="tag"># $interpolate, $parse, $eval</a>
+          
+            <a href="/tags/scope/" rel="tag"># $scope</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/06/201701-2017-01-06-angular-day10/" rel="next" title="angular-day10-$watch-$apply-$digest">
+                <i class="fa fa-chevron-left"></i> angular-day10-$watch-$apply-$digest
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/08/201701-2017-01-08-angular-day12/" rel="prev" title="angular-day12-$transclude">
+                angular-day12-$transclude <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/img/bloodycat.jpg"
+               alt="浩齐" />
+          <p class="site-author-name" itemprop="name">浩齐</p>
+          <p class="site-description motion-element" itemprop="description">some kind of blog</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#interpolate-parse-eval"><span class="nav-number">1.</span> <span class="nav-text">$interpolate, $parse, $eval</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shared-inherited-scope-in-controllers"><span class="nav-number">2.</span> <span class="nav-text">shared/inherited scope(in controllers)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#shared-scope-parent-and-child-use-the-same-scope"><span class="nav-number">2.1.</span> <span class="nav-text">shared scope: parent and child use the same scope</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inherited-scope"><span class="nav-number">2.2.</span> <span class="nav-text">inherited scope</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#以下两种情况-模板声明使用shared-scope但是实际使用inherited-scope"><span class="nav-number">3.</span> <span class="nav-text">以下两种情况, 模板声明使用shared scope但是实际使用inherited scope</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">浩齐</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
+      <!-- UY END -->
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
