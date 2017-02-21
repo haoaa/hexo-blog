@@ -84,26 +84,23 @@
 
 
 
-<meta name="description" content="$interpolate, $parse, $eval
-$eval 调用 $parse
-$eval&amp;amp;$parse可修改数据, $Interpolate只读
-$interpolate解析包含表达式\{\{ \}\}的字符串, 可处理过滤器">
+<meta name="description" content="quick note (parent/child directive context)
+shared scope (child directive’s property scope=false) parent/child share the same scope
+inherited scope (child directive’s property scope=true) child’s own">
 <meta property="og:type" content="article">
 <meta property="og:title" content="angular-day11-shared/inherited-$scope">
 <meta property="og:url" content="https://haoaa.github.io/hexo/2017/01/07/201701-2017-01-07-angular-day11/index.html">
 <meta property="og:site_name" content="Haoqi's blog-ish!">
-<meta property="og:description" content="$interpolate, $parse, $eval
-$eval 调用 $parse
-$eval&amp;amp;$parse可修改数据, $Interpolate只读
-$interpolate解析包含表达式\{\{ \}\}的字符串, 可处理过滤器">
+<meta property="og:description" content="quick note (parent/child directive context)
+shared scope (child directive’s property scope=false) parent/child share the same scope
+inherited scope (child directive’s property scope=true) child’s own">
 <meta property="og:image" content="https://haoaa.github.io/hexo/assets/2017/inherited-scope.jpg">
-<meta property="og:updated_time" content="2017-01-09T02:11:06.858Z">
+<meta property="og:updated_time" content="2017-02-21T12:47:08.289Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="angular-day11-shared/inherited-$scope">
-<meta name="twitter:description" content="$interpolate, $parse, $eval
-$eval 调用 $parse
-$eval&amp;amp;$parse可修改数据, $Interpolate只读
-$interpolate解析包含表达式\{\{ \}\}的字符串, 可处理过滤器">
+<meta name="twitter:description" content="quick note (parent/child directive context)
+shared scope (child directive’s property scope=false) parent/child share the same scope
+inherited scope (child directive’s property scope=true) child’s own">
 <meta name="twitter:image" content="https://haoaa.github.io/hexo/assets/2017/inherited-scope.jpg">
 
 
@@ -359,7 +356,12 @@ $interpolate解析包含表达式\{\{ \}\}的字符串, 可处理过滤器">
       
 
       
-        <h2 id="interpolate-parse-eval"><a href="#interpolate-parse-eval" class="headerlink" title="$interpolate, $parse, $eval"></a>$interpolate, $parse, $eval</h2><ul>
+        <h2 id="quick-note-parent-child-directive-context"><a href="#quick-note-parent-child-directive-context" class="headerlink" title="quick note (parent/child directive context)"></a>quick note (parent/child directive context)</h2><ol>
+<li>shared scope (child directive’s property scope=false) parent/child share the same scope</li>
+<li>inherited scope (child directive’s property scope=true) child’s own scope that inherite from parent, and the scope’s property can be overwrite</li>
+<li>isolate scope (child directive’s property scope is an object) . And that object has nothing to with parent’s scope </li>
+</ol>
+<h2 id="interpolate-parse-eval"><a href="#interpolate-parse-eval" class="headerlink" title="$interpolate, $parse, $eval"></a>$interpolate, $parse, $eval</h2><ul>
 <li>$eval 调用 $parse</li>
 <li>$eval&amp;$parse可修改数据, $Interpolate只读</li>
 <li>$interpolate解析包含表达式<code>\{\{ \}\}</code>的字符串, 可处理过滤器<a id="more"></a>
@@ -556,7 +558,7 @@ $interpolate解析包含表达式\{\{ \}\}的字符串, 可处理过滤器">
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#interpolate-parse-eval"><span class="nav-number">1.</span> <span class="nav-text">$interpolate, $parse, $eval</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shared-inherited-scope-in-controllers"><span class="nav-number">2.</span> <span class="nav-text">shared/inherited scope(in controllers)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#shared-scope-parent-and-child-use-the-same-scope"><span class="nav-number">2.1.</span> <span class="nav-text">shared scope: parent and child use the same scope</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inherited-scope"><span class="nav-number">2.2.</span> <span class="nav-text">inherited scope</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#以下两种情况-模板声明使用shared-scope但是实际使用inherited-scope"><span class="nav-number">3.</span> <span class="nav-text">以下两种情况, 模板声明使用shared scope但是实际使用inherited scope</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#quick-note-parent-child-directive-context"><span class="nav-number">1.</span> <span class="nav-text">quick note (parent/child directive context)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#interpolate-parse-eval"><span class="nav-number">2.</span> <span class="nav-text">$interpolate, $parse, $eval</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shared-inherited-scope-in-controllers"><span class="nav-number">3.</span> <span class="nav-text">shared/inherited scope(in controllers)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#shared-scope-parent-and-child-use-the-same-scope"><span class="nav-number">3.1.</span> <span class="nav-text">shared scope: parent and child use the same scope</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inherited-scope"><span class="nav-number">3.2.</span> <span class="nav-text">inherited scope</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#以下两种情况-模板声明使用shared-scope但是实际使用inherited-scope"><span class="nav-number">4.</span> <span class="nav-text">以下两种情况, 模板声明使用shared scope但是实际使用inherited scope</span></a></li></ol></div>
             
 
           </div>

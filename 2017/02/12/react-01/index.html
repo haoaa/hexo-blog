@@ -98,7 +98,7 @@ browserHistory(推荐使用)
 react路由Histories
 browserHistory(推荐使用)
 缺点, 超链接在新标签打开报错,">
-<meta property="og:updated_time" content="2017-02-12T08:19:52.354Z">
+<meta property="og:updated_time" content="2017-02-12T10:19:01.539Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="react-01">
 <meta name="twitter:description" content="react路由参数获取1&amp;lt;Route path=&quot;/books/:id&quot; component=&amp;#123;BooksList&amp;#125;/&amp;gt;
@@ -386,7 +386,14 @@ browserHistory(推荐使用)
 </li>
 <li>createMemoryHistory(服务器端渲染使用)</li>
 </ul>
-
+<h2 id="组件内外跳转"><a href="#组件内外跳转" class="headerlink" title="组件内外跳转"></a>组件内外跳转</h2><ul>
+<li><p>内跳转</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">componentDidMount()&#123;</div><div class="line">    setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</div><div class="line">        <span class="keyword">this</span>.context.router.push(<span class="string">'/home'</span>);</div><div class="line">    &#125;,<span class="number">3000</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>外跳转</p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">    <span class="comment">//在引入的service里通过browserHistory来跳转</span></div><div class="line">    </div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span>&#123;</div><div class="line">    getData() &#123;</div><div class="line">        setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</div><div class="line">            browserHistory.push(<span class="string">'/home'</span>)</div><div class="line">        &#125;,<span class="number">3000</span>)</div><div class="line">    &#125;,</div><div class="line"> <span class="comment">//...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
       
     </div>
 
@@ -551,7 +558,7 @@ browserHistory(推荐使用)
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#react路由参数获取"><span class="nav-number">1.</span> <span class="nav-text">react路由参数获取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#react路由Histories"><span class="nav-number">2.</span> <span class="nav-text">react路由Histories</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#react路由参数获取"><span class="nav-number">1.</span> <span class="nav-text">react路由参数获取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#react路由Histories"><span class="nav-number">2.</span> <span class="nav-text">react路由Histories</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件内外跳转"><span class="nav-number">3.</span> <span class="nav-text">组件内外跳转</span></a></li></ol></div>
             
 
           </div>
