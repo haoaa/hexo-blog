@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="webpack," />
+  <meta name="keywords" content="test karma mocha," />
 
 
 
@@ -84,24 +84,28 @@
 
 
 
-<meta name="description" content="webpack day1webpack流程Give webpack the entry point (app.js) and specify an output file (app.bundle.js):
-webpack ./app.js app.bundle.js
-webpack will read and analyze the entry point and its dependencies">
+<meta name="description" content="测试套餐 - testing suitesthe 4 major classifications of testing software are:
+Test Runners =&amp;gt; karma ava
+Testing Frameworks =&amp;gt; jasmine mocha 
+Assertion Libraries =&amp;gt; chai
+Testing Plugins =&amp;gt; sino">
 <meta property="og:type" content="article">
-<meta property="og:title" content="webpack-day1">
-<meta property="og:url" content="https://haoaa.github.io/hexo/2016/12/24/2016-2016-12-24-webpack-day1/index.html">
+<meta property="og:title" content="test">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2017/05/12/201705-2017-05-12-test/index.html">
 <meta property="og:site_name" content="Haoqi's blog-ish!">
-<meta property="og:description" content="webpack day1webpack流程Give webpack the entry point (app.js) and specify an output file (app.bundle.js):
-webpack ./app.js app.bundle.js
-webpack will read and analyze the entry point and its dependencies">
-<meta property="og:image" content="https://dtinth.github.io/webpack-docs-images/usage/how-it-works.png?imageView/0/w/720">
-<meta property="og:updated_time" content="2017-01-16T02:24:37.387Z">
+<meta property="og:description" content="测试套餐 - testing suitesthe 4 major classifications of testing software are:
+Test Runners =&amp;gt; karma ava
+Testing Frameworks =&amp;gt; jasmine mocha 
+Assertion Libraries =&amp;gt; chai
+Testing Plugins =&amp;gt; sino">
+<meta property="og:updated_time" content="2017-05-12T11:42:11.284Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="webpack-day1">
-<meta name="twitter:description" content="webpack day1webpack流程Give webpack the entry point (app.js) and specify an output file (app.bundle.js):
-webpack ./app.js app.bundle.js
-webpack will read and analyze the entry point and its dependencies">
-<meta name="twitter:image" content="https://dtinth.github.io/webpack-docs-images/usage/how-it-works.png?imageView/0/w/720">
+<meta name="twitter:title" content="test">
+<meta name="twitter:description" content="测试套餐 - testing suitesthe 4 major classifications of testing software are:
+Test Runners =&amp;gt; karma ava
+Testing Frameworks =&amp;gt; jasmine mocha 
+Assertion Libraries =&amp;gt; chai
+Testing Plugins =&amp;gt; sino">
 
 
 
@@ -129,13 +133,13 @@ webpack will read and analyze the entry point and its dependencies">
 
 
 
-  <link rel="canonical" href="https://haoaa.github.io/hexo/2016/12/24/2016-2016-12-24-webpack-day1/"/>
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2017/05/12/201705-2017-05-12-test/"/>
 
 
 
 
 
-  <title> webpack-day1 | Haoqi's blog-ish! </title>
+  <title> test | Haoqi's blog-ish! </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -248,7 +252,7 @@ webpack will read and analyze the entry point and its dependencies">
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2016/12/24/2016-2016-12-24-webpack-day1/">
+  <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/05/12/201705-2017-05-12-test/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="浩齐">
@@ -272,7 +276,7 @@ webpack will read and analyze the entry point and its dependencies">
             
             
               
-                webpack-day1
+                test
               
             
           </h1>
@@ -287,8 +291,8 @@ webpack will read and analyze the entry point and its dependencies">
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-24T19:09:51+08:00">
-                2016-12-24
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-12T19:08:10+08:00">
+                2017-05-12
               </time>
             
 
@@ -310,8 +314,8 @@ webpack will read and analyze the entry point and its dependencies">
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/workflow/" itemprop="url" rel="index">
-                    <span itemprop="name">workflow</span>
+                  <a href="/categories/test-framework-test-runner/" itemprop="url" rel="index">
+                    <span itemprop="name">test-framework test-runner</span>
                   </a>
                 </span>
 
@@ -345,41 +349,33 @@ webpack will read and analyze the entry point and its dependencies">
       
 
       
-        <h1 id="webpack-day1"><a href="#webpack-day1" class="headerlink" title="webpack day1"></a>webpack day1</h1><h2 id="webpack流程"><a href="#webpack流程" class="headerlink" title="webpack流程"></a>webpack流程</h2><p>Give webpack the entry point (app.js) and specify an output file (app.bundle.js):</p>
-<p><code>webpack ./app.js app.bundle.js</code></p>
-<p>webpack will read and analyze the entry point and its dependencies (including transitive dependencies).<br>Then it will bundle them all into app.bundle.js.<br><a id="more"></a></p>
-<p><img src="https://dtinth.github.io/webpack-docs-images/usage/how-it-works.png?imageView/0/w/720" alt="how webpack works"></p>
-<blockquote>
-<p>打包后的bundle文件分析<br><a href="http://www.jianshu.com/p/0e5247f9975f" target="_blank" rel="external">http://www.jianshu.com/p/0e5247f9975f</a><br><a href="http://www.w2bc.com/Article/50764" target="_blank" rel="external">http://www.w2bc.com/Article/50764</a></p>
+        <h3 id="测试套餐-testing-suites"><a href="#测试套餐-testing-suites" class="headerlink" title="测试套餐 - testing suites"></a>测试套餐 - testing suites</h3><h2 id="the-4-major-classifications-of-testing-software-are"><a href="#the-4-major-classifications-of-testing-software-are" class="headerlink" title="the 4 major classifications of testing software are:"></a>the 4 major classifications of testing software are:</h2><ol>
+<li>Test Runners =&gt; karma ava</li>
+<li>Testing Frameworks =&gt; jasmine mocha </li>
+<li>Assertion Libraries =&gt; chai</li>
+<li>Testing Plugins =&gt; sinon</li>
+</ol>
+<a id="more"></a>
+<h2 id="Karma"><a href="#Karma" class="headerlink" title="Karma"></a>Karma</h2><blockquote>
+<p>Karma is a type of test runner which creates a fake server, and then spins up tests in various browsers using data derived from that fake server. Karma is only a test runner, and requires a testing framework such as Mocha to plug into it in order to actually run tests.</p>
+<p>Test Runners work on the highest level of abstraction out of all testing software.</p>
 </blockquote>
-<hr>
-<h3 id="关于使用CommonsChunkPlugin插件的debug总结"><a href="#关于使用CommonsChunkPlugin插件的debug总结" class="headerlink" title="关于使用CommonsChunkPlugin插件的debug总结"></a>关于<a href="https://segmentfault.com/a/1190000006814420#articleHeader5" target="_blank" rel="external">使用CommonsChunkPlugin插件</a>的debug总结</h3><h4 id="CommonsChunkPlugin提前公共模块分析"><a href="#CommonsChunkPlugin提前公共模块分析" class="headerlink" title="CommonsChunkPlugin提前公共模块分析:"></a>CommonsChunkPlugin提前公共模块分析:</h4><ol>
-<li><p><code>__webpack_require__(2)</code>的1和2是installedModules[moduleId]里面的1,2</p>
-</li>
-<li><p>只是installedModules[每次都会被替换掉,用webpack第二个数组参数]. webpackJsonp([2],[function() /这个function是0/ 后面省略</p>
-</li>
-<li><p>webpackJsonp([2]这个2是installedChunks的2, installedChunks的0是common模块 (不同场景会有不同情况,通常是起始模块或公用模块)</p>
-</li>
-</ol>
-<h4 id="CommonsChunkPlugin按需加载分析"><a href="#CommonsChunkPlugin按需加载分析" class="headerlink" title="CommonsChunkPlugin按需加载分析"></a>CommonsChunkPlugin按需加载分析</h4><ol>
-<li><p><code>初始化__webpack_require__(0)</code>调用</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span>(<span class="params">module, exports, __webpack_require__</span>) </span>&#123;</div><div class="line"></div><div class="line">__webpack_require__.e<span class="comment">/* nsure */</span>(<span class="number">1</span>, <span class="function"><span class="keyword">function</span>(<span class="params">require</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> content = __webpack_require__(<span class="number">2</span>);</div><div class="line">  <span class="built_in">document</span>.open();</div><div class="line">  <span class="built_in">document</span>.write(<span class="string">'&lt;h1&gt;'</span> + content.chunk2 + <span class="string">'&lt;/h1&gt;'</span>);</div><div class="line">  <span class="built_in">document</span>.close();</div><div class="line">&#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p><code>__webpack_require__.e</code>将第二个参数设为异步加载文件后installedChunks[1]的值.</p>
-</li>
-<li><p>等待1.bundle.js加载后执行</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"> webpackJsonp([<span class="number">1</span>],[</div><div class="line">    <span class="comment">/* 0 */</span>,</div><div class="line">    <span class="comment">/* 1 */</span></div><div class="line">    <span class="comment">/***/</span> <span class="function"><span class="keyword">function</span>(<span class="params">module, exports</span>) </span>&#123;</div><div class="line"></div><div class="line">        <span class="built_in">module</span>.exports = <span class="string">'Hello World'</span>;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment">/***/</span> &#125;</div><div class="line">]);</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<ol>
-<li>installedChunks[1]的值被设为0, 执行installedChunks[1]里面的回调</li>
-</ol>
-<h4 id="draw-conclusion"><a href="#draw-conclusion" class="headerlink" title="draw conclusion"></a>draw conclusion</h4><ol>
-<li>CommonsChunkPlugin中只是installedModules是用于加载webpackJsonp,每个installedChunks的临时变量.</li>
-<li>jsonp加载的chunk,会把installedModules[0]设为chunk的入口模块,chunk的依赖会缓存到installedModules数组的其他元素上,<br>多个chunk公用的模块,会通过设置空index如:<code>,,</code>来跳过覆盖.</li>
-<li>按需加载,通过往installedModules[需要加载的模块编号]设置文件加载后的回调,来实现异步加载.</li>
-</ol>
-<h2 id="webpack参数"><a href="#webpack参数" class="headerlink" title="webpack参数"></a>webpack参数</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ webpack --config XXX.js   <span class="comment">//使用另一份配置文件（比如webpack.config2.js）来打包</span></div><div class="line"> </div><div class="line">$ webpack --watch   <span class="comment">//监听变动并自动打包</span></div><div class="line"> </div><div class="line">$ webpack -p    <span class="comment">//压缩混淆脚本，这个非常非常重要！</span></div><div class="line"> </div><div class="line">$ webpack -d    <span class="comment">//生成map映射文件，告知哪些模块被最终打包到哪里了</span></div></pre></td></tr></table></figure>
+<h2 id="Mocha-amp-Chai"><a href="#Mocha-amp-Chai" class="headerlink" title="Mocha &amp; Chai"></a>Mocha &amp; Chai</h2><blockquote>
+<p>We can distinguish between framework (Mocha) methods and assertion library (Chai) methods by looking at the contents of the it block. Methods outside the it block are generally derived from the testing framework. Everything within the it block is code coming from the assertion library. beforeEach, describe, context, it, are all methods extending from Mocha. expect, equal, and exist, are all methods extending from Chai.</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">afterEach(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    $httpBackend.verifyNoOutstandingExpectation();</div><div class="line">    $httpBackend.verifyNoOutstandingRequest();</div><div class="line">    $<span class="built_in">window</span>.localStorage.removeItem(<span class="string">'com.shortly'</span>);</div><div class="line">  &#125;);</div><div class="line"></div><div class="line">  it(<span class="string">'should have a signup method'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    expect($scope.signup).to.be.a(<span class="string">'function'</span>);</div><div class="line">  &#125;);</div></pre></td></tr></table></figure>
+<h2 id="Chai-Assertion-Library"><a href="#Chai-Assertion-Library" class="headerlink" title="Chai: Assertion Library"></a>Chai: Assertion Library</h2><blockquote>
+<p>Jasmine for example, has it’s own assertion library builtin. Mocha is just structured in such a way where it does need an external assertion library. This makes Mocha more difficult to setup initially, but offers much greater flexibility than frameworks which use a builtin assertion library such as Jasmine.</p>
+</blockquote>
+<h2 id="Sinon-Testing-Plugin"><a href="#Sinon-Testing-Plugin" class="headerlink" title="Sinon: Testing Plugin"></a>Sinon: Testing Plugin</h2><blockquote>
+<p>Sinon is a plugin which hooks into Chai and gives us the ability to perform a more diverse set of tests. Through the Sinon plugin we can create mocks, stubs, and fake servers:</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">describe(<span class="string">'API integration'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> server, setupStub, JSONresponse;</div><div class="line"></div><div class="line">  beforeEach(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    setupStub = sinon.stub(todo, <span class="string">'setup'</span>);</div><div class="line">    server = sinon.fakeServer.create();</div><div class="line">  &#125;);</div><div class="line"></div><div class="line">  it(<span class="string">'todo.setup receives an array of todos when todo.init is called'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  &#125;);</div><div class="line"></div><div class="line">  afterEach(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    server.restore();</div><div class="line">    setupStub.restore();</div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Sinon has a bunch of cool features that allow you to really get into the nooks and crannies of your source code and see what is really going on under the hood.</p>
+</blockquote>
+<p>##</p>
+
       
     </div>
 
@@ -402,7 +398,7 @@ webpack will read and analyze the entry point and its dependencies">
       
         <div class="post-tags">
           
-            <a href="/tags/webpack/" rel="tag"># webpack</a>
+            <a href="/tags/test-karma-mocha/" rel="tag"># test karma mocha</a>
           
         </div>
       
@@ -411,8 +407,8 @@ webpack will read and analyze the entry point and its dependencies">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/12/22/2016-2016-12-22-js-code-collection/" rel="next" title="js-code-collection">
-                <i class="fa fa-chevron-left"></i> js-code-collection
+              <a href="/2017/02/12/react-01/" rel="next" title="react-01">
+                <i class="fa fa-chevron-left"></i> react-01
               </a>
             
           </div>
@@ -420,10 +416,6 @@ webpack will read and analyze the entry point and its dependencies">
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/12/27/2016-2016-12-27-angular-day6/" rel="prev" title="angular-day6">
-                angular-day6 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -546,7 +538,7 @@ webpack will read and analyze the entry point and its dependencies">
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#webpack-day1"><span class="nav-number">1.</span> <span class="nav-text">webpack day1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack流程"><span class="nav-number">1.1.</span> <span class="nav-text">webpack流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于使用CommonsChunkPlugin插件的debug总结"><span class="nav-number">1.1.1.</span> <span class="nav-text">关于使用CommonsChunkPlugin插件的debug总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CommonsChunkPlugin提前公共模块分析"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">CommonsChunkPlugin提前公共模块分析:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CommonsChunkPlugin按需加载分析"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">CommonsChunkPlugin按需加载分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#draw-conclusion"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">draw conclusion</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack参数"><span class="nav-number">1.2.</span> <span class="nav-text">webpack参数</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试套餐-testing-suites"><span class="nav-number">1.</span> <span class="nav-text">测试套餐 - testing suites</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#the-4-major-classifications-of-testing-software-are"><span class="nav-number"></span> <span class="nav-text">the 4 major classifications of testing software are:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Karma"><span class="nav-number"></span> <span class="nav-text">Karma</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mocha-amp-Chai"><span class="nav-number"></span> <span class="nav-text">Mocha & Chai</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chai-Assertion-Library"><span class="nav-number"></span> <span class="nav-text">Chai: Assertion Library</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sinon-Testing-Plugin"><span class="nav-number"></span> <span class="nav-text">Sinon: Testing Plugin</span></a></div>
             
 
           </div>
