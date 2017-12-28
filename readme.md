@@ -25,7 +25,7 @@ $ hexo new something-about-sass
  ```sh
  npm run reload 
  ```
-### push repo to github
+### push repo to github without reload
 ```sh
 npm run push # "your commit comments goes here"
 ```
