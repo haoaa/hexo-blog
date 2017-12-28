@@ -1,0 +1,676 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="vue ele," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/img/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="开发脚本dev-server.js
+The compiler object represents the fully configured Webpack environment. This object is built once upon starting Webpack, and is configured with all operational settings including op">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue-01">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2017/05/13/201705-2017-05-14-vue-elm-01/index.html">
+<meta property="og:site_name" content="Haoqi's blog-ish!">
+<meta property="og:description" content="开发脚本dev-server.js
+The compiler object represents the fully configured Webpack environment. This object is built once upon starting Webpack, and is configured with all operational settings including op">
+<meta property="og:updated_time" content="2017-05-14T11:34:34.640Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue-01">
+<meta name="twitter:description" content="开发脚本dev-server.js
+The compiler object represents the fully configured Webpack environment. This object is built once upon starting Webpack, and is configured with all operational settings including op">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2017/05/13/201705-2017-05-14-vue-elm-01/"/>
+
+
+
+
+
+  <title> vue-01 | Haoqi's blog-ish! </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Haoqi's blog-ish!</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">blah blah blah</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/05/13/201705-2017-05-14-vue-elm-01/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="浩齐">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/assets/img/bloodycat.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Haoqi's blog-ish!">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Haoqi's blog-ish!" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                vue-01
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-13T14:49:08+08:00">
+                2017-05-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js-vue/" itemprop="url" rel="index">
+                    <span itemprop="name">js vue</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="开发脚本dev-server-js"><a href="#开发脚本dev-server-js" class="headerlink" title="开发脚本dev-server.js"></a>开发脚本dev-server.js</h2><blockquote>
+<p>The compiler object represents the fully configured Webpack environment. This object is built once upon starting Webpack, and is configured with all operational settings including options, loaders, and plugins.<br>A compilation object represents a single build of versioned assets<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> config = <span class="built_in">require</span>(<span class="string">'../config'</span>)</div><div class="line"><span class="keyword">if</span> (!process.env.NODE_ENV) process.env.NODE_ENV = <span class="built_in">JSON</span>.parse(config.dev.env.NODE_ENV) <span class="comment">// "development"</span></div><div class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>)</div><div class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</div><div class="line"><span class="keyword">var</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>)</div><div class="line"><span class="keyword">var</span> opn = <span class="built_in">require</span>(<span class="string">'opn'</span>)</div><div class="line"><span class="keyword">var</span> proxyMiddleware = <span class="built_in">require</span>(<span class="string">'http-proxy-middleware'</span>)</div><div class="line"><span class="keyword">var</span> webpackConfig = <span class="built_in">require</span>(<span class="string">'./webpack.dev.conf'</span>) </div><div class="line"></div><div class="line"><span class="comment">// default port where dev server listens for incoming traffic</span></div><div class="line"><span class="keyword">var</span> port = process.env.PORT || config.dev.port</div><div class="line">    <span class="comment">// Define HTTP proxies to your custom API backend</span></div><div class="line">    <span class="comment">// https://github.com/chimurai/http-proxy-middleware</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> server = express()</div><div class="line"><span class="keyword">var</span> compiler = webpack(webpackConfig)</div><div class="line"></div><div class="line"><span class="keyword">var</span> devMiddleware = <span class="built_in">require</span>(<span class="string">'webpack-dev-middleware'</span>)(compiler, &#123; <span class="comment">// 将打包后文件放内存</span></div><div class="line">    publicPath: webpackConfig.output.publicPath, <span class="comment">//和webpack的output的一样</span></div><div class="line">    stats: &#123;</div><div class="line">        <span class="attr">colors</span>: <span class="literal">true</span>,</div><div class="line">        <span class="attr">chunks</span>: <span class="literal">false</span></div><div class="line">    &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="keyword">var</span> hotMiddleware = <span class="built_in">require</span>(<span class="string">'webpack-hot-middleware'</span>)(compiler) <span class="comment">//热重载</span></div><div class="line">    <span class="comment">// force page reload when html-webpack-plugin template changes</span></div><div class="line">    <span class="comment">//While running Webpack development middleware, a new compilation will be created each time a file change is detected, thus generating a new set of compiled assets.</span></div><div class="line">compiler.plugin(<span class="string">'compilation'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">compilation</span>) </span>&#123; <span class="comment">// webpack在compile时的回调</span></div><div class="line">    <span class="comment">//The Compiler has emitted all assets.</span></div><div class="line">    compilation.plugin(<span class="string">'html-webpack-plugin-after-emit'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data, cb</span>) </span>&#123; <span class="comment">//文件由webpack生成后 </span></div><div class="line">        hotMiddleware.publish(&#123;</div><div class="line">            <span class="attr">action</span>: <span class="string">'reload'</span></div><div class="line">        &#125;)</div><div class="line">        cb()</div><div class="line">    &#125;)</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="keyword">var</span> context = config.dev.context</div><div class="line"><span class="keyword">var</span> proxypath = config.dev.proxypath</div><div class="line"></div><div class="line"><span class="keyword">var</span> options = &#123;</div><div class="line">    <span class="attr">target</span>: proxypath,</div><div class="line">    <span class="attr">changeOrigin</span>: <span class="literal">true</span>,</div><div class="line">&#125;</div><div class="line"><span class="keyword">if</span> (context.length) &#123;</div><div class="line">    server.use(proxyMiddleware(context, options))</div><div class="line">&#125;</div><div class="line"></div><div class="line">server.use(proxyMiddleware(<span class="string">'/payapi'</span>, &#123;</div><div class="line">    <span class="attr">target</span>: <span class="string">'https://pay.ele.me'</span>,</div><div class="line">    <span class="attr">changeOrigin</span>: <span class="literal">true</span>,</div><div class="line">&#125;))</div><div class="line">server.use(proxyMiddleware(<span class="string">'/m.ele.me@json'</span>, &#123;</div><div class="line">    <span class="attr">target</span>: <span class="string">'https://crayfish.elemecdn.com'</span>,</div><div class="line">    <span class="attr">changeOrigin</span>: <span class="literal">true</span>,</div><div class="line">&#125;))</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// handle fallback for HTML5 history API</span></div><div class="line">server.use(<span class="built_in">require</span>(<span class="string">'connect-history-api-fallback'</span>)())</div><div class="line"></div><div class="line">serve webpack bundle output</div><div class="line">server.use(devMiddleware)</div><div class="line"></div><div class="line">enable hot-reload and state-preserving</div><div class="line">compilation error display</div><div class="line">server.use(hotMiddleware)</div><div class="line"></div><div class="line"><span class="comment">// serve pure static assets</span></div><div class="line"><span class="keyword">var</span> staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)</div><div class="line">server.use(staticPath, express.static(<span class="string">'./static'</span>))</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = server.listen(port, <span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (err) &#123;</div><div class="line">        <span class="built_in">console</span>.log(err)</div><div class="line">        <span class="keyword">return</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> uri = <span class="string">'http://localhost:'</span> + port</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Listening at '</span> + uri + <span class="string">'\n'</span>)</div><div class="line"></div><div class="line">    <span class="comment">// when env is testing, don't need open it</span></div><div class="line">    <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'testing'</span>) &#123;</div><div class="line">        opn(uri)</div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="webpack1-gt-webpack2迁移文档"><a href="#webpack1-gt-webpack2迁移文档" class="headerlink" title="webpack1-&gt;webpack2迁移文档"></a>webpack1-&gt;webpack2迁移文档</h2><p><a href="https://webpack.js.org/guides/migrating/" target="_blank" rel="external">https://webpack.js.org/guides/migrating/</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue-ele/" rel="tag"># vue ele</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/12/201705-2017-05-12-test/" rel="next" title="test">
+                <i class="fa fa-chevron-left"></i> test
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/13/201705-2017-05-13-vue-01-1/" rel="prev" title="vue-01">
+                vue-01 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/img/bloodycat.jpg"
+               alt="浩齐" />
+          <p class="site-author-name" itemprop="name">浩齐</p>
+          <p class="site-description motion-element" itemprop="description">some kind of blog</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#开发脚本dev-server-js"><span class="nav-number">1.</span> <span class="nav-text">开发脚本dev-server.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack1-gt-webpack2迁移文档"><span class="nav-number">2.</span> <span class="nav-text">webpack1->webpack2迁移文档</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">浩齐</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
+      <!-- UY END -->
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
