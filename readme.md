@@ -1,5 +1,6 @@
-# This hexo repo handbook-ish
+# This a hexo blog repo
 
+## quick catch up
 ### **Step1:** Clone project
 ```
 $ git clone -b master https://github.com/haoaa/hexo.git .
@@ -10,26 +11,27 @@ $ git clone -b master https://github.com/haoaa/hexo.git .
 $ npm install
 ```
 
-### **Step3:** write some md file under the `source/_posts`
+### **Step3:** write new md post under the `source/_posts`, the engine will add date automatically
 ```
 $ hexo new something-about-sass
 ``` 
-### **Step4:** backup
+### **Step4:** commit and deploy
 
 - commit source
-
+ ```sh
+ npm run git # "your commit comments goes here"
  ```
- $ npm run git -- "your commit comments goes here"
+- deploy
+ ```sh
+ npm run reload 
  ```
-- deploy commond
-
- ```
- $ npm run reload 
- ```
-
+### push repo to github
+```sh
+npm run push # "your commit comments goes here"
+```
 ---
 
-> pretty easy huh
+:v:
 
 ![alt text](http://up.henan.china.cn/2016/1219/1482137264449.png)
 
