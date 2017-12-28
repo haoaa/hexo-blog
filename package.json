@@ -4,6 +4,7 @@
   "private": true,
    "scripts": {
     "push": "git add . && git commit -m ",
+    "postpush" : "git push origin master",
     "git": "git add . && git commit -m ",
     "postgit": "git push origin master && npm run reload",
     "reload" : "hexo g -d",
