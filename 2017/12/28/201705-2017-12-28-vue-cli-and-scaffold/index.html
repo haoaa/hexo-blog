@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="hexo,blog," />
+  <meta name="keywords" content="vue-cli babel," />
 
 
 
@@ -84,28 +84,25 @@
 
 
 
-<meta name="description" content="hexo config tipscustom files
-\scaffolds\post.md 等,配置了创建post的Front-matter信息 
-12345---title: &amp;#123;&amp;#123; title &amp;#125;&amp;#125;date: &amp;#123;&amp;#123; date &amp;#125;&amp;#125;tags:---end up with these dashes
-
-_config.">
+<meta name="description" content="babel preset
+Presets are sharable .babelrc configs or simply an array of babel plugins.
+Babel-preset-env replaces es2015, es2016, es2017, latest
+With most of the new feature covered usually will use “">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hexo-tips">
-<meta property="og:url" content="https://haoaa.github.io/hexo/2016/12/14/2016-2016-12-14-hexo-tips/index.html">
+<meta property="og:title" content="vue-cli-and-scaffold">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2017/12/28/201705-2017-12-28-vue-cli-and-scaffold/index.html">
 <meta property="og:site_name" content="Haoqi's blog-ish!">
-<meta property="og:description" content="hexo config tipscustom files
-\scaffolds\post.md 等,配置了创建post的Front-matter信息 
-12345---title: &amp;#123;&amp;#123; title &amp;#125;&amp;#125;date: &amp;#123;&amp;#123; date &amp;#125;&amp;#125;tags:---end up with these dashes
-
-_config.">
-<meta property="og:updated_time" content="2017-01-03T03:54:53.204Z">
+<meta property="og:description" content="babel preset
+Presets are sharable .babelrc configs or simply an array of babel plugins.
+Babel-preset-env replaces es2015, es2016, es2017, latest
+With most of the new feature covered usually will use “">
+<meta property="og:updated_time" content="2017-12-29T07:43:09.396Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hexo-tips">
-<meta name="twitter:description" content="hexo config tipscustom files
-\scaffolds\post.md 等,配置了创建post的Front-matter信息 
-12345---title: &amp;#123;&amp;#123; title &amp;#125;&amp;#125;date: &amp;#123;&amp;#123; date &amp;#125;&amp;#125;tags:---end up with these dashes
-
-_config.">
+<meta name="twitter:title" content="vue-cli-and-scaffold">
+<meta name="twitter:description" content="babel preset
+Presets are sharable .babelrc configs or simply an array of babel plugins.
+Babel-preset-env replaces es2015, es2016, es2017, latest
+With most of the new feature covered usually will use “">
 
 
 
@@ -133,13 +130,13 @@ _config.">
 
 
 
-  <link rel="canonical" href="https://haoaa.github.io/hexo/2016/12/14/2016-2016-12-14-hexo-tips/"/>
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2017/12/28/201705-2017-12-28-vue-cli-and-scaffold/"/>
 
 
 
 
 
-  <title> hexo-tips | Haoqi's blog-ish! </title>
+  <title> vue-cli-and-scaffold | Haoqi's blog-ish! </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -252,7 +249,7 @@ _config.">
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2016/12/14/2016-2016-12-14-hexo-tips/">
+  <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/12/28/201705-2017-12-28-vue-cli-and-scaffold/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="浩齐">
@@ -276,7 +273,7 @@ _config.">
             
             
               
-                hexo-tips
+                vue-cli-and-scaffold
               
             
           </h1>
@@ -291,8 +288,8 @@ _config.">
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-14T07:40:15+08:00">
-                2016-12-14
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-28T19:51:27+08:00">
+                2017-12-28
               </time>
             
 
@@ -301,39 +298,6 @@ _config.">
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/" itemprop="url" rel="index">
-                    <span itemprop="name">fe-framework</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">hexo</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -360,31 +324,20 @@ _config.">
       
 
       
-        <h3 id="hexo-config-tips"><a href="#hexo-config-tips" class="headerlink" title="hexo config tips"></a>hexo config tips</h3><h4 id="custom-files"><a href="#custom-files" class="headerlink" title="custom files"></a>custom files</h4><ul>
-<li><p>\scaffolds\post.md 等,配置了创建post的Front-matter信息 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">title: &#123;&#123; title &#125;&#125;</div><div class="line">date: &#123;&#123; date &#125;&#125;</div><div class="line">tags:</div><div class="line">---end up with these dashes</div></pre></td></tr></table></figure>
-</li>
-<li><p>_config.yml总配置信息</p>
-<a id="more"></a>
+        <h3 id="babel-preset"><a href="#babel-preset" class="headerlink" title="babel preset"></a>babel <a href="http://2ality.com/2017/02/babel-preset-env.html" target="_blank" rel="external">preset</a></h3><ul>
+<li>Presets are sharable .babelrc configs or simply an array of babel plugins.</li>
+<li><code>Babel-preset-env</code> replaces es2015, es2016, es2017, latest</li>
+<li>With most of the new feature covered usually will use “stage-2”(Stage 2 - Draft: initial spec.)<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="string">"presets"</span>: [</div><div class="line">    [<span class="string">"env"</span>, &#123;</div><div class="line">      <span class="string">"modules"</span>: <span class="literal">false</span>,</div><div class="line">      <span class="string">"targets"</span>: &#123;</div><div class="line">        <span class="string">"browsers"</span>: [<span class="string">"&gt; 1%"</span>, <span class="string">"last 2 versions"</span>, <span class="string">"not ie &lt;= 8"</span>]</div><div class="line">      &#125;</div><div class="line">    &#125;],</div><div class="line">    <span class="string">"stage-2"</span> <span class="comment">// why ???</span></div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ul>
-<h4 id="Categories-amp-Tags"><a href="#Categories-amp-Tags" class="headerlink" title="Categories &amp; Tags"></a>Categories &amp; Tags</h4><ul>
-<li>Only posts support the use of categories and tags. Categories apply to posts in order,<br>resulting in a hierarchy of classifications and sub-classifications. Tags are all defined on the same hierarchical<br>level so the order in which they appear is not important.<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"> categories:</div><div class="line">- Sports</div><div class="line">- Baseball</div><div class="line">tags:</div><div class="line">- Injury</div><div class="line">- Fight</div><div class="line">- Shocking</div></pre></td></tr></table></figure>
+<h3 id="e2e-test"><a href="#e2e-test" class="headerlink" title="e2e test"></a>e2e test</h3><ul>
+<li><code>npm i</code>的时候chromedriver下载失败, 可通过配置解决<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm confit <span class="built_in">set</span>  chromedriver_cdnurl  <span class="string">"https://npm.taobao.org/mirrors/chromedriver"</span></div></pre></td></tr></table></figure>
 </li>
 </ul>
-<h4 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h4><ul>
-<li>原文备份 在<code>hexo</code>目录下执行git push</li>
-</ul>
-<h2 id="tag-Plugins"><a href="#tag-Plugins" class="headerlink" title="tag Plugins"></a>tag Plugins</h2><blockquote>
-<p>前提是<code>post_asset_folder: true</code></p>
-</blockquote>
-<p>Include post assets.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;% asset_path slug %&#125;</div><div class="line">&#123;% asset_img slug [title] %&#125;</div><div class="line">&#123;% asset_link slug [title] %&#125;</div></pre></td></tr></table></figure></p>
-<p>Inserts a YouTube video.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;% youtube video_id %&#125;</div></pre></td></tr></table></figure></p>
-<h2 id="嵌入音乐"><a href="#嵌入音乐" class="headerlink" title="嵌入音乐"></a>嵌入音乐</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">marginwidth</span>=<span class="string">"0"</span> <span class="attr">marginheight</span>=<span class="string">"0"</span> <span class="attr">width</span>=<span class="string">330</span> <span class="attr">height</span>=<span class="string">86</span> <span class="attr">src</span>=<span class="string">"https://music.163.com/outchain/player?type=2&amp;id=28577823&amp;auto=0&amp;height=66"</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></div></pre></td></tr></table></figure>
-<h2 id=""><a href="#" class="headerlink" title=""></a><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="https://music.163.com/outchain/player?type=2&id=28577823&auto=0&height=66"></iframe></h2><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="http://www.jianshu.com/p/b7886271e21a" target="_blank" rel="external">http://www.jianshu.com/p/b7886271e21a</a></li>
-<li><a href="https://segmentfault.com/a/1190000002632530" target="_blank" rel="external">https://segmentfault.com/a/1190000002632530</a></li>
-</ul>
+<h3 id="Fixing-Linting-Errors"><a href="#Fixing-Linting-Errors" class="headerlink" title="Fixing Linting Errors"></a>Fixing Linting Errors</h3><p><code>npm run lint -- --fix</code><br>(The – in the middle is necessary to ensure the –fix option is passdd to eslint, not to npm)</p>
+<h3 id="Asset-Resolving-Rules"><a href="#Asset-Resolving-Rules" class="headerlink" title="Asset Resolving Rules"></a>Asset Resolving Rules</h3><p>Root-relative URLs, e.g. <code>/assets/logo.png</code> are not processed at all.</p>
+<h3 id="“Real”-Static-Assets"><a href="#“Real”-Static-Assets" class="headerlink" title="“Real” Static Assets"></a>“Real” Static Assets</h3><p>In comparison, files in static/ are not processed by Webpack at all: they are directly copied to their final destination as-is, with the same filename.</p>
+<p>Any file placed in static/ should be referenced using the absolute URL /static/[filename].</p>
 
       
     </div>
@@ -408,9 +361,7 @@ _config.">
       
         <div class="post-tags">
           
-            <a href="/tags/hexo/" rel="tag"># hexo</a>
-          
-            <a href="/tags/blog/" rel="tag"># blog</a>
+            <a href="/tags/vue-cli-babel/" rel="tag"># vue-cli babel</a>
           
         </div>
       
@@ -419,8 +370,8 @@ _config.">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/11/13/2016-2016-11-13-nodejs-1/" rel="next" title="nodejs day1">
-                <i class="fa fa-chevron-left"></i> nodejs day1
+              <a href="/2017/05/13/201705-2017-05-14-vue-elm-01/" rel="next" title="vue-elm-devServer-config">
+                <i class="fa fa-chevron-left"></i> vue-elm-devServer-config
               </a>
             
           </div>
@@ -428,10 +379,6 @@ _config.">
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/12/19/2016-2016-12-19-something-about-sass/" rel="prev" title="something-about-sass">
-                something-about-sass <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -554,7 +501,7 @@ _config.">
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#hexo-config-tips"><span class="nav-number">1.</span> <span class="nav-text">hexo config tips</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#custom-files"><span class="nav-number">1.1.</span> <span class="nav-text">custom files</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Categories-amp-Tags"><span class="nav-number">1.2.</span> <span class="nav-text">Categories & Tags</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#备份"><span class="nav-number">1.3.</span> <span class="nav-text">备份</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tag-Plugins"><span class="nav-number"></span> <span class="nav-text">tag Plugins</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#嵌入音乐"><span class="nav-number"></span> <span class="nav-text">嵌入音乐</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number"></span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number"></span> <span class="nav-text">参考</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#babel-preset"><span class="nav-number">1.</span> <span class="nav-text">babel preset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#e2e-test"><span class="nav-number">2.</span> <span class="nav-text">e2e test</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fixing-Linting-Errors"><span class="nav-number">3.</span> <span class="nav-text">Fixing Linting Errors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Asset-Resolving-Rules"><span class="nav-number">4.</span> <span class="nav-text">Asset Resolving Rules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#“Real”-Static-Assets"><span class="nav-number">5.</span> <span class="nav-text">“Real” Static Assets</span></a></li></ol></div>
             
 
           </div>
