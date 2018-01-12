@@ -19,7 +19,7 @@ $ hexo new something-about-sass
 
 - commit source
  ```sh
- npm run git # "your commit comments goes here"
+ npm run git  "your commit comments goes here"
  ```
 - deploy
  ```sh

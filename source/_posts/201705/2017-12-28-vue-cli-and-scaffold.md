@@ -22,3 +22,20 @@ tags: vue-cli babel
   ]
 }
 ```
+
+### e2e test
+- `npm i`的时候chromedriver下载失败, 可通过配置解决
+```sh
+npm confit set  chromedriver_cdnurl  "https://npm.taobao.org/mirrors/chromedriver"
+```
+### Fixing Linting Errors
+`npm run lint -- --fix`
+(The -- in the middle is necessary to ensure the --fix option is passdd to eslint, not to npm)
+
+### Asset Resolving Rules
+Root-relative URLs, e.g. `/assets/logo.png` are not processed at all.
+
+### "Real" Static Assets
+In comparison, files in static/ are not processed by Webpack at all: they are directly copied to their final destination as-is, with the same filename.
+
+Any file placed in static/ should be referenced using the absolute URL /static/[filename].
