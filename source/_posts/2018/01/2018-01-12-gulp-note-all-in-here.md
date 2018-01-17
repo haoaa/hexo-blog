@@ -16,7 +16,7 @@ gulp.task('someTask', function(){
         _.forEach(gulpConfig.branches, function (name) {
             stream.add(
             gulp.src('biz/*.html')
-                .pipe(gulp-plumber(handleError))
+                .pipe(gulp-plumber(errorHandler))
                 .pipe(gulp-newer('./dest/' + name))
                 .pipe(gulp.dest('./dest/' + name))
             );
@@ -26,3 +26,23 @@ gulp.task('someTask', function(){
 });
 ```
 - By doing this, now can run this multiple working flow with other tasks in sequence.
+
+### alter gulp dest path through gulp-rename
+```js
+    srcPath = path.join(component, '*', 'lib/**/*')
+```
+```js
+function getJsStream(srcPath, distPath){
+	return gulp.src(srcPath)
+		.pipe(gulp-plumber(errorHandler))
+		// .pipe(gulp-logger({showChange: true}))
+		.pipe(rename(function(file) {
+			var pathArr = file.dirname.split(path.sep);
+			pathArr.splice(1,1); //切掉lib
+			file.dirname = pathArr.join(path.sep);
+		}))
+		.pipe(gulp-newer(distPath))
+		.pipe(gulp.dest(distPath));
+}
+
+```
