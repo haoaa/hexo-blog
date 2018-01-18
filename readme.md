@@ -30,10 +30,4 @@ $ hexo new something-about-sass
 npm run push # "your commit comments goes here"
 ```
 ---
-
-:v:
-
-![alt text](http://up.henan.china.cn/2016/1219/1482137264449.png)
-
----
 [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)

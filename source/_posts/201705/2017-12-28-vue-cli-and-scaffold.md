@@ -26,7 +26,7 @@ tags: vue-cli babel
 ### e2e test
 - `npm i`的时候chromedriver下载失败, 可通过配置解决
 ```sh
-npm confit set  chromedriver_cdnurl  "https://npm.taobao.org/mirrors/chromedriver"
+npm config set  chromedriver_cdnurl  "https://npm.taobao.org/mirrors/chromedriver"
 ```
 ### Fixing Linting Errors
 `npm run lint -- --fix`
@@ -39,3 +39,52 @@ Root-relative URLs, e.g. `/assets/logo.png` are not processed at all.
 In comparison, files in static/ are not processed by Webpack at all: they are directly copied to their final destination as-is, with the same filename.
 
 Any file placed in static/ should be referenced using the absolute URL /static/[filename].
+
+### 保留滚动位置,scrollBehavior
+```js
+export default new Router({
+  routes,
+  mode: routerMode,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition && to.meta.keepAlive) {
+      return savedPosition;
+    } else {
+      return { x: 0, y: 0 };
+    }
+  }
+});
+```
+### 入口路由两种方式
+1. app组件做根路由
+```js
+//main.js
+new Vue({
+  el: '#app',
+  router,
+  template: '<App/>',
+  components: { App }
+});
+```
+```jsx
+// App.vue
+<template>
+  <div id="app">
+    <!-- <img src="./assets/logo.png"> -->
+    <router-view/>
+  </div>
+</template>
+```
+2. 根路由放到index.html上
+```js
+//main.js
+new Vue({
+	router,
+	store,
+}).$mount('#app')
+```
+```jsx
+//index.html
+<div id="app">
+  <router-view></router-view>
+</div>
+```
