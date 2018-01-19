@@ -88,3 +88,8 @@ new Vue({
   <router-view></router-view>
 </div>
 ```
+
+### resolve in webpack configuration
+The resolver helps webpack find the module code that needs to be included in the bundle for every such `require/import` statement. 
+
+Configure how modules are resolved. For example, when calling import "lodash" in ES2015, the resolve options can change where webpack goes to look for "lodash".
