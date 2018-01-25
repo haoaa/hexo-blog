@@ -29,5 +29,11 @@ $ hexo new something-about-sass
 ```sh
 npm run push # "your commit comments goes here"
 ```
+### update theme
+```sh
+git remote add next https://github.com/iissnan/hexo-theme-next.git
+git subtree add --prefix themes/next next master
+git subtree pull --prefix themes/next next master
+```
 ---
 [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
