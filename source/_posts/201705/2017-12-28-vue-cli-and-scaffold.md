@@ -33,8 +33,8 @@ npm config set  chromedriver_cdnurl  "https://npm.taobao.org/mirrors/chromedrive
 (The -- in the middle is necessary to ensure the --fix option is passdd to eslint, not to npm)
 
 ### Asset Resolving Rules
-Root-relative URLs, e.g. `/assets/logo.png` are not processed at all.
-
+- Root-relative URLs, e.g. `/assets/logo.png` are not processed at all.
+- Relative url will be interpreted as a module dependency.
 ### "Real" Static Assets
 In comparison, files in static/ are not processed by Webpack at all: they are directly copied to their final destination as-is, with the same filename.
 
