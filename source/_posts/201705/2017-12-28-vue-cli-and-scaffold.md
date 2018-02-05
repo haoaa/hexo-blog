@@ -40,6 +40,15 @@ In comparison, files in static/ are not processed by Webpack at all: they are di
 
 Any file placed in static/ should be referenced using the absolute URL /static/[filename].
 
+### favicon locate
+```html
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/png" href="/static/favicon.png"/>
+    <title>My Vue.js app</title>
+    ...
+</head>
+```
 ### 保留滚动位置,scrollBehavior
 ```js
 export default new Router({
