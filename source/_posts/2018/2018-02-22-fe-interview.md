@@ -29,7 +29,7 @@ tags: interview career
 - 你熟悉的Backbone/Vue/Angular/Sea/Require有什么有优缺点?针对那些缺点,你有没有想过解决方案?
 - 你如何理解MVC/MV*的?
 - 如果让你设计一个登录页,按照MVC/MV*你会怎么去组织各个层?
-
+<!--more-->
 ## Html:
 
 - html元素的分类有哪些?结构元素,列表元素,文本格式元素,表单元素,表格元素

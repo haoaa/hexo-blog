@@ -35,5 +35,10 @@ git remote add next https://github.com/iissnan/hexo-theme-next.git
 git subtree add --prefix themes/next next master
 git subtree pull --prefix themes/next next master
 ```
+
+### read more tag
+```html
+<!--more-->
+```
 ---
 [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
