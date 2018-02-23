@@ -6,8 +6,10 @@ tags: interview career
 ---
 
 # 面试题目录[calabash519/interview-q-collection](https://github.com/calabash519/interview-questions)
-| Number |                 Content                  |
-| :----: | :--------------------------------------: |
+<!--more-->
+
+ Number |                 Content                 
+| ----: | -------------------------------------- |
 |   1    | [BAT及各大互联网公司2014前端笔试面试题--Html,Css篇](http://www.cnblogs.com/coco1s/p/4034937.html) |
 |   2    | [BAT及各大互联网公司2014前端笔试面试题--JavaScript篇](http://www.cnblogs.com/coco1s/p/4029708.html) |
 |   3    | [javascript面试题](http://www.voidcn.com/blog/u014787301/article/p-6166599.html) |
@@ -17,7 +19,7 @@ tags: interview career
 |   7    | [如何面试前端工程师：GitHub 很重要](https://segmentfault.com/a/1190000000375138) |
 |   8    | [44 个 JavaScript 变态题解析](http://www.codeceo.com/article/44-javascript-crazy-question.html) |
 |   9    | [如何通过饿了么 Node.js 面试](https://elemefe.github.io/node-interview/#/sections/zh-cn/?id=%e5%a6%82%e4%bd%95%e9%80%9a%e8%bf%87%e9%a5%bf%e4%ba%86%e4%b9%88-nodejs-%e9%9d%a2%e8%af%95) |
-|   10   | [Front-end-Developer-Interview-Questions](https://github.com/h5bp/Front-end-Developer-Interview-Questions) |
+|   10   | [Front-end-Developer-Interview-Questions](https://github.com/h5bp/Front-end-Developer-Interview-Questions) |\
 |   11   | [轻课堂JavaScript面试题](http://www.qingkt.com/a/interview/js/) |
 |   12   | [前端开发面试题](https://microzz.com/2017/02/10/interview/) |
 |   13   | [2016腾讯前端JavaScript笔试题](https://segmentfault.com/a/1190000004641602) |
@@ -49,7 +51,7 @@ tags: interview career
 |   39   | [前端面试--四月二十家前端面试题分享](http://www.jianshu.com/p/c41cc287d7d4) |
 |   40   | [我遇到的前端面试题2017](http://www.imooc.com/article/20319) |
 |   41   | [ECMAScript 6 六级考试](http://qingbob.com/es6-level6-test/) |
-<!--more-->
+
 
 # ~~面试题q&a[BearD01001/front-end-QA-to-interview](https://github.com/BearD01001/front-end-QA-to-interview#%E8%AF%B4%E8%AF%B4%E4%BD%A0%E5%AF%B9%E9%97%AD%E5%8C%85%E7%9A%84%E7%90%86%E8%A7%A3)~~
 
