@@ -5,6 +5,7 @@ categories: frontend interview
 tags: interview career
 ---
 
+[笔记](#笔记)
 # 面试题目录[calabash519/interview-q-collection](https://github.com/calabash519/interview-questions)
 <!--more-->
 
@@ -186,4 +187,112 @@ tags: interview career
 - 前沿技术的了解
 - 对前端未来走向的判断
 - 对领域设计的理解
-- 视觉评定能力
+- 
+
+# 笔记
+
+## http/https/websocket
+
+### http
+特点: 无状态,被动型.   
+长轮询:等服务端响应,没等到就响应空数据,浏览器再发请求.  
+短轮询:服务端直接响应,没数据,客户端等会儿在发请求. 就是服务端还是客户端等一会儿的区别.  
+短轮询是每次http请求前都要建立连接，而长轮询是相邻几次请求前都要建立连接  
+http1.1支持长连接,由connection: keep-alive标识.长连接相邻几次请求只建立一次连接
+
+### https
+http和TCP中间夹层SSL, 加证书验证身份.
+但是公开密钥加密与共享密钥加密相比，其处理速度要慢. 非对称传共享秘钥, 后面就用共享秘钥加密内容.
+
+##### 通信步骤:
+
+1. 客户端通过发送 Client Hello 报文开始 SSL 通信。报文中包含客户端支持的 SSL 的指定版本、加密组件(Cipher Suite)列表(所使用的加密算法及密钥长度等)  
+
+2. 服务器可进行 SSL 通信时，会以 Server Hello 报文作为应答。和客户端一样，在报文中包含 SSL 版本以及加密组件。服务器的加密组件内容是从接收 到的客户端加密组件内筛选出来的。
+
+3. 之后服务器发送 Certificate 报文。报文中包含公开密钥证书。
+4. 最后服务器发送 Server Hello Done 报文通知客户端，最初阶段的 SSL 握手协商部分结束。
+5. SSL 第一次握手结束之后，客户端以 Client Key Exchange 报文作为回应。报文中包含通信加密中使用的一种被称为 Pre-master secret 的随机密码串。该 报文已用步骤#3 中的公开密钥进行加密。
+6. 接着客户端继续发送 Change Cipher Spec 报文。该报文会提示服务器，在此报文之后的通信会采用 Pre-master secret 密钥加密。
+7. 客户端发送 Finished 报文。该报文包含连接至今全部报文的整体校验值。这次握手协商是否能够成功，要以服务器是否能够正确解密该报文作为判定标准。
+8. 服务器同样发送 Change Cipher Spec 报文。
+服务器同样发送 Finished 报文。
+9. 服务器和客户端的 Finished 报文交换完毕之后，SSL 连接就算建立完成。当然，通信会受到 SSL 的保护。从此处开始进行应用层协议的通信，即发 送 HTTP 请求。
+应用层协议通信，即发送 HTTP 响应。
+最后由客户端断开连接。断开连接时，发送 close_notify 报文。
+<img src='https://showme.codes/assets/images/2017-2-20-292372-323411d0bb2d7232.png'/>
+
+## js
+### es6
+1. arrow function
+this 是lexical binding非 dynamic, 通常就是绑定外层function的this. 也就不要做self=this这种hack.
+适合代码少的function, 适合给内层function需要外层this/argument/super的function.
+2. spread + rest  看起来更简洁
+3. 函数默认参数, 不用再xx||default了
+4. 参数析构, 看起来更简洁
+5. 对象字面量增强 书写代码更简洁
+6. 模板字符串  书写代码更简洁,不要豆豆加加
+7. Let + Const blockscoped
+8. for..of 迭代器遍历
+9. 异步实现generator/Promises 被es7 await+async取代
+10. 模块化export/import, 统一了模块化的标准
+11. Map + Set + WeakMap + WeakSet 丰富了集合数据结构
+12. meta-data symbols, proxy/reflect
+13. Math + Number + String + Object APIs isNaN, array.from, array.entries/keys/values等iterator. object.assign, string.includes/repeat
+14. class语法糖
+
+### js
+##### [JS继承的实现方式](http://www.cnblogs.com/humin/p/4556820.html)
+1. 原型链继承Cat.prototype = new Animal();
+缺点1. 来自原型对象的引用属性是所有实例共享的
+缺点2. 创建子类实例时，无法向父类构造函数传参
+2. 构造继承 原型链没连上
+3. 实例继承 实例是父类实例
+4. 拷贝继承 效率低
+5. 组合继承
+6. 寄生组合继承 解决调用了两次父类构造函数
+
+## 框架
+
+### vue 轻量/相关技术栈齐全/有饿了么和阿里大公司使用和支持
+1.父组件和子组件、子组件和子组件如何传递数据 props down emit up
+兄弟组件有么用一个Vue对象做通信bus, 要么vuex
+2.dom更新机制
+
+### angular
+angular的原理
+promise
+双向绑定
+
+### 单元测试sinon/jasmine
+模拟输入数据比对输出结果, spy函数比对传参和返回结果, 时钟测异步, 模拟request,response,xmlhttp
+
+## gulp原理
+
+## webpack的原理
+
+
+## 笔试题
+```js
+function run(){
+	function pro(fn) {
+		return new Promise(res => {
+			fn(res)
+		})
+	}
+	let arr = [].slice.apply(arguments)
+	arr.forEach(async fn => {await pro(fn)})
+}
+
+
+run(next=>{
+	console.log(1);
+	setTimeout(next,1000)
+},next=>{
+	console.log(2);
+	next()
+},next=>{
+	console.log(3);
+	next()
+})
+```
