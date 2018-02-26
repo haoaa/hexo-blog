@@ -8,7 +8,7 @@ tags: interview career
 [笔记](#笔记)
 # 面试题目录[calabash519/interview-q-collection](https://github.com/calabash519/interview-questions)
 <!--more-->
-> **6, 11, 12, 23**
+> **6, 11, 12, 23**  
 
  Number |                 Content                 
 | ----: | -------------------------------------- |
@@ -21,7 +21,7 @@ tags: interview career
 |   7    | [如何面试前端工程师：GitHub 很重要](https://segmentfault.com/a/1190000000375138) |
 |   8    | [44 个 JavaScript 变态题解析](http://www.codeceo.com/article/44-javascript-crazy-question.html) |
 |   9    | [如何通过饿了么 Node.js 面试](https://elemefe.github.io/node-interview/#/sections/zh-cn/?id=%e5%a6%82%e4%bd%95%e9%80%9a%e8%bf%87%e9%a5%bf%e4%ba%86%e4%b9%88-nodejs-%e9%9d%a2%e8%af%95) |
-|   10   | [Front-end-Developer-Interview-Questions](https://github.com/h5bp/Front-end-Developer-Interview-Questions) |\
+|   10   | [Front-end-Developer-Interview-Questions](https://github.com/h5bp/Front-end-Developer-Interview-Questions) |
 |   11   | [轻课堂JavaScript面试题](http://www.qingkt.com/a/interview/js/) |
 |   12   | [我遇到的前端面试题2017](http://www.imooc.com/article/20319) |
 |   13   | [2016腾讯前端JavaScript笔试题](https://segmentfault.com/a/1190000004641602) |
@@ -51,87 +51,8 @@ tags: interview career
 |   38   | [破解前端面试（80% 应聘者不及格系列）：从 闭包说起](https://zhuanlan.zhihu.com/p/25855075) |
 |   39   | [前端面试--四月二十家前端面试题分享](http://www.jianshu.com/p/c41cc287d7d4) |
 |   40   | [ECMAScript 6 六级考试](http://qingbob.com/es6-level6-test/) |
-
-
-# ~~面试题q&a[BearD01001/front-end-QA-to-interview](https://github.com/BearD01001/front-end-QA-to-interview#%E8%AF%B4%E8%AF%B4%E4%BD%A0%E5%AF%B9%E9%97%AD%E5%8C%85%E7%9A%84%E7%90%86%E8%A7%A3)~~
-
-# 面试题q[li4065整理问题](https://www.jianshu.com/p/9a7d604f69a7)
-## JS:
-
-- 你们常用的命名规范是什么?
-  - camelcase
-- 字符串的操作,截取,分割?
-  - substr, slice, split
-- 节点的类型有哪些,如何对节点进行查找,删除,克隆?
-- 你用过的属性操作的方法有哪些?
-- 你是如何做图片延时加载的效果?
-- 如何阻止事件冒泡、如何阻止元素默认行为?
-- 什么是冒泡和捕获、什么是事件委托和代理?
-- 作用域、闭包、局部变量、全局变量各个概念指的是什么?
-- 如何做一个放大镜效果?
-- 如何做谈入弹出效果?缓冲运动效果?如何实现无缝运动?
-- 你理解的模块化有哪些?cmd,amd,commonjs.
-- 什么是B/S架构?什么是同源策略?Jsonp的原理?onreadystatechange的使用?iframe如何实现跨域?
-- 是否设计过通用化组件?如果让你设计一个Dialog(弹出层)/Slider(图片轮播)等组件你会怎么设计,提供什么接口?你预估会碰到什么问题,你如何调试?
-- 你熟悉的Backbone/Vue/Angular/Sea/Require有什么有优缺点?针对那些缺点,你有没有想过解决方案?
-- 你如何理解MVC/MV*的?
-- 如果让你设计一个登录页,按照MVC/MV*你会怎么去组织各个层?
-
-## Html:
-
-- html元素的分类有哪些?结构元素,列表元素,文本格式元素,表单元素,表格元素
-- 你是如何理解渐进增强的?
-
-## Css:
-
-- em rem px三者直接的区别?
-- 如何让选择的文本颜色变色?
-- max-width和max-device-width区别?
-- @media,@supports和@document分别用法是什么?
-- box-sizing属性中border-box和content-box的区别?
-  - 
-## 工程化 :
-
-- gulp的原理何使用,如何使用gulp进行打包?
-  - [基本概念与原理](https://segmentfault.com/a/1190000008513154#articleHeader4)
-
-## 类库:
-
-- 如何选择合适的jQuery版本?
-- jQuery对象和Dom对象如何相互转换?
-- jQuery动画的实现原理?整个实现是否有问题,有需要优化的地方?
-- jQuery代码优化的基本原则是什么?
-- jQuery的异步编程Promise具体用法?
-
-## 浏览器:
-
-- 一个页面从输入Url到页面加载完的过程中都发生了什么事情?
-
-## 性能:
-
-- 谈一下你所知道的页面性能优化方法?这些优化方法背后的原理是什么?除了这些已经成熟方案,你还了解哪些?
-- 如何去分析一个页面的性能?
-
-## 个人能力:
-
-- 你最擅长的技术是什么?你感觉你的技术能到达什么水平?你认为最高级别应该是什么样的?
-- 你做过最满意的项目是什么?
-- 项目的背景是什么?为什么要做这个项目?项目最终达到什么效果?
-- 你在项目中处于什么角色,起到了什么方面的作用?
-- 你在项目中碰到了什么问题,怎么解决的?
-- 如果再做这个项目,你会在哪些方面进行改善?
-- 你没如何和设计师,产品经理,测试人员进行沟通?如何开展工作?如何处理碰到的问题?
-- 描述一个你遇到的技术问题,你是如何处理的?有没有碰到什么非常奇葩的问题,而且百度不到,完全自己想到解决方案的?
-- 除了前端你还了解什么其他技术?你对这些技术掌握的怎么样?
-- 你最近在学什么?接下来的半年你打算学习什么?你平时如何去学习了解新的技术?
-  - gulp插件/webpack loader
-  - 函数式编程
-- 之前做的项目,有什么是你主动推动了什么?
-
-## 高级技术:
-
-- 你对的数据结构,编译原理有何了解?你理解哈夫曼编码,或者贪心算法么?
-- Get和Post的本质区别是什么? 参考Http的Rfc解释
+|   41   | 阅[前端开发面试问题及答案整理](https://github.com/BearD01001/front-end-QA-to-interview#%E8%AF%B4%E8%AF%B4%E4%BD%A0%E5%AF%B9%E9%97%AD%E5%8C%85%E7%9A%84%E7%90%86%E8%A7%A3)|
+|   42   | [前端面试问题](https://www.jianshu.com/p/9a7d604f69a7)|
 
 # 时允-前端面试[提纲](https://segmentfault.com/a/1190000010969779)
 
@@ -190,7 +111,7 @@ tags: interview career
 
 # 笔记
 > 链接: [http](#http/https/websocket) , [js](#js), [css](#css), [框架](#框架) , [性能优化](#性能优化)  
-[todo](#todo) 
+
 ## http/https/websocket
 
 ### http
@@ -204,7 +125,7 @@ http1.1支持长连接,由connection: keep-alive标识.长连接相邻几次请�
 http和TCP中间夹层SSL, 加证书验证身份.
 但是公开密钥加密与共享密钥加密相比，其处理速度要慢. 非对称传共享秘钥, 后面就用共享秘钥加密内容.
 
-##### 通信步骤:
+#### https通信步骤:
 
 1. 客户端通过发送 Client Hello 报文开始 SSL 通信。报文中包含客户端支持的 SSL 的指定版本、加密组件(Cipher Suite)列表(所使用的加密算法及密钥长度等)  
 
@@ -242,7 +163,7 @@ this 是lexical binding非 dynamic, 通常就是绑定外层function的this. 也
 14. class语法糖
 
 ### js
-##### [JS继承的实现方式](http://www.cnblogs.com/humin/p/4556820.html)
+#### [JS继承的实现方式](http://www.cnblogs.com/humin/p/4556820.html)
 1. 原型链继承Cat.prototype = new Animal();
 缺点1. 来自原型对象的引用属性是所有实例共享的
 缺点2. 创建子类实例时，无法向父类构造函数传参
@@ -389,8 +310,30 @@ promise
 双向绑定
 
 
-## gulp原理 TODO
+## gulp原理
 
+- [基本概念与原理](https://segmentfault.com/a/1190000008513154#articleHeader4)
+- Vinyl-fs，它主要的工作是接受 glob 模式的参数，然后读取匹配的文件。然后利用 Vinyl 制作一个 Transform Stream，称为 Vinyl Stream 对象，并返回。
+- 在 Gulp 中的 API gulp.src、gulp.watch、gulp.dest 都返回一个 Vinyl Stream 实例对象。Vinyl Stream 实例之间可以通过管道（ vinyl1.pipe(vinyl2) ）的形式来互相传输数据。
+
+- 从 Gulp 的 源码 中也能看出，这三个 API 都是由 vinyl-fs 提供全部的实现。
+
+- 再一点是，从这两个模块的实现来看，Gulp 是把文件内容以 Buffer 的形式读到内存中，然后再进行处理的
+- Orchestartor，为 gulp.task 提供了全部实现，这可以从 源码 中看出。
+它为 Gulp 提供了任务相关的功能，包括任务注册、任务执行以及相对应的任务进度、错误监控等功能。
+### 常用插件
+- gulp-load-plugins：自动加载 package.json 中的 gulp 插件
+- gulp-rename： 重命名
+- gulp-uglify：文件压缩
+- gulp-concat：文件合并
+- gulp-less：编译 less
+- gulp-sass：编译 sass
+- gulp-clean-css：压缩 CSS 文件
+- gulp-htmlmin：压缩 HTML 文件
+- gulp-babel: 使用 babel 编译 JS 文件
+- gulp-jshint：jshint 检查
+- gulp-imagemin：压缩jpg、png、gif等图片
+- gulp-livereload：当代码变化时，它可以帮我们自动刷新页面
 ## webpack的原理/常用插件 TODO
 ### 常用plugin
 - compression-webpack-plugin 生成gz压缩文件
@@ -419,8 +362,15 @@ promise
    <img	src='http://f.wetest.qq.com/gqop/10000/20000/LabImage_af779f66f361c5cbf002d4683084ae43.png' />
 4. cdn/缓存
    - 如果没有CDN服务，我们可以添加Expires头，减少DNS查找，配置ETag，使AjaX可缓存。  
-
-#### 其他
+### [http缓存优化](http://www.cnblogs.com/chenqf/p/6386163.html)
+#### 强制缓存与对比缓存
+- 强制缓存有就取,没有就向服务器拿
+- 对比缓存有就发缓存标记问服务器是否过期. 没过期返回304, 过期就返回新文件
+#### 缓存涉及头参数: 
+- Cache-Control:no-cache //协商缓存/对比缓存
+- Last-Modified(响应)/If-Modified-Since(再次请求带上)
+- Etag (响应)/  If-None-Match(再次请求带上)
+### 其他
 1. 减少http请求次数：CSS Sprites, JS、CSS源码压缩、图片大小控制合适；网页Gzip，CDN托管，data缓存 ，图片服务器。
 
 2. 前端模板 JS+数据，减少由于HTML标签导致的带宽浪费，前端用变量保存AJAX请求结果，每次操作本地变量，不用请求，减少请求次数
@@ -440,9 +390,25 @@ promise
 
 ## 前端安全 todo
 
+### XSS，CSRF
+- XSS：跨站脚本攻击
+它允许用户将恶意代码植入到提供给其他用户使用的页面中，可以简单的理解为一种javascript代码注入。
+- XSS的防御措施：
+过滤转义输入输出
+避免使用eval、new Function等执行字符串的方法，除非确定字符串和用户输入无关
+使用cookie的httpOnly属性，加上了这个属性的cookie字段，js是无法进行读写的
+使用innerHTML、document.write的时候，如果数据是用户输入的，那么需要对象关键字符进行过滤与转义
+- CSRF：跨站请求伪造
+其实就是网站中的一些提交行为，被黑客利用，在你访问黑客的网站的时候进行操作，会被操作到其他网站上
+- CSRF防御措施：
+检测http referer是否是同域名
+避免登录的session长时间存储在客户端中
+关键请求使用验证码或者token机制
+其他的一些攻击方法还有HTTP劫持、界面操作劫持
 ### CSP
 web前端对于xss安全漏洞一定不陌生。我们知道Javascript语句甚至是css表达式都可能导致xss攻击，   
 ## 笔试题
+### 1.任意异步任务同步执行
 ```js
 function run(){
 	function pro(fn) {
@@ -466,7 +432,7 @@ run(next=>{
 	next()
 })
 ```
-### 数组去重
+### 2.数组去重
 ```js 
 // 空间换时间
 function unique2(array) {
@@ -496,7 +462,7 @@ function deduplicate(src){
 // es6
 const unique = a => Array.from(new Set(a))
 ```
-### 深拷贝
+### 3.深拷贝
 ```js
 function clone(obj){
     var buf;
@@ -523,14 +489,39 @@ function clone(obj){
 - 事件委托就是利用事件冒泡, 委托它们父级代为执行事件
 - 适合用事件委托的事件：click，mousedown，mouseup，keydown，keyup，keypress。
 
-# todo 
-闭包应用场景原理
-浏览器内核渲染的原理？
-前端攻击 XSS，CSRF ？避免方法
 
+### 闭包应用场景原理
+- 闭包是javascript语言的一大特点，主要应用闭包场合主要是为了：设计私有的方法和变量
+1. 希望一个变量长期驻扎在内存中
+2. 避免全局变量的污染
+3. 私有成员的存在
+### 前端路由的原理
+什么是路由？简单的说，路由是根据不同的 url 地址展示不同的内容或页面
+- 使用场景？前端路由更多用在单页应用上, 也就是SPA, 因为单页应用, 基本上都是前后端分离的, 后端自然也就不会给前端提供路由。
+前端的路由和后端的路由在实现技术上不一样，但是原理都是一样的。在 HTML5 的 history API 出现之前，前端的路由都是通过 hash 来实现的，hash 能兼容低版本的浏览器。
+- 两种实现前端路由的方式
+  - HTML5 History两个新增的API：history.pushState 和 history.replaceState，两个 API 都会操作浏览器的历史记录，而不会引起页面的刷新。
+  - Hash就是url 中看到 # ,我们需要一个根据监听哈希变化触发的事件( hashchange) 事件。我们用 window.location 处理哈希的改变时不会重新渲染页面，而是当作新页面加到历史记录中，这样我们跳转页面就可以在 hashchange 事件中注册 ajax 从而改变页面内容。
+- 优点
+从性能和用户体验的层面来比较的话，后端路由每次访问一个新页面的时候都要向服务器发送请求，然后服务器再响应请求，这个过程肯定会有延迟。而前端路由在访问一个新页面的时候仅仅是变换了一下路径而已，没有了网络延迟，对于用户体验来说会有相当大的提升。
+更多内容请看这里
+- 缺点
+使用浏览器的前进，后退键的时候会重新发送请求，没有合理地利用缓存。
+
+### 浏览器内核渲染的原理？
+<img src='http://taligarsiel.com/Projects/webkitflow.png' />  
+1. HTML被解析成DOM Tree，CSS被解析成CSS Rule Tree
+2. 把DOM Tree和CSS Rule Tree经过整合生成Render Tree（布局阶段）
+3. 元素按照算出来的规则，把元素放到它该出现的位置，通过显卡画到屏幕上
+ 
+
+# todo 
 就是把myangular写一遍,ydkjs看一遍,elm项目滤了一遍vueroute/vuex  
-新大陆解决过问题:
+某陆解决过问题:
 1,decorator重复点击 
 2,gulp多目标 
 3.三个密码用promise all  
 1.在hexo搞个帖子记录前端每月目标记录完成情况, 刷日历
+- 你最近在学什么?接下来的半年你打算学习什么?你平时如何去学习了解新的技术?
+  - gulp插件/webpack loader
+  - 函数式编程
