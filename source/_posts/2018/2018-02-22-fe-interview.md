@@ -335,6 +335,91 @@ promise
 - gulp-imagemin：压缩jpg、png、gif等图片
 - gulp-livereload：当代码变化时，它可以帮我们自动刷新页面
 ## webpack的原理/常用插件 TODO
+### webapck模块化机制
+- webpack把模块代码包装在函数内部. 通过实现exports和require，然后自动加载入口模块，控制缓存模块, 做到依赖复用(angular依赖注入类似实现)
+- webpack传入的第一个参数module是当前缓存的模块，包含当前模块的信息和exports；第二个参数exports是module.exports的引用，这也符合commonjs的规范；第三个__webpack_require__ 则是require的实现
+```js
+function (module, exports, __webpack_require__) {
+    /* 模块的代码 */
+}
+```
+- webpack_require的实现和commonjs的require实现一致
+  1. IIFE首先定义了installedModules ，这个变量被用来缓存已加载的模块。
+  2. 定义了`__webpack_require__ 这个函数，函数参数为模块的id。这个函数用来实现模块的require。
+  3. `__webpack_require__` 函数首先会检查是否缓存了已加载的模块，如果有则直接返回缓存模块的exports。
+  4. 如果没有缓存，也就是第一次加载，则首先初始化模块，并将模块进行缓存。
+  5. 然后调用模块函数，也就是前面webpack对我们的模块的包装函数，将module、module.exports和`__webpack_require__`作为参数传入。注意这里做了一个动态绑定，将模块函数的调用对象绑定为module.exports，这是为了保证在模块中的this指向当前模块。`modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);`
+  6. 调用完成后，模块标记为已加载。
+  7. 返回模块exports的内容。
+  8. 利用前面定义的`__webpack_require__` 函数，require第0个模块，也就是入口模块。
+
+### webpack异步加载/code split [参考](https://segmentfault.com/a/1190000011435407)
+- installedChunks指的是文件chunk, installedModules才是文件里面的模块function
+- webpack通过`__webpack_require__.e`函数实现了动态加载，script loaded后再通过webpackJsonp函数去调`__webpack_require__`加载chunk里面module。
+- `__webpack_require__.e`代码解析
+  ```js
+  __webpack_require__.e = function requireEnsure(chunkId) {
+    // 1、查找chunk是否loaded/loading
+    var installedChunkData = installedChunks[chunkId];
+    if(installedChunkData === 0) {
+        return new Promise(function(resolve) { resolve(); });
+    }
+    if(installedChunkData) {
+        return installedChunkData[2];
+    }
+    // 2、未load的chunk用resolve,reject,promise暂时来表示chunk loading状态
+    var promise = new Promise(function(resolve, reject) {
+        installedChunkData = installedChunks[chunkId] = [resolve, reject];
+    });
+    installedChunkData[2] = promise;
+    // 3、script标签加载chunk(chunk内容格式是webpackJsonp([chunckid],{moduleId: module的function}))
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.charset = 'utf-8';
+    script.async = true;
+    script.timeout = 120000;
+    script.src = __webpack_require__.p + "" + ({"0":"foo"}[chunkId]||chunkId) + ".bundle.js";
+    // 4、异常处理
+    
+    head.appendChild(script);
+    // 5、返回promise
+    return promise;
+};
+  ```
+- webpackJsonp代码解析
+  ```js
+  window["webpackJsonp"] = function webpackJsonpCallback(chunkIds, moreModules, executeModules) {
+    var moduleId, chunkId, i = 0, resolves = [], result;
+    // 1、包含chunk的ID, 获取chunk对应的resolve函数, 标记chunk loaded
+    for(;i < chunkIds.length; i++) {
+        chunkId = chunkIds[i];
+        if(installedChunks[chunkId]) {
+            resolves.push(installedChunks[chunkId][0]);
+        }
+        installedChunks[chunkId] = 0;
+    }
+    // 2、把chunk的module function设置到modules
+    for(moduleId in moreModules) {
+        if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+            modules[moduleId] = moreModules[moduleId];
+        }
+    }
+    if(parentJsonpFunction) parentJsonpFunction(chunkIds, moreModules, executeModules);
+    // 3、resolve 后`__webpack_require__`执行modulefunction获取exports
+    while(resolves.length) {
+        resolves.shift()();
+    }
+};
+  ```
+- commonchunk里的异步加载
+  ```js
+  // 加载chunk0, 加载后__webpack_require__去调chunk0里的module1
+  __webpack_require__.e/* import() */(0).then(__webpack_require__.bind(null, 1)).then(foo => {
+      console.log(foo.foo());
+  })
+  ```
+
 ### 常用plugin
 - compression-webpack-plugin 生成gz压缩文件
 - extract-text-webpack-plugin 抽取css到文件
@@ -521,7 +606,10 @@ function clone(obj){
 1,decorator重复点击 
 2,gulp多目标 
 3.三个密码用promise all  
-1.在hexo搞个帖子记录前端每月目标记录完成情况, 刷日历
+
 - 你最近在学什么?接下来的半年你打算学习什么?你平时如何去学习了解新的技术?
   - gulp插件/webpack loader
   - 函数式编程
+
+## 参考
+- [webpack模块化原理-commonjs](https://segmentfault.com/a/1190000010349749)
