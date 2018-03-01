@@ -8,10 +8,10 @@ tags: interview career
 [笔记](#笔记)
 # 面试题目录[calabash519/interview-q-collection](https://github.com/calabash519/interview-questions)
 <!--more-->
-> **6, 11, 12, 23**  
+-  **6, 11, 12, 23**
 
- Number |                 Content                 
-| ----: | -------------------------------------- |
+| Number |                 Content                | 
+| ------ | -------------------------------------- |
 |   1    | [BAT及各大互联网公司2014前端笔试面试题--Html,Css篇](http://www.cnblogs.com/coco1s/p/4034937.html) |
 |   2    | [BAT及各大互联网公司2014前端笔试面试题--JavaScript篇](http://www.cnblogs.com/coco1s/p/4029708.html) |
 |   3    | [javascript面试题](http://www.voidcn.com/blog/u014787301/article/p-6166599.html) |
@@ -51,8 +51,8 @@ tags: interview career
 |   38   | [破解前端面试（80% 应聘者不及格系列）：从 闭包说起](https://zhuanlan.zhihu.com/p/25855075) |
 |   39   | [前端面试--四月二十家前端面试题分享](http://www.jianshu.com/p/c41cc287d7d4) |
 |   40   | [ECMAScript 6 六级考试](http://qingbob.com/es6-level6-test/) |
-|   41   | 阅[前端开发面试问题及答案整理](https://github.com/BearD01001/front-end-QA-to-interview#%E8%AF%B4%E8%AF%B4%E4%BD%A0%E5%AF%B9%E9%97%AD%E5%8C%85%E7%9A%84%E7%90%86%E8%A7%A3)|
-|   42   | [前端面试问题](https://www.jianshu.com/p/9a7d604f69a7)|
+|   41   | 阅[前端开发面试问题及答案整理](https://github.com/BearD01001/front-end-QA-to-interview#%E8%AF%B4%E8%AF%B4%E4%BD%A0%E5%AF%B9%E9%97%AD%E5%8C%85%E7%9A%84%E7%90%86%E8%A7%A3) |
+|   42   | [前端面试问题](https://www.jianshu.com/p/9a7d604f69a7) |
 
 # 时允-前端面试[提纲](https://segmentfault.com/a/1190000010969779)
 
@@ -306,8 +306,129 @@ body {
 
 ### angular 
 angular的原理
-promise
-双向绑定
+#### scope
+- $apply(外部函数执行后触发脏值检查)调用$digest, digest里面有脏数据就循环调$watch的listener, 超过10次抛异常结束
+- 共享scope原型链继承, 独立scope创建`childScope = Object.create(this);`. isolate scope有自己watchers,listeners等
+  - Destroy a scope: 移除watchers, 从$parent的$$children移除自己
+  - $digest将递归执行children的listeners
+- 事件系统基于scope层级,向上是emit向下是broadcast
+  - 模拟propagationStopped, 结束$emit事件
+- $evalasync
+  - 往$$asyncQueue加任务, 执行规则: 当前是digest phase就在`$$digestOnce`后的下次循环执行,没在digest phase就自己去调用$digest
+  - 代码如下: 
+  ```js
+  Scope.prototype.$evalAsync = function(expr) {
+      var self = this;
+      if (!self.$$phase && !self.$$asyncQueue.length) { // If there’s something in the queue, we already have a timeout set and it will eventually drain the queue.
+          setTimeout(function() {
+              if (self.$$asyncQueue.length) {
+                  self.$root.$digest();
+              }
+          }, 0);
+      }
+      this.$$asyncQueue.push({ scope: this, expression: expr});
+  };
+  // digest snippet
+  do {
+    while (this.$$asyncQueue.length) {
+        try {
+            var asyncTask = this.$$asyncQueue.shift();
+            asyncTask.scope.$eval(asyncTask.expression);
+        } catch (error) {
+            // console.log(error);
+        }
+    }
+
+    dirty = this.$$digestOnce();
+    if ((dirty || this.$$asyncQueue.length) && !(ttl--)) {
+        this.$clearPhase();
+        throw ttl + ' digest iterations reached';
+    }
+  } while (dirty || this.$$asyncQueue.length);
+  ```
+
+#### expression|filter
+
+- 表达式解析过程: lexer词法解析 -> tokens -> astBuilder生成ast -> astCompiler -> 生成表达式
+- expect预读token
+- astCompile的时候,操作符优先级通过`()`实现的
+- $watch与parse结合的时候为了提升效率,引入$$watchDelegate. 将特殊情况的表达式特殊处理(constant watch执行一次后就把watcher移除).
+
+#### DI
+- providerCache里面是一些有$get属性的对象, instanceCache是providerCache的$get执行后获得的对象. 
+- config是执行providerInjector的$injector.invoke,而且是在configblock里, 执行configblock的时候其他provider都已经实例化,可对这些provider进行配置. 所有module的runBlocks汇集后再执行
+- `providerCache.$provide`那几个方法都是往providerCache里加provider实例
+- Factory是一个可注入的function，它和service的区别就是：factory是普通function，而service是一个构造器(constructor)，这样Angular在调用service时会用new关键字，而调用factory时只是调用普通的function，所以factory可以返回任何东西，而service可以不返回(~~可查阅new关键字的作用~~)
+- Providers allow you to configure the factory or service in the module's config block before it is instantiated. 只有provider可以返回除了$get之外的方法
+- decorator修改providerInstance后再返回 
+#### Utils
+##### promise
+- defer里面有promise, resolve, reject
+- $q的异步机制是调用$evalAsync, $$q的是setTimeout, 来调用processQueue??
+- promise内置变量$$state, 基于state转换,且只能resolve/reject一次
+
+- 机制
+    - new Deffered会在内部插件一个promise, promise内部有个$$state{value, status, pending}
+    - `defer.resolve defer.reject`会修改$$state.status并且去执行promise里$$state.pending数组, 执行回调结果会传参给下个defer的`resolve/reject`
+    ```js
+      Deferred.prototype.reject = function(reason) {
+        if (this.promise.$$state.status) {
+          return;
+        }
+        this.promise.$$state.value = reason;
+        this.promise.$$state.status = 2;
+        scheduleProcessQueue(this.promise.$$state);
+      }
+      // scheduleProcessQueue'异步'执行processQueue
+      function processQueue(state) {
+        var pending = state.pending;
+        state.pending = undefined;
+        _.forEach(pending, function(handlers) {
+          var deferred = handlers[0];
+          var fn = handlers[state.status];
+          try {
+            if (_.isFunction(fn)) {
+              deferred.resolve(fn(state.value));
+            } else if (state.status === 1) {
+              deferred.resolve(state.value);
+            } else {
+              deferred.reject(state.value);
+            }
+          } catch (e) {
+            deferred.reject(e);
+          }
+        });
+      }
+    ```
+    - `Promise.then`会重复`new Deferred(); return defer.promise`这个过程,并把传进来的onFulfilled和新的defer保存到当前promise的`$$state.pending`数组里
+    ```js
+      Promise.prototype.then = function(onFulfilled, onRejected, onProgress) {
+        var result = new Deferred();
+        this.$$state.pending = this.$$state.pending || [];
+        this.$$state.pending.push([result, onFulfilled, onRejected, onProgress]);
+        if (this.$$state.status > 0) {
+          scheduleProcessQueue(this.$$state);
+        }
+        return result.promise;
+      };
+    ```
+- 其他: reject后不能被resolve, 会一直调用到最底层的defer.
+##### http
+- http_backend回调传参
+```js
+callback(
+    xhr.status,
+    response,
+    xhr.getAllResponseHeaders(),
+    statusText
+)
+```
+- $http的intercepter通过promise实现request和response的分层处理.
+  - 拦截器有四个属性request, requestError, responce, responceError(对应四个阶段)
+  - 这边在request里加请求头字段, response/responseError里统一处理异常信息
+#### directive
+
+##### 双向绑定
 
 
 ## gulp原理
@@ -473,25 +594,25 @@ function (module, exports, __webpack_require__) {
 8. 避免在页面的主体布局中使用table，table要等其中的内容完全下载之后才会显示出来，显示比div+css布局慢。  
 对普通的网站有一个统一的思路，就是尽量向前端优化、减少数据库操作、减少磁盘IO。向前端优化指的是，在不影响功能和体验的情况下，能在浏览器执行的不要在服务端执行，能在缓存服务器上直接返回的不要到应用服务器，程序能直接取得的结果不要到外部取得，本机内能取得的数据不要到远程取，内存能取到的不要到磁盘取，缓存中有的不要去数据库查询。减少数据库操作指减少更新次数、缓存结果减少查询次数、将数据库执行的操作尽可能的让你的程序完成（例如join查询），减少磁盘IO指尽量不使用文件系统作为缓存、减少读写文件次数等。程序优化永远要优化慢的部分，换语言是无法“优化”的。
 
-## 前端安全 todo
-
-### XSS，CSRF
-- XSS：跨站脚本攻击
-它允许用户将恶意代码植入到提供给其他用户使用的页面中，可以简单的理解为一种javascript代码注入。
+## 前端安全
+### XSS，CSRF(CSRF是利用了系统对页面浏览器的信任，XSS则利用了系统对用户的信任。)
+- XSS：跨站脚本攻击(cross site script)
+  - 它允许用户将恶意代码植入到提供给其他用户使用的页面中，可以简单的理解为一种javascript代码注入。
 - XSS的防御措施：
-过滤转义输入输出
-避免使用eval、new Function等执行字符串的方法，除非确定字符串和用户输入无关
-使用cookie的httpOnly属性，加上了这个属性的cookie字段，js是无法进行读写的
-使用innerHTML、document.write的时候，如果数据是用户输入的，那么需要对象关键字符进行过滤与转义
-- CSRF：跨站请求伪造
-其实就是网站中的一些提交行为，被黑客利用，在你访问黑客的网站的时候进行操作，会被操作到其他网站上
+  - 对用户输入的内容过滤转义
+  - 避免使用eval、new Function等执行字符串的方法，除非确定字符串和用户输入无关
+  - 使用cookie的httpOnly属性，加上了这个属性的cookie字段，js是无法进行读写的
+- CSRF：跨站请求伪造(Cross-site request forgery)
+其实就是网站中的一些提交行为，被黑客利用，黑客帮你发起未经你允许的请求
 - CSRF防御措施：
-检测http referer是否是同域名
-避免登录的session长时间存储在客户端中
-关键请求使用验证码或者token机制
-其他的一些攻击方法还有HTTP劫持、界面操作劫持
-### CSP
-web前端对于xss安全漏洞一定不陌生。我们知道Javascript语句甚至是css表达式都可能导致xss攻击，   
+  - 检测http referer是否是同域名
+  - 关键请求使用验证码或者token机制(每一个表单生成一个随机数秘钥token)
+  - 避免登录的session长时间存储在客户端中
+  - 其他的一些攻击方法还有HTTP劫持、界面操作劫持
+<img src='https://images2015.cnblogs.com/blog/789055/201704/789055-20170426213837647-1576415902.jpg' />
+### CSP [参考](http://www.ruanyifeng.com/blog/2016/09/csp.html)
+- web前端对于xss安全漏洞一定不陌生。我们知道Javascript语句甚至是css表达式都可能导致xss攻击，   
+- 开发者明确告诉客户端，哪些外部资源可以加载和执行
 ## 笔试题
 ### 1.任意异步任务同步执行
 ```js
@@ -604,7 +725,9 @@ function clone(obj){
 就是把myangular写一遍,ydkjs看一遍,elm项目滤了一遍vueroute/vuex  
 某陆解决过问题:
 1,decorator重复点击 
-2,gulp多目标 
+2,gulp多目标 通过项目参数, 在打包的时候引入项目的配置信息, 样式等.
+修改gulp任务时src只有一个,dist确需要多个.而且任务要按顺序来,sprite生成less后才能执行less任务编译成CSS.
+ 查资料和测试后用merge stream的方式来实现, gulp-rename做路径修改
 3.三个密码用promise all  
 
 - 你最近在学什么?接下来的半年你打算学习什么?你平时如何去学习了解新的技术?
