@@ -6,8 +6,7 @@ tags: interview career
 ---
 
 [笔记](#笔记)
-# 面试题目录[calabash519/interview-q-collection](https://github.com/calabash519/interview-questions)
-<!--more-->
+
 -  **6, 11, 12, 23**
 
 | Number |                 Content                | 
@@ -53,6 +52,10 @@ tags: interview career
 |   40   | [ECMAScript 6 六级考试](http://qingbob.com/es6-level6-test/) |
 |   41   | 阅[前端开发面试问题及答案整理](https://github.com/BearD01001/front-end-QA-to-interview#%E8%AF%B4%E8%AF%B4%E4%BD%A0%E5%AF%B9%E9%97%AD%E5%8C%85%E7%9A%84%E7%90%86%E8%A7%A3) |
 |   42   | [前端面试问题](https://www.jianshu.com/p/9a7d604f69a7) |
+
+<!--more-->
+
+# 面试题目录[calabash519/interview-q-collection](https://github.com/calabash519/interview-questions)
 
 # 时允-前端面试[提纲](https://segmentfault.com/a/1190000010969779)
 
@@ -264,10 +267,12 @@ body {
 
 ### 品字布局
 ### 固定宽高布局
-```css
+```html
 <div class="d1">上</div>
 <div class="d2">右</div>
 <div class="d3">左</div>
+```
+```css
  .d1,
  .d2,
  .d3 {
@@ -361,6 +366,7 @@ angular的原理
 - Factory是一个可注入的function，它和service的区别就是：factory是普通function，而service是一个构造器(constructor)，这样Angular在调用service时会用new关键字，而调用factory时只是调用普通的function，所以factory可以返回任何东西，而service可以不返回(~~可查阅new关键字的作用~~)
 - Providers allow you to configure the factory or service in the module's config block before it is instantiated. 只有provider可以返回除了$get之外的方法
 - decorator修改providerInstance后再返回 
+
 #### Utils
 ##### promise
 - defer里面有promise, resolve, reject
@@ -368,7 +374,7 @@ angular的原理
 - promise内置变量$$state, 基于state转换,且只能resolve/reject一次
 
 - 机制
-    - new Deffered会在内部插件一个promise, promise内部有个$$state{value, status, pending}
+    - new Deffered会在内部创建一个promise, promise内部有个$$state(包含value, status, pending)
     - `defer.resolve defer.reject`会修改$$state.status并且去执行promise里$$state.pending数组, 执行回调结果会传参给下个defer的`resolve/reject`
     ```js
       Deferred.prototype.reject = function(reason) {
@@ -426,9 +432,40 @@ callback(
 - $http的intercepter通过promise实现request和response的分层处理.
   - 拦截器有四个属性request, requestError, responce, responceError(对应四个阶段)
   - 这边在request里加请求头字段, response/responseError里统一处理异常信息
-#### directive
 
-##### 双向绑定
+#### directive
+- controllers只是指令系统的一部分
+#### 双向绑定
+- `=`属性绑定, parentValue和上次不一样覆盖子属性, 一样子覆盖父属性
+```js
+case '=':
+  if (definition.optional && !attrs[attrName]) {
+      break;
+  }
+  parentGetParseFun = $parse(attrs[attrName]);
+  var lastValue = destination[scopeName] = parentGetParseFun(
+      scope); // right now scope is empty
+
+  var parentValueWatch = function() {
+      var parentValue = parentGetParseFun(scope);
+      if (lastValue !== parentValue) {
+          destination[scopeName] = parentValue;
+      } else {
+          parentValue = destination[scopeName];
+          parentGetParseFun.assign(scope, parentValue);
+      }
+      lastValue = parentValue;
+      return lastValue;
+  };
+  if (definition.collection) {
+      unwatch = scope.$watchCollection(attrs[attrName],
+          parentValueWatch);
+  } else {
+      unwatch = scope.$watch(parentValueWatch);
+  }
+  newScope.$on('$destroy', unwatch);
+  break;
+```
 
 
 ## gulp原理
@@ -557,6 +594,7 @@ function (module, exports, __webpack_require__) {
    - 加快静态文件下载速度
    - 减少静态文件的文件大小
    - 减少静态文件请求数量，从而减少发起请求的次数（对于移动端页面来说，请求的开销比网速的开销要大）
+
 ### 优化细则
 1. 代码压缩
 2. 文件合并
@@ -567,7 +605,8 @@ function (module, exports, __webpack_require__) {
    - 使用插件如:`compression-webpack-plugin`  
    <img	src='http://f.wetest.qq.com/gqop/10000/20000/LabImage_af779f66f361c5cbf002d4683084ae43.png' />
 4. cdn/缓存
-   - 如果没有CDN服务，我们可以添加Expires头，减少DNS查找，配置ETag，使AjaX可缓存。  
+   - 如果没有CDN服务，我们可以添加Expires头，减少DNS查找，配置ETag，使AjaX可缓存。
+  
 ### [http缓存优化](http://www.cnblogs.com/chenqf/p/6386163.html)
 #### 强制缓存与对比缓存
 - 强制缓存有就取,没有就向服务器拿
@@ -610,9 +649,11 @@ function (module, exports, __webpack_require__) {
   - 避免登录的session长时间存储在客户端中
   - 其他的一些攻击方法还有HTTP劫持、界面操作劫持
 <img src='https://images2015.cnblogs.com/blog/789055/201704/789055-20170426213837647-1576415902.jpg' />
+
 ### CSP [参考](http://www.ruanyifeng.com/blog/2016/09/csp.html)
 - web前端对于xss安全漏洞一定不陌生。我们知道Javascript语句甚至是css表达式都可能导致xss攻击，   
 - 开发者明确告诉客户端，哪些外部资源可以加载和执行
+
 ## 笔试题
 ### 1.任意异步任务同步执行
 ```js
@@ -720,6 +761,29 @@ function clone(obj){
 2. 把DOM Tree和CSS Rule Tree经过整合生成Render Tree（布局阶段）
 3. 元素按照算出来的规则，把元素放到它该出现的位置，通过显卡画到屏幕上
  
+### nd q&a
+- timeline profile用来调优过吗？ todo
+- 写spa和多页面区别是什么，注意点
+  - spa: i.交互体验好页面开始响应, 无整页刷新 ii.前后端分离 iii.seo ajax无法爬虫 iv. 要求高版本浏览器(摒弃IE) v.首页加载慢
+  - mpa: i.seo 友好 ii.方案成熟 iii.前后端代码混合 iv.页面整体刷新 v.兼容老版本浏览器
+
+- 做过什么性能调优，[页面优化](###优化细则)
+- js设计模式有哪些
+- HTTP2了解不
+- promise内部怎么实现
+- ES6哪些新特性，比ES5好在哪里
+- 怎么跨域的，cors是做什么的
+  - jsonp: 由于同源策略的限制，XmlHttpRequest只允许请求当前源（域名、协议、端口）的资源，为了实现跨域请求，可以通过script标签实现跨域请求，然后在服务端输出JSON数据并执行回调函数，从而解决了跨域的数据请求。 优点是兼容性好，简单易用，支持浏览器与服务器双向通信。缺点是只支持GET请求。
+  - 服务器端对于CORS的支持，主要就是通过设置Access-Control-Allow-Origin来进行的。如果浏览器检测到相应的设置，就可以允许Ajax进行跨域的访问。
+  - window.name/postMessage
+
+- Webpack怎么规划按需加载
+  - 在路由里面注册component的时候用es6的import语法去引入组件/ 或者AMD的require.ensure
+    - `const home = r => require.ensure([], () => r(require('../page/home/home')), 'home')`
+    - `const Home = () => import(/* webpackChunkName: "Home" */ "@page/home/home")`
+- 测试框架用过什么，写单元测试吗
+  - 单元测试jasmine/jtest, 模拟网络请求sinon
+  - 模拟输入数据比对输出结果, spy函数比对传参和返回结果, 时钟测异步, 模拟request,response,xmlhttp
 
 # todo 
 就是把myangular写一遍,ydkjs看一遍,elm项目滤了一遍vueroute/vuex  
