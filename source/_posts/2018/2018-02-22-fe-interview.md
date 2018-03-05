@@ -492,15 +492,30 @@ case '=':
 - gulp-jshint：jshint 检查
 - gulp-imagemin：压缩jpg、png、gif等图片
 - gulp-livereload：当代码变化时，它可以帮我们自动刷新页面
-## webpack的原理/常用插件 TODO
+## webpack的原理/常用插件 
+### webpack插件原理
+1. webpack插件就是一个function, function的prototype上定义了apply方法.
+webpack调用该方法注入compiler对象. complier(包含所有配置信息)通过Tapable的plugin方法注册编译事件回调. 事件回调执行时传入compilation对象
+2. compilation继承compiler, 在开发环境中compiler编译配置文件并返回compilation,compilation是每个资源发生变化后重新加载模块编译到bundle里
+3. compiler和compilation的事件钩子
+   - `compilation`生成compilation对象, `emit`在将内存中assets写到硬盘前, `make`分析依赖,build模块
+   - `optimize`优化编译, `optimize-chunks`获取模块依赖，loader等
+```js
+  Plugin.prototype.apply = function (compiler) {
+      compiler.plugin('emit', function (compilation, callback) {
+          console.log(compilation);
+          callback();
+      });
+  };
+```
 ### webapck模块化机制
 - webpack把模块代码包装在函数内部. 通过实现exports和require，然后自动加载入口模块，控制缓存模块, 做到依赖复用(angular依赖注入类似实现)
 - webpack传入的第一个参数module是当前缓存的模块，包含当前模块的信息和exports；第二个参数exports是module.exports的引用，这也符合commonjs的规范；第三个__webpack_require__ 则是require的实现
-```js
-function (module, exports, __webpack_require__) {
-    /* 模块的代码 */
-}
-```
+  ```js
+  function (module, exports, __webpack_require__) {
+      /* 模块的代码 */
+  }
+  ```
 - webpack_require的实现和commonjs的require实现一致
   1. IIFE首先定义了installedModules ，这个变量被用来缓存已加载的模块。
   2. 定义了`__webpack_require__ 这个函数，函数参数为模块的id。这个函数用来实现模块的require。
