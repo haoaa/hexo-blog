@@ -308,7 +308,26 @@ body {
 1.父组件和子组件、子组件和子组件如何传递数据 props down emit up
 兄弟组件有么用一个Vue对象做通信bus, 要么vuex
 2.dom更新机制
-
+  - reativity通过nexttick触发diff算法进行局部DOM更新
+  <img src='https://user-gold-cdn.xitu.io/2017/12/19/1606e7eaa2a664e8?imageView2/0/w/1280/h/960/format/webp/ignore-error/1' />
+3. reactivity
+- 其实「依赖收集」的过程就是把 Watcher 实例存放到对应的 Dep 对象中去。get 方法可以让当前的 Watcher 对象（Dep.target）存放到它的 subs 中（addSub）方法，在数据变化时，set 会调用 Dep 对象的 notify 方法通知它内部所有的 Watcher 对象进行视图更新。  
+- vuex. install方法里给Vue混入初始化方法. 初始化获取store到data上. commit方法遍历执行mutation, dispatch方法用promise执行action.
+#### diff
+- 调patch方法比vnode
+  - 只有当 key、 tag、 isComment就是sameVnode, 不是就替换realDom
+  - 调用patchVnode ,通过静态节点, 两个都有子虚节点比对更新childVnode
+- 优化: 尽量不要跨层级的修改dom, 设置key可以最大化的利用节点
+#### nexttick
+- Internally Vue tries native Promise.then and MessageChannel for the asynchronous queuing and falls back to setTimeout(fn, 0).
+- Vue异步更新dom, notify后 watch的run会通过nextTick下个周期执行, watch只会添加进队列一次
+  ```js
+  this.message = 'updated' // setter触发update,将watcher的run加入nextTick回调
+  console.log(this.$el.textContent) // => 'not updated'
+  this.$nextTick(function () {
+    console.log(this.$el.textContent) // => 'updated'
+  })
+  ```
 ### angular 
 angular的原理
 #### scope
@@ -746,6 +765,35 @@ function clone(obj){
     }
 }
 
+```
+### 4.快速排序
+```js
+function quickSort(arr, start, end) {
+    if (start >= end) return;
+    var pIndex = partition(arr, start, end);
+    quickSort(arr, start, pIndex - 1);
+    quickSort(arr, pIndex + 1, end);
+}
+function partition(arr, start, end) {
+    var pivot = arr[end];
+    var pIndex = start;
+    for (var i = start; i <= end - 1; i++) {
+        if (arr[i] <= pivot) {
+            swap(arr, i, pIndex);
+            pIndex++;
+        }
+    }
+    swap(arr, pIndex, end);
+    return pIndex;
+}
+function swap(arr, i, j) {
+    var temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+var a = [3,5,6,7,8,4,0,9,2,1];
+quickSort(a,0,9)
+console.log(a);
 ```
 ### 事件委托 
 - 事件委托就是利用事件冒泡, 委托它们父级代为执行事件
