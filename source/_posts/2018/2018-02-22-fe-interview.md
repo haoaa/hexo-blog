@@ -329,7 +329,16 @@ body {
   })
   ```
 ### angular 
-angular的原理
+#### 指令间通信方式
+- service,单例可以重复注入
+- $broadcast及$emit利用scope hierarchy, 不推荐因为广播遍历整颗树
+- 同一元素指令利用attrs的$observe,$set通信
+- 层级指令通过require controller来通信
+#### 双向绑定
+- interpolate,生成addTextInterpolateDirective, watch the expression and update the dom
+- ng-input收到input事件后去调ngModuleController的$setViewValue, 更新$modelValue,$viewValue
+#### controller as name
+- 把controller通过别名引用到scope上
 #### scope
 - $apply(外部函数执行后触发脏值检查)调用$digest, digest里面有脏数据就循环调$watch的listener, 超过10次抛异常结束
 - 共享scope原型链继承, 独立scope创建`childScope = Object.create(this);`. isolate scope有自己watchers,listeners等
@@ -768,6 +777,7 @@ function clone(obj){
 ```
 ### 4.快速排序
 ```js
+// 时间复杂度平均/最好都是O(nlogn),最差O(n^2)可通过random避免, 空间复杂度O(log)复杂类型排序不稳定
 function quickSort(arr, start, end) {
     if (start >= end) return;
     var pIndex = partition(arr, start, end);
