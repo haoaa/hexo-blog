@@ -879,7 +879,8 @@ console.log(a);
 修改gulp任务时src只有一个,dist确需要多个.而且任务要按顺序来,sprite生成less后才能执行less任务编译成CSS.
  查资料和测试后用merge stream的方式来实现, gulp-rename做路径修改
 3.三个密码用promise all  
-
+4.less和sprite相互依赖/return steam callback ,runsequence
+5.调盾,人脸指纹,密码接口
 - 你最近在学什么?接下来的半年你打算学习什么?你平时如何去学习了解新的技术?
   - gulp插件/webpack gitchat看完
   - 函数式编程
