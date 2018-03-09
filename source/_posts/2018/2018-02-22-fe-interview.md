@@ -52,7 +52,7 @@ tags: interview career
 |   40   | [ECMAScript 6 六级考试](http://qingbob.com/es6-level6-test/) |
 |   41   | 阅[前端开发面试问题及答案整理](https://github.com/BearD01001/front-end-QA-to-interview#%E8%AF%B4%E8%AF%B4%E4%BD%A0%E5%AF%B9%E9%97%AD%E5%8C%85%E7%9A%84%E7%90%86%E8%A7%A3) |
 |   42   | [前端面试问题](https://www.jianshu.com/p/9a7d604f69a7) |
-
+|   43   | [前端经典面试题集合](https://github.com/976500133/FETopic)
 <!--more-->
 
 # 面试题目录[calabash519/interview-q-collection](https://github.com/calabash519/interview-questions)
@@ -884,6 +884,8 @@ console.log(a);
 - 你最近在学什么?接下来的半年你打算学习什么?你平时如何去学习了解新的技术?
   - gulp插件/webpack gitchat看完
   - 函数式编程
+  - react stack
+  - pwa
 
 ## 参考
 - [webpack模块化原理-commonjs](https://segmentfault.com/a/1190000010349749)
