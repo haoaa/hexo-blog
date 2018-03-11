@@ -1,5 +1,5 @@
 ---
-title: fe-interview
+title: 前端面试了解一下
 date: 2018-02-22 11:04:43
 categories: frontend interview 
 tags: interview career
@@ -328,6 +328,8 @@ body {
     console.log(this.$el.textContent) // => 'updated'
   })
   ```
+#### 路由
+- 脚本原理监听hash变化/state, 匹配路径, 执行对应的页面更新回调
 ### angular 
 #### 指令间通信方式
 - service,单例可以重复注入
@@ -881,6 +883,7 @@ console.log(a);
 3.三个密码用promise all  
 4.less和sprite相互依赖/return steam callback ,runsequence
 5.调盾,人脸指纹,密码接口
+6.1px边框用,伪元素做边框, transform scaleY(0.5)
 - 你最近在学什么?接下来的半年你打算学习什么?你平时如何去学习了解新的技术?
   - gulp插件/webpack gitchat看完
   - 函数式编程
