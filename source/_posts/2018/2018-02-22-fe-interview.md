@@ -163,13 +163,54 @@ this 是lexical binding非 dynamic, 通常就是绑定外层function的this. 也
 11. Map + Set + WeakMap + WeakSet 丰富了集合数据结构
 12. meta-data symbols, proxy/reflect
 13. Math + Number + String + Object APIs isNaN, array.from, array.entries/keys/values等iterator. object.assign, string.includes/repeat
+  - ```js
+    Number.EPSILON
+    Number.isInteger(Infinity) // false
+    Number.isNaN("NaN") // false
+
+    Math.acosh(3) // 1.762747174039086
+    Math.hypot(3, 4) // 5
+    Math.imul(Math.pow(2, 32) - 1, Math.pow(2, 32) - 2) // 2
+
+    "abcde".includes("cd") // true
+    "abc".repeat(3) // "abcabcabc"
+
+    Array.from(document.querySelectorAll("*")) // Returns a real Array
+    Array.of(1, 2, 3) // Similar to new Array(...), but without special one-arg behavior
+    [0, 0, 0].fill(7, 1) // [0,7,7]
+    [1,2,3].findIndex(x => x == 2) // 1
+    ["a", "b", "c"].entries() // iterator [0, "a"], [1,"b"], [2,"c"]
+    ["a", "b", "c"].keys() // iterator 0, 1, 2
+    ["a", "b", "c"].values() // iterator "a", "b", "c"
+
+    Object.assign(Point, { origin: new Point(0,0) })
+    ```
 14. class语法糖
+  - ```js
+    class SkinnedMesh extends THREE.Mesh {
+      constructor(geometry, materials) {
+        super(geometry, materials);
+
+        this.idMatrix = SkinnedMesh.defaultMatrix();
+        this.bones = [];
+        this.boneMatrices = [];
+        //...
+      }
+      update(camera) {
+        //...
+        super.update();
+      }
+      static defaultMatrix() {
+        return new THREE.Matrix4();
+      }
+    }
+    ```
 
 ### js
 #### [JS继承的实现方式](http://www.cnblogs.com/humin/p/4556820.html)
 1. 原型链继承Cat.prototype = new Animal();
-缺点1. 来自原型对象的引用属性是所有实例共享的
-缺点2. 创建子类实例时，无法向父类构造函数传参
+   - 缺点1. 来自原型对象的引用属性是所有实例共享的
+   - 缺点2. 创建子类实例时，无法向父类构造函数传参
 2. 构造继承 原型链没连上
 3. 实例继承 实例是父类实例
 4. 拷贝继承 效率低
@@ -305,9 +346,9 @@ body {
 ## 框架 TODO
 
 ### vue 轻量/相关技术栈齐全/有饿了么和阿里大公司使用和支持
-1.父组件和子组件、子组件和子组件如何传递数据 props down emit up
-兄弟组件有么用一个Vue对象做通信bus, 要么vuex
-2.dom更新机制
+1. 父组件和子组件、子组件和子组件如何传递数据 props down emit up
+兄弟组件要么用一个Vue对象做通信bus, 要么vuex
+2. dom更新机制
   - reativity通过nexttick触发diff算法进行局部DOM更新
   <img src='https://user-gold-cdn.xitu.io/2017/12/19/1606e7eaa2a664e8?imageView2/0/w/1280/h/960/format/webp/ignore-error/1' />
 3. reactivity
@@ -329,7 +370,7 @@ body {
   })
   ```
 #### 路由
-- 脚本原理监听hash变化/state, 匹配路径, 执行对应的页面更新回调
+- 脚本原理监听hash变化/state, 匹配路径, 执行对应的render回调
 ### angular 
 #### 指令间通信方式
 - service,单例可以重复注入
