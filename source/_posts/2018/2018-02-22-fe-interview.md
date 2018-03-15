@@ -349,17 +349,24 @@ body {
 1. 父组件和子组件、子组件和子组件如何传递数据 props down emit up
 兄弟组件要么用一个Vue对象做通信bus, 要么vuex
 2. dom更新机制
+  - vue初始化时通过Object.defineProperty给data设置setter/getter函数，用来实现reactivity以及依赖收集. get会往闭包内的dep添加watcher, set会调dep.notify遍历watcher
   - reativity通过nexttick触发diff算法进行局部DOM更新
   <img src='https://user-gold-cdn.xitu.io/2017/12/19/1606e7eaa2a664e8?imageView2/0/w/1280/h/960/format/webp/ignore-error/1' />
 3. reactivity
 - 其实「依赖收集」的过程就是把 Watcher 实例存放到对应的 Dep 对象中去。get 方法可以让当前的 Watcher 对象（Dep.target）存放到它的 subs 中（addSub）方法，在数据变化时，set 会调用 Dep 对象的 notify 方法通知它内部所有的 Watcher 对象进行视图更新。  
 - vuex. install方法里给Vue混入初始化方法. 初始化获取store到data上. commit方法遍历执行mutation, dispatch方法用promise执行action.
-#### diff
+4. compile
+- parse 用正则遍历template形成ast, 遍历获取标签,属性,文本, 指令,层级关系等
+- optimize 标记静态节点(没有v-if/v-for属性的文本节点type===3),在patch比对的时候可以直接跳过来优化
+- generate 将 AST 转化成 render funtion 字符串
+
+5. diff
 - 调patch方法比vnode
   - 只有当 key、 tag、 isComment就是sameVnode, 不是就替换realDom
   - 调用patchVnode ,通过静态节点, 两个都有子虚节点比对更新childVnode
-- 优化: 尽量不要跨层级的修改dom, 设置key可以最大化的利用节点
-#### nexttick
+- 优化: 尽量不要跨层级的修改dom, 设置key可以最大化的重复利用节点
+6. nexttick
+- 调用nexttick回调会被放在队列里,然后异步批量执行
 - Internally Vue tries native Promise.then and MessageChannel for the asynchronous queuing and falls back to setTimeout(fn, 0).
 - Vue异步更新dom, notify后 watch的run会通过nextTick下个周期执行, watch只会添加进队列一次
   ```js
@@ -369,6 +376,7 @@ body {
     console.log(this.$el.textContent) // => 'updated'
   })
   ```
+
 #### 路由
 - 脚本原理监听hash变化/state, 匹配路径, 执行对应的render回调
 ### angular 
@@ -425,7 +433,7 @@ body {
 
 #### expression|filter
 
-- 表达式解析过程: lexer词法解析 -> tokens -> astBuilder生成ast -> astCompiler -> 生成表达式
+- 表达式解析过程: lexer词法解析 -> tokens -> astBuilder生成ast -> astCompiler -> new Function生成函数表达式
 - expect预读token
 - astCompile的时候,操作符优先级通过`()`实现的
 - $watch与parse结合的时候为了提升效率,引入$$watchDelegate. 将特殊情况的表达式特殊处理(constant watch执行一次后就把watcher移除).
@@ -858,10 +866,11 @@ console.log(a);
 1. 希望一个变量长期驻扎在内存中
 2. 避免全局变量的污染
 3. 私有成员的存在
+
 ### 前端路由的原理
-什么是路由？简单的说，路由是根据不同的 url 地址展示不同的内容或页面
+- 什么是路由？简单的说，路由是根据不同的 url 地址展示不同的内容或页面
 - 使用场景？前端路由更多用在单页应用上, 也就是SPA, 因为单页应用, 基本上都是前后端分离的, 后端自然也就不会给前端提供路由。
-前端的路由和后端的路由在实现技术上不一样，但是原理都是一样的。在 HTML5 的 history API 出现之前，前端的路由都是通过 hash 来实现的，hash 能兼容低版本的浏览器。
+- 前端的路由和后端的路由在实现技术上不一样，但是原理都是一样的。在 HTML5 的 history API 出现之前，前端的路由都是通过 hash 来实现的，hash 能兼容低版本的浏览器。
 - 两种实现前端路由的方式
   - HTML5 History两个新增的API：history.pushState 和 history.replaceState，两个 API 都会操作浏览器的历史记录，而不会引起页面的刷新。
   - Hash就是url 中看到 # ,我们需要一个根据监听哈希变化触发的事件( hashchange) 事件。我们用 window.location 处理哈希的改变时不会重新渲染页面，而是当作新页面加到历史记录中，这样我们跳转页面就可以在 hashchange 事件中注册 ajax 从而改变页面内容。
