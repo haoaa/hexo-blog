@@ -923,10 +923,9 @@ console.log(a);
   - 单元测试jasmine/jtest, 模拟网络请求sinon
   - 模拟输入数据比对输出结果, spy函数比对传参和返回结果, 时钟测异步, 模拟request,response,xmlhttp
 
-# todo 
-就是把myangular写一遍,ydkjs看一遍,elm项目滤了一遍vueroute/vuex  
-某陆解决过问题:
-1,decorator重复点击 
+#  summary 
+解决过问题:
+1,decorator重复点击, 代理模式在ng-clicklink之前帮一个事件监听stopImmediatePropagation,定时截流 
 2,gulp多目标 通过项目参数, 在打包的时候引入项目的配置信息, 样式等.
 修改gulp任务时src只有一个,dist确需要多个.而且任务要按顺序来,sprite生成less后才能执行less任务编译成CSS.
  查资料和测试后用merge stream的方式来实现, gulp-rename做路径修改
@@ -934,11 +933,9 @@ console.log(a);
 4.less和sprite相互依赖/return steam callback ,runsequence
 5.调盾,人脸指纹,密码接口
 6.1px边框用,伪元素做边框, transform scaleY(0.5)
-- 你最近在学什么?接下来的半年你打算学习什么?你平时如何去学习了解新的技术?
-  - gulp插件/webpack gitchat看完
-  - 函数式编程
-  - react stack
-  - pwa
+
+## 常见问题
+- 设计模式举例, es6语法(看深浅), 工作流程/协作, webpack/gulp插件,一些思想如 面向对象/spa/dom
 
 ## 参考
 - [webpack模块化原理-commonjs](https://segmentfault.com/a/1190000010349749)
