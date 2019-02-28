@@ -1,5 +1,5 @@
 <div class="site-brand-wrapper">
-  <audio src="\assets\2019\jump.mp3" autoplay></audio>
+  <audio src="\assets\2019\jump.mp3"></audio>
   <div class="site-meta {% if theme.custom_logo.enabled %}custom-logo{% endif %}">
     {% if theme.custom_logo.image and theme.scheme === 'Muse' %}
       <div class="site-meta-headline">
@@ -75,3 +75,14 @@
 </nav>
 
 {% include '../_custom/header.swig' %}
+
+<script>
+  let hasClick = 0 
+  document.querySelector('.site-subtitle').onclick = ()=>{
+    hasClick++
+    if(hasClick === 3) {
+      document.querySelector('audio').play()
+    }
+  }
+
+</script>
