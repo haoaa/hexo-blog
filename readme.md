@@ -17,18 +17,15 @@ $ hexo new something-about-sass
 ``` 
 ### **Step4:** commit and deploy
 
-- commit source
+- commit source and deploy
  ```sh
- npm run git  "your commit comments goes here"
+ npm run pd  "your commit comments goes here"
  ```
-- deploy
+- local serve 
  ```sh
- npm run reload 
+ npm run x 
  ```
-### push repo to github without reload
-```sh
-npm run push # "your commit comments goes here"
-```
+ 
 ### update theme
 ```sh
 git remote add next https://github.com/iissnan/hexo-theme-next.git

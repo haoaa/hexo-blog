@@ -1,11 +1,70 @@
 ---
-title: 前端面试了解一下
-date: 2018-02-22 11:04:43
+title: frontend interview 
+date: 2019-02-22 11:04:43
 categories: frontend interview 
 tags: interview career
 ---
 
-[笔记](#笔记)
+[笔记link](#笔记)
+
+
+## 前端基础
+- JS 原型链机制的理解
+- [作用域和闭包](https://juejin.im/post/58500a02128fe10069319d83#heading-1)
+- 设计模式：了解基本的前端设计模式，单例、适配器、工厂、观察者、迭代器、发布/订阅。
+  + [es6实现工厂/单例模式](https://www.jianshu.com/p/11918dd0f694)
+- 跨域的方式、同源策略、为什么有同源策略、如何做安全防范：新的- H5的跨域方式（cors、postmessage）。
+- 安全，对攻击方式、安全的防范上的了解 。
+- http、TCP 协议的知识，如：什么是无状态，http 状态码的分类。
+- 知晓 CSS 布局原理，什么是BFC，如何实现垂直居中，绝对定位相对位置。
+- 如何做自适应布局，怎么计算 REM
+- websocket, WebRTC, EventSource 的区别
+
+## 框架、组件化
+
+- 架构分层
+- 模块解耦：理解接口、事件通讯的两种方式。
+- 组件化趋势： shadow dom，react和vue 。
+- Virtual DOM 的优势以及缺陷
+- 实践中如何解耦 UI 状态和领域状态
+- 目录结构如何规划
+
+## 前端构建方案
+
+- 工程化的理解以及解决的问题如 gulp。
+- gulp与其他构建工具的对比。
+- 如何拆分 SPA 中的大型代码
+- 如何做异步加载
+- 有没有写过 webpack loader, 以及这个 loader 是为了解决什么问题
+
+## 性能优化
+
+- webview的优化：对静态资源缓存到native的原理和流程 ，- webview缓存、版本号管理、线下调试。
+- 如何加快首屏加载速度，Server Render 的实践。
+- 网页渲染性能优化，layout, paint, compose 三步骤的理解。
+- css 动画、SVG、canvas 的运用
+- 针对前端框架的性能优化，如 showComponentUpdate 的使用
+- 如何带领团队优化：制定量化指标，寻找性能瓶颈，集中优化。
+- 浏览器资源加载, 解析, 渲染. 
+- 事件循环, 异步promise理解
+
+<!--more-->
+## 质量保障
+
+- eslint、tslint 如何跟开发流程集成
+- 单元测试覆盖率
+- 如何面对需求变更带来的测试用例失效
+- 前端灰度方案
+- 如何排查内存泄漏
+- Jest/jasmine puppeteer/nightmare
+## 其他
+
+- 期望：偏技术或偏管理
+- 觉得一个前端专家应具备的技能和素质：综合、系统能力，需要理解- 系统和框架的原理，对前端前沿技术有所关注。
+- 前沿技术的了解
+- 对前端未来走向的判断
+- 对领域设计的理解
+- 
 
 -  **6, 11, 12, 23**
 
@@ -15,7 +74,6 @@ tags: interview career
 |   2    | [BAT及各大互联网公司2014前端笔试面试题--JavaScript篇](http://www.cnblogs.com/coco1s/p/4029708.html) |
 |   3    | [javascript面试题](http://www.voidcn.com/blog/u014787301/article/p-6166599.html) |
 |   4    | [javascript puzzlers](http://javascript-puzzlers.herokuapp.com/) |
-|   5    | [9个JQuery和5个JavaScript经典面试题](http://www.voidcn.com/blog/u010227447/article/p-3561418.html) |
 |   6    | [前端开发面试题](https://github.com/markyun/My-blog/tree/master/Front-end-Developer-Questions/Questions-and-Answers) |
 |   7    | [如何面试前端工程师：GitHub 很重要](https://segmentfault.com/a/1190000000375138) |
 |   8    | [44 个 JavaScript 变态题解析](http://www.codeceo.com/article/44-javascript-crazy-question.html) |
@@ -53,64 +111,7 @@ tags: interview career
 |   41   | 阅[前端开发面试问题及答案整理](https://github.com/BearD01001/front-end-QA-to-interview#%E8%AF%B4%E8%AF%B4%E4%BD%A0%E5%AF%B9%E9%97%AD%E5%8C%85%E7%9A%84%E7%90%86%E8%A7%A3) |
 |   42   | [前端面试问题](https://www.jianshu.com/p/9a7d604f69a7) |
 |   43   | [前端经典面试题集合](https://github.com/976500133/FETopic)
-<!--more-->
 
-# 面试题目录[calabash519/interview-q-collection](https://github.com/calabash519/interview-questions)
-
-# 时允-前端面试[提纲](https://segmentfault.com/a/1190000010969779)
-
-## 前端基础
-- JS 原型链机制的理解
-- 设计模式：了解基本的前端设计模式，单例、适配器、工厂、观察者。
-- 跨域的方式、同源策略、为什么有同源策略、如何做安全防范：新的- H5的跨域方式（cors、postmessage）。
-- 安全，对攻击方式、安全的防范上的了解 。
-- http、TCP 协议的知识，如：什么是无状态，http 状态码的分类。
-- 知晓 CSS 布局原理，什么是BFC，如何实现垂直居中，绝对定位相对位置。
-- 如何做自适应布局，怎么计算 REM
-- websocket, WebRTC, EventSource 的区别
-
-## 框架、组件化
-
-- 架构分层
-- 模块解耦：理解接口、事件通讯的两种方式。
-- 组件化趋势： shadow dom，react和vue 。
-- Virtual DOM 的优势以及缺陷
-- 实践中如何解耦 UI 状态和领域状态
-- 目录结构如何规划
-
-## 前端构建方案
-
-- 工程化的理解以及解决的问题如 gulp。
-- gulp与其他构建工具的对比。
-- 如何拆分 SPA 中的大型代码
-- 如何做异步加载
-- 有没有写过 webpack loader, 以及这个 loader 是为了解决什么问题
-
-## 性能优化
-
-- webview的优化：对静态资源缓存到native的原理和流程 ，- webview缓存、版本号管理、线下调试。
-- 如何加快首屏加载速度，Server Render 的实践。
-- 网页渲染性能优化，layout, paint, compose 三步骤的理解。
-- css 动画、SVG、canvas 的运用
-- 针对前端框架的性能优化，如 showComponentUpdate 的使用
-- 如何带领团队优化：制定量化指标，寻找性能瓶颈，集中优化。
-
-## 质量保障
-
-- eslint、tslint 如何跟开发流程集成
-- 单元测试覆盖率
-- 如何面对需求变更带来的测试用例失效
-- 前端灰度方案
-- 如何排查内存泄漏
-
-## 其他
-
-- 期望：偏技术或偏管理
-- 觉得一个前端专家应具备的技能和素质：综合、系统能力，需要理解- 系统和框架的原理，对前端前沿技术有所关注。
-- 前沿技术的了解
-- 对前端未来走向的判断
-- 对领域设计的理解
-- 
 
 # 笔记
 > 链接: [http](#http/https/websocket) , [js](#js), [css](#css), [框架](#框架) , [性能优化](#性能优化)  
