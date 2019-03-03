@@ -28,6 +28,7 @@ function webpack(options, callback) {
 	return compiler;
 }
 ```
+<!--more-->
 
 ### 日志屏蔽copy-webpack-plugin
 

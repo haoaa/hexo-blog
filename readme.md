@@ -19,11 +19,11 @@ $ hexo new something-about-sass
 
 - commit source and deploy
  ```sh
- npm run pd  "your commit comments goes here"
+ yarn pd  "your commit comments goes here"
  ```
-- local serve 
+- local serve
  ```sh
- npm run x 
+ yarn s
  ```
  
 ### update theme
@@ -32,6 +32,9 @@ git remote add next https://github.com/iissnan/hexo-theme-next.git
 git subtree add --prefix themes/next next master
 git subtree pull --prefix themes/next next master
 ```
+
+### cust theme
+- 修改模板文件 `themes\next\layout\_partials\header.swig`
 
 ### read more tag
 ```html
