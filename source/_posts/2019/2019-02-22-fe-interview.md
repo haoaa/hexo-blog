@@ -11,11 +11,16 @@ tags: interview career
 ## 前端基础
 - JS 原型链机制的理解
 - [作用域和闭包](https://juejin.im/post/58500a02128fe10069319d83#heading-1)
+  - 每个函数都有自己的作用域(函数作用域, let引入块作用域), 作用域可以层层嵌套, 子作用域变量覆盖父级作用域
+  - 声明提前: js函数里所有变量声明(var)都被提前至函数体顶部.
+  - es6: temporal dead zone, let代码段(if/for/switch)变量声明前引用会报ReferenceError
+  - [JS专题之严格模式](https://juejin.im/post/5c5d0b495188256282695206#heading-7)
 - 设计模式：了解基本的前端设计模式，单例、适配器、工厂、观察者、迭代器、发布/订阅。
   + [es6实现工厂/单例模式](https://www.jianshu.com/p/11918dd0f694)
 - 跨域的方式、同源策略、为什么有同源策略、如何做安全防范：新的- H5的跨域方式（cors、postmessage）。
 - 安全，对攻击方式、安全的防范上的了解 。
 - http、TCP 协议的知识，如：什么是无状态，http 状态码的分类。
+  + CDN的域名不要和主站的域名一样，这样会防止访问CDN时还携带主站cookie的问题。
 - 知晓 CSS 布局原理，什么是BFC，如何实现垂直居中，绝对定位相对位置。
 - 如何做自适应布局，怎么计算 REM
 - websocket, WebRTC, EventSource 的区别
@@ -46,8 +51,9 @@ tags: interview career
 - 针对前端框架的性能优化，如 showComponentUpdate 的使用
 - 如何带领团队优化：制定量化指标，寻找性能瓶颈，集中优化。
 - 浏览器资源加载, 解析, 渲染. 
-- 事件循环, 异步promise理解
-
+- [事件循环, 异步promise理解](/2019/03/03/2019-2019-03-03-事件循环)
+- 案例:
+  1. [Vue 应用性能优化指南](https://juejin.im/post/5b960fcae51d450e9d645c5f)
 <!--more-->
 ## 质量保障
 
@@ -66,6 +72,15 @@ tags: interview career
 - 对领域设计的理解
 - 
 
+## low-level knowledge 
+- [前端面试之路一(HTML+CSS面试整理)](https://juejin.im/post/5c0115e2e51d4539a175a15c)
+- [前端面试之路二(javaScript基础整理)](https://juejin.im/post/5c62b92de51d457fd77b22ce)
+- [前端面试之路三(javaScript高级篇)](https://juejin.im/post/5c1cd35c6fb9a049aa6f0f69#heading-26)
+- [前端面试之路四(web性能优化篇)](https://juejin.im/post/5c011e0c5188252ea66afdfa)
+- [前端面试之路五(网络HTTP篇)](https://juejin.im/post/5c226efe51882514440e4c46)
+- [前端面试之路六(Javascript设计模式篇)](https://juejin.im/post/5c1d1f04e51d4544d544b600)
+
+---
 -  **6, 11, 12, 23**
 
 | Number |                 Content                | 

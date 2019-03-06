@@ -7,6 +7,11 @@ tags: webpack
 
 ## webpack优化
 
+### webpack构建流程
+- 初始化：启动构建，读取与合并配置参数，加载 Plugin，实例化 Compiler。
+- 编译：从 Entry 发出，针对每个 Module 串行调用对应的 Loader 去翻译文件内容，再找到该 Module 依赖的 Module，递归地进行编译处理。
+- 输出：对编译后的 Module 组合成 Chunk，把 Chunk 转换成文件，输出到本地。
+
 ### compiler初始化和注册插件
 ```js
 // `lib/webpack(options, (err, stats) => {})` 在node后面执行, 没有cb就只是创建compiler.  有cb就会顺带执行compiler.run
@@ -19,13 +24,13 @@ function webpack(options, callback) {
   if(options.plugins && Array.isArray(options.plugins)) {
     compiler.apply.apply(compiler, options.plugins);
   }
-	if(callback) {
-		if(options.watch === true) {
-			return compiler.watch(watchOptions, callback);
-		}
-		compiler.run(callback);
-	}
-	return compiler;
+  if(callback) {
+    if(options.watch === true) {
+      return compiler.watch(watchOptions, callback);
+    }
+    compiler.run(callback);
+  }
+  return compiler;
 }
 ```
 <!--more-->
@@ -82,3 +87,6 @@ const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const smp = new SpeedMeasurePlugin();
 const webpackConfig = smp.wrap(webpackConfig);
 ```
+
+### 参考
+[webpack源码之运行流程](https://segmentfault.com/a/1190000014221014)
