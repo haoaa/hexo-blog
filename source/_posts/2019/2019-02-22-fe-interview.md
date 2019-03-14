@@ -5,19 +5,47 @@ categories: frontend interview
 tags: interview career
 ---
 
-[笔记link](#笔记)
+[笔记年羹](#笔记)
 
 
 ## 前端基础
 - JS 原型链机制的理解
-- [作用域和闭包](https://juejin.im/post/58500a02128fe10069319d83#heading-1)
+- [作用域和this](https://juejin.im/post/58500a02128fe10069319d83#heading-1)
+  - 代码在一个环境中执行时，会创建变量对象的一个作用域链
   - 每个函数都有自己的作用域(函数作用域, let引入块作用域), 作用域可以层层嵌套, 子作用域变量覆盖父级作用域
   - 声明提前: js函数里所有变量声明(var)都被提前至函数体顶部.
   - es6: temporal dead zone, let代码段(if/for/switch)变量声明前引用会报ReferenceError
   - [JS专题之严格模式](https://juejin.im/post/5c5d0b495188256282695206#heading-7)
+  - this四种绑定
+    - 默认绑定全局window
+    - 隐式绑定,最近的一个调用该函数的上下文对象(context object)
+      + 在函数上下文中，也就是在任何函数体内部，this 指代调用函数的那个对象。严格模式下,this禁止指向window
+    - 显式绑定(call/apply/bind), bind在定义函数时候就绑定this，call和apply在调用函数时候才绑定this
+      + [call、apply和bind的实现](https://github.com/Abiel1024/blog/issues/16)
+    - new绑定
+      + 一个全新的对象会凭空创建（就是被构建）
+      + 这个新构建的对象会被接入原形链（[[Prototype]]-linked）
+      + 这个新构建的对象被设置为函数调用的this绑定
+      + 除非函数返回一个它自己的其他 对象，这个被new调用的函数将 自动返回这个新构建的对象
+- 闭包: 只有函数内部的子函数才能读取函数的局部变量. 闭包内的变量因为引用计数, 不会在函数调用完后清除.
+  - 闭包做对象缓存, 模块化代码. 闭包会使得函数中的变量都被保存在内存中.滥用导致内测泄露.
+  - 调用 f.bind(someObject) 会创建一个与 f 具有相同函数体和作用域的函数，但是在这个新函数中，this 将永久地被绑定到了 bind 的第一个参数，无论这个函数是如何被
+- 对象: 
+  + 基础类型`string,number,boolean,null,undefined,object`, build-in对象类型`String,Number,Boolean,Object,Function,Array,Date,RegExp,Error`
+  + defineProperties: 
+    - [[Configurable]]：表示能否通过delete删除属性从而重新定义属性，能否修改属性的特性，或者能否把属性修改为数据属性。默认值为true。
+    - [[Enumerable]]：表示能否通过for…in…循环遍历到该属性，默认值为true。
+    - 访问器属性 [[Get]]：在读取属性时调用的函数。默认值为undefined。
+    - 访问器属性 [[Set]]：在写入属性时调用的函数。默认值为undefined。
+    - 数据属性 [[Writable]]：表示能否修改属性的值，默认为true。
+    - 数据属性 [[Value]]：该属性的数值。
+  + `...`,`assign`都是浅拷贝
+
 - 设计模式：了解基本的前端设计模式，单例、适配器、工厂、观察者、迭代器、发布/订阅。
   + [es6实现工厂/单例模式](https://www.jianshu.com/p/11918dd0f694)
-- 跨域的方式、同源策略、为什么有同源策略、如何做安全防范：新的- H5的跨域方式（cors、postmessage）。
+
+- 跨域的方式、同源策
+略、为什么有同源策略、如何做安全防范：新=的- H5的跨域方式（cors、postmessage）。
 - 安全，对攻击方式、安全的防范上的了解 。
 - http、TCP 协议的知识，如：什么是无状态，http 状态码的分类。
   + CDN的域名不要和主站的域名一样，这样会防止访问CDN时还携带主站cookie的问题。
@@ -37,10 +65,9 @@ tags: interview career
 ## 前端构建方案
 
 - 工程化的理解以及解决的问题如 gulp。
-- gulp与其他构建工具的对比。
 - 如何拆分 SPA 中的大型代码
-- 如何做异步加载
-- 有没有写过 webpack loader, 以及这个 loader 是为了解决什么问题
+- 有没有写过 webpack loader/ plugin, 以及这个 loader 是为了解决什么问题
+- 做过什么打包优化, 分离全家桶, 脚本构建npm/yarn
 
 ## 性能优化
 
@@ -72,7 +99,9 @@ tags: interview career
 - 对领域设计的理解
 - 
 
-## low-level knowledge 
+## 基础
+- [JavaScript开发者应懂的33个概念 
+](https://github.com/stephentian/33-js-concepts#%E7%9B%AE%E5%BD%95)
 - [前端面试之路一(HTML+CSS面试整理)](https://juejin.im/post/5c0115e2e51d4539a175a15c)
 - [前端面试之路二(javaScript基础整理)](https://juejin.im/post/5c62b92de51d457fd77b22ce)
 - [前端面试之路三(javaScript高级篇)](https://juejin.im/post/5c1cd35c6fb9a049aa6f0f69#heading-26)

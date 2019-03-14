@@ -1,5 +1,5 @@
 <div class="site-brand-wrapper">
-  <audio src="\assets\2019\jump.mp3"></audio>
+  <audio src="\assets\2019\Indian_Summer.mp3"></audio>
   <div class="site-meta {% if theme.custom_logo.enabled %}custom-logo{% endif %}">
     {% if theme.custom_logo.image and theme.scheme === 'Muse' %}
       <div class="site-meta-headline">
