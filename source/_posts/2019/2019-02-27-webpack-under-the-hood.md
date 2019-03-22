@@ -247,3 +247,4 @@ const webpackConfig = smp.wrap(webpackConfig);
 [Writing a Plugin](https://webpack.js.org/contribute/writing-a-plugin/#creating-a-plugin)
 [三十分钟掌握Webpack性能优化](https://juejin.im/post/5b652b036fb9a04fa01d616b)
 [理解webpack4.splitChunks之其余要点](https://www.cnblogs.com/kwzm/p/10333554.html)
+[浅析webpack源码系列](https://www.cnblogs.com/QH-Jimmy/default.html?page=7)

@@ -59,6 +59,10 @@ tags: interview career
 - 模块解耦：理解接口、事件通讯的两种方式。
 - 组件化趋势： shadow dom，react和vue 。
 - Virtual DOM 的优势以及缺陷
+  - 减少dom的增删开支, 增加js计算消耗. 
+  - 未命中sameNode, 还是一样的dom增删消耗, 同级修改, 添加key.
+  - dom结构越庞大, 优化的效果越明显.
+  - snabbdom的怕patch算法和vue的一致.
 - 实践中如何解耦 UI 状态和领域状态
 - 目录结构如何规划
 
@@ -68,7 +72,8 @@ tags: interview career
 - 如何拆分 SPA 中的大型代码
 - 有没有写过 webpack loader/ plugin, 以及这个 loader 是为了解决什么问题
 - 做过什么打包优化, 分离全家桶, 脚本构建npm/yarn
-
+- ts项目搭建
+- 
 ## 性能优化
 
 - webview的优化：对静态资源缓存到native的原理和流程 ，- webview缓存、版本号管理、线下调试。
@@ -99,7 +104,11 @@ tags: interview career
 - 对领域设计的理解
 - 
 
+## 遇到过的问题
+- v-for在checker上引起的不更新
+
 ## 基础
+- [技术面试必备基础知识](https://github.com/CyC2018/CS-Notes)
 - [JavaScript开发者应懂的33个概念 
 ](https://github.com/stephentian/33-js-concepts#%E7%9B%AE%E5%BD%95)
 - [前端面试之路一(HTML+CSS面试整理)](https://juejin.im/post/5c0115e2e51d4539a175a15c)
