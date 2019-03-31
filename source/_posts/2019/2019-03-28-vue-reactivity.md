@@ -617,8 +617,27 @@ function nextTick (cb, ctx) {
 ```js
 function set (target, key, val) {
   var ob = (target).__ob__;
-  defineReactive$$1(ob.value, key, val);
+  defineReactive(ob.value, key, val);
   ob.dep.notify();
   return val
 }
+
+
+  var childOb = !shallow && observe(val); // 子属性依赖创建observer
+  Object.defineProperty(obj, key, {
+    enumerable: true,
+    configurable: true,
+    get: function reactiveGetter () {
+      var value = getter ? getter.call(obj) : val;
+      if (Dep.target) {
+        dep.depend();
+        if (childOb) {
+          childOb.dep.depend(); // 收集子属性依赖
+          if (Array.isArray(value)) {
+            dependArray(value);
+          }
+        }
+      }
+      return value
+    },
 ```
