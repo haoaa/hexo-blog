@@ -8,6 +8,7 @@ tags: vue源码 响应式
 ### anchors
 - [定义响应式]
   + [定义响应式流程](#定义响应式流程)
+  + [user-watcher响应式流程](#user-watcher响应式流程)
 - [依赖收集](#依赖收集)
 - [派发更新](#派发更新)
 - [其他watcher](#其他watcher)
@@ -15,7 +16,9 @@ tags: vue源码 响应式
 
 ### 题外
 - watcher定义后会立即执行一次getter(不是cb) `this.value = this.lazy ? undefined : this.get();`
-
+- Observe里面有dep, defineReactivity里也有dep.
+- defineReactive为在模型上的每个属性, 创建dep. 谁get那个属性就把target watcher添加到dep.subs里去. 
+- render watcher执行一次get后, 让不再引用的的属性的dep取消订阅自己.
 ### 定义响应式
 #### 定义响应式流程
 - 遍历属性对象, 通过getter定义代理到vm上
@@ -192,6 +195,66 @@ function proxy (target, sourceKey, key) {
 }
 ```
 
+#### user-watcher响应式流程
+- user定义的watch在initState时通过$watch创建并放入`vm._watchers`,  renderWatcher在`vm.$mount`创建, watcher创建晚于defineReactivity这样, 在get属性的时候就能访问属性的getters收集依赖
+```js
+function initState (vm) {
+  // props data computed reactivity
+  if (opts.watch && opts.watch !== nativeWatch) {
+    initWatch(vm, opts.watch); // => createWatcher(vm, key, handler); => vm.$watch(expOrFn, handler, options) => var watcher = new Watcher(vm, expOrFn, cb, options);
+  }
+}
+```
+- user watcher在创建后访问getter, 此时Dep.target是user watcher, expOrFun
+```js
+get: function reactiveGetter () {
+  var value = getter ? getter.call(obj) : val;
+  if (Dep.target) {
+    dep.depend();
+    if (childOb) {
+      childOb.dep.depend();
+      if (Array.isArray(value)) {
+        dependArray(value);
+      }
+    }
+  }
+  return value
+}
+
+Dep.prototype.depend = function depend () {
+  if (Dep.target) {
+    Dep.target.addDep(this);
+  }
+};
+
+Watcher.prototype.addDep = function addDep (dep) {
+  var id = dep.id;
+  if (!this.newDepIds.has(id)) {
+    this.newDepIds.add(id);
+    this.newDeps.push(dep);
+    if (!this.depIds.has(id)) {
+      dep.addSub(this);
+    }
+  }
+};
+// depend过后, user watcher会有如下数据, 的确是循环引用
+Dep.target.deps = [
+  dep : {
+    sub : `user watcher`
+  },
+  dep : { // "defineReactive person.name dep"
+    sub : `user watcher`
+  },
+  dep : { // "defineReactive person dep"
+    sub : `user watcher`
+  },
+  dep : { // "person.data observer dep"
+    sub : `user watcher`
+  }
+]
+```
+
+
 ### 依赖收集
 
 ```js
@@ -239,4 +302,55 @@ function pushTarget (_target) {
 function popTarget () {
   Dep.target = targetStack.pop();
 }
+
+
+```
+
+- Watcher的get 收集依赖后, 取消视图上不再依赖的dep.subs注册.
+
+```js
+
+Watcher.prototype.get = function get () {
+  pushTarget(this);
+  var value;
+  var vm = this.vm;
+  try {
+    value = this.getter.call(vm, vm);
+  } catch (e) {
+    if (this.user) {
+      handleError(e, vm, ("getter for watcher \"" + (this.expression) + "\""));
+    } else {
+      throw e
+    }
+  } finally {
+    // "touch" every property so they are all tracked as
+    // dependencies for deep watching
+    if (this.deep) {
+      traverse(value);
+    }
+    popTarget();
+    this.cleanupDeps();
+  }
+  return value
+};
+
+Watcher.prototype.cleanupDeps = function cleanupDeps () {
+    var this$1 = this;
+
+  var i = this.deps.length;
+  while (i--) {
+    var dep = this$1.deps[i];
+    if (!this$1.newDepIds.has(dep.id)) {
+      dep.removeSub(this$1);
+    }
+  }
+  var tmp = this.depIds;
+  this.depIds = this.newDepIds;
+  this.newDepIds = tmp;
+  this.newDepIds.clear();
+  tmp = this.deps;
+  this.deps = this.newDeps;
+  this.newDeps = tmp;
+  this.newDeps.length = 0;
+};
 ```
