@@ -613,6 +613,8 @@ function nextTick (cb, ctx) {
 ```
 
 ### 手动设置响应式和数组响应式
+- `{} []`上都会创建observer, object会对每个key
+- setter里让watcher 添加到dep的subs里.
 - observer里dep的作用, 为了set触发渲染watcher的重新渲染。
 ```js
 function set (target, key, val) {
@@ -640,4 +642,53 @@ function set (target, key, val) {
       }
       return value
     },
+    
+```
+
+- 数组响应式方法
+
+```js
+
+var arrayProto = Array.prototype;
+var arrayMethods = Object.create(arrayProto);
+
+
+var methodsToPatch = [
+  'push',
+  'pop',
+  'shift',
+  'unshift',
+  'splice',
+  'sort',
+  'reverse'
+];
+
+/**
+ * Intercept mutating methods and emit events
+ */
+methodsToPatch.forEach(function (method) {
+  // cache original method
+  var original = arrayProto[method];
+  def(arrayMethods, method, function mutator () {
+    var args = [], len = arguments.length;
+    while ( len-- ) args[ len ] = arguments[ len ];
+
+    var result = original.apply(this, args);
+    var ob = this.__ob__;
+    var inserted;
+    switch (method) {
+      case 'push':
+      case 'unshift':
+        inserted = args;
+        break
+      case 'splice':
+        inserted = args.slice(2);
+        break
+    }
+    if (inserted) { ob.observeArray(inserted); }
+    // notify change
+    ob.dep.notify();
+    return result
+  });
+})
 ```
