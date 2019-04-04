@@ -32,6 +32,7 @@ tags: vue计算属性
   - watcher在内部依赖的属性更新时触发, watcher在调用get后会触发`render watcher`的的get执行.
 - `v2.5.17`中的值不变不重新渲染,也只是昙花一现
 
+<!--more-->
 ```js
 var computedWatcherOptions = { lazy: true };
 

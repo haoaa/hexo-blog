@@ -28,7 +28,7 @@ tags: vue源码 响应式
 - 关系为data有dep, dep里有watcher, watcher里有dep.循环依赖?
 - defineReactive内部又new dep去notify和depend, 那observer里的dep有什么用?
   - `childOb.dep.depend();`
-
+<!--more-->
 ```js
 initState(vm);
 
