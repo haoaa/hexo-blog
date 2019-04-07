@@ -435,4 +435,5 @@ if (isUndef(vnode.text)) {
 - 执行postpatch钩子函数
 
 - updateChildren
+  - dom能移动就不增删
   - [查看diff算法](https://segmentfault.com/a/1190000008782928)
