@@ -192,7 +192,7 @@ function parse ( template, options ): ASTElement | void {
 ```
 
 #### parseHTML
-- 从头到尾按正则匹配出开始,结束标签, 文本注释等
+- 从头到尾按正则匹配出开始,结束标签, 文本注释等 
 - ast node type: 1:元素节点 2:expression text node 3:plain text node
 - parse->stack用ast node层级关系缓存, parseHTML->stack用ast node层级关系缓存
   + 一个读数标签属性, 一个构建ast. 都是类似层级结构
