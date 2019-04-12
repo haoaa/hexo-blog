@@ -187,6 +187,8 @@ function parse ( template, options ): ASTElement | void {
   })
   return astRootElement
 }
+
+<img src="/assets/2019/vue-template-parse.png" />
 ```
 
 #### parseHTML
