@@ -8,7 +8,12 @@ tags: vue模板编译
 ### anchors
 - [入口](#入口)
 - [parse](#parse)
-  - 
+  - [parse流程](#parse流程)
+  - [parseHTML](#parseHTML)
+    + [startElement](#startElement)
+    + [endElement](#endElement)
+    + [text](#text)
+  - [conerCases](#conerCases)
 - [optimize](#optimize)
   - 
 - [codegen](#codegen)
@@ -33,7 +38,7 @@ var ref = compileToFunctions(template, {
       }, this);
 var render = ref.render;
 ```
-
+<!--more-->
 ```js
 var createCompiler = createCompilerCreator(function baseCompile (
   template,
@@ -120,42 +125,516 @@ function createCompileToFunctionFn (compile) {
 ### parse
 
 #### parse流程
-- 通过正则表达式读取标签,属性, 文本等信息
+- 通过正则表达式读取标签,属性, 文本注释等信息
 - 开始/结束标签通过栈配对.
 
 ```js
-export function parse (
-  template: string,
-  options: CompilerOptions
-): ASTElement | void {
-  getFnsAndConfigFromOptions(options)
+function parse ( template, options ): ASTElement | void {
+  // 选项处理
+  warn$2 = options.warn || baseWarn;
+  platformIsPreTag = options.isPreTag || no;
+  platformMustUseProp = options.mustUseProp || no;
+  platformGetTagNamespace = options.getTagNamespace || no;
 
+  transforms = pluckModuleFunction(options.modules, 'transformNode');
+  preTransforms = pluckModuleFunction(options.modules, 'preTransformNode');
+  postTransforms = pluckModuleFunction(options.modules, 'postTransformNode');
+
+  delimiters = options.delimiters;
+  var stack = []; // 保存节点层级关系
+  var currentParent; // 父子关联
   parseHTML(template, {
-    // options ...
+    warn: warn$2,
+    expectHTML: options.expectHTML,
+    isUnaryTag: options.isUnaryTag,
+    canBeLeftOpenTag: options.canBeLeftOpenTag,
+    shouldDecodeNewlines: options.shouldDecodeNewlines,
+    shouldDecodeNewlinesForHref: options.shouldDecodeNewlinesForHref,
+    shouldKeepComment: options.comments,
+    // 对应字符处理的方法从option传入
     start (tag, attrs, unary) {
-      let element = createASTElement(tag, attrs)
-      processElement(element)
-      treeManagement()
+      let element = createASTElement(tag, attrs, currentParent)
+      // 处理 for/if等指令逻辑
+      if (!element.processed) {
+        // structural directives
+        processFor(element);
+        processIf(element);
+        processOnce(element);
+        // element-scope stuff
+        processElement(element, options);
+      }
+      // 处理父子关联 element.parent = currentParent; 
     },
 
     end () {
-      treeManagement()
+      var element = stack[stack.length - 1];
+      // pop stack
+      stack.length -= 1;
+      currentParent = stack[stack.length - 1];
       closeElement()
     },
 
     chars (text: string) {
-      handleText()
-      createChildrenASTOfText()
+      // 添加文本ast 节点
     },
     comment (text: string) {
-      createChildrenASTOfComment()
+      currentParent.children.push({
+        type: 3,
+        text: text,
+        isComment: true
+      });
     }
   })
   return astRootElement
 }
 ```
 
-#### ast创建流程
+#### parseHTML
+- 从头到尾按正则匹配出开始,结束标签, 文本注释等
+- ast node type: 1:元素节点 2:expression text node 3:plain text node
+- parse->stack用ast node层级关系缓存, parseHTML->stack用ast node层级关系缓存
+  + 一个读数标签属性, 一个构建ast. 都是类似层级结构
+  + handleStartTag `stack.push({ tag: tagName, lowerCasedTag: tagName.toLowerCase(), attrs: attrs });`
+  + start `stack.push(element);`
+  
+```js
+var attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/; // 属性xx=yy
+var ncname = '[a-zA-Z_][\\w\\-\\.]*';
+var qnameCapture = "((?:" + ncname + "\\:)?" + ncname + ")";
+var startTagOpen = new RegExp(("^<" + qnameCapture));
+var startTagClose = /^\s*(\/?)>/;
+var endTag = new RegExp(("^<\\/" + qnameCapture + "[^>]*>"));
+var doctype = /^<!DOCTYPE [^>]+>/i;
+var comment = /^<!\--/;
+var conditionalComment = /^<!\[/;
+```  
+```js
+export function parseHTML (html, options) {
+  var stack = [];
+  let lastTag
+  while (html) {
+    if (!lastTag || !isPlainTextElement(lastTag)){
+      let textEnd = html.indexOf('<')
+      if (textEnd === 0) {
+         if(matchComment) { // 匹配到各类型的节点进行相应的处理
+           advance(commentLength) 
+           continue
+         }
+         if(matchDoctype) {
+           advance(doctypeLength)
+           continue
+         }
+         if(matchEndTag) {
+           advance(endTagLength)
+           parseEndTag()
+           continue
+         }
+         parseStartTag()
+         if(matchStartTag) {
+           handleStartTag()
+           continue
+         }
+      }
+      handleText()
+      advance(textLength)
+    } else {
+       handlePlainTextElement()
+       parseEndTag()
+    }
+  }
+  // Clean up any remaining tags
+  parseEndTag();
+}
+```
+##### startElement
+- `parseStartTag`通过正则获取属性,标签等信息, 开始标签的结尾index.
+- `handleStartTag`处理自闭合标签, attrs转为`{name, value}`格式, 记录lastTag, 调用`options.start`
+- `options.start`创建ast节点, 往ast上添加所有属性的, 处理层级关系
+  + preTransforms处理`src/platforms/web/compiler/modules`里module的`preTransforms`、` transforms`处理在`processElement`里
+  + 处理for,if,once指令
+  + 处理层级关系
+    ```js
+      currentParent = element
+      stack.push(element)
+      currentParent = element
+      stack.push(element)
+    ```
+```js
+// Start tag:
+var startTagMatch = parseStartTag();
+if (startTagMatch) {
+  handleStartTag(startTagMatch);
+  continue
+}
+
+function parseStartTag () {
+    var start = html.match(startTagOpen);
+    if (start) {
+      var match = {
+        tagName: start[1],
+        attrs: [],
+        start: index
+      };
+      advance(start[0].length);
+      var end, attr;
+      while (!(end = html.match(startTagClose)) && (attr = html.match(attribute))) {
+        advance(attr[0].length);
+        match.attrs.push(attr);
+      }
+      if (end) {
+        match.unarySlash = end[1];
+        advance(end[0].length);
+        match.end = index;
+        return match
+      }
+    }
+  }
+
+  function handleStartTag (match) {
+    var tagName = match.tagName;
+    var unarySlash = match.unarySlash;
+
+    var unary = isUnaryTag$$1(tagName) || !!unarySlash;
+
+    var l = match.attrs.length;
+    var attrs = new Array(l);
+    for (var i = 0; i < l; i++) {
+      var args = match.attrs[i];
+      var value = args[3] || args[4] || args[5] || '';
+      attrs[i] = {
+        name: args[1],
+        value: value
+      };
+    }
+    if (!unary) {
+      // parseHTML的stack
+      stack.push({ tag: tagName, lowerCasedTag: tagName.toLowerCase(), attrs: attrs });
+      lastTag = tagName;
+    }
+
+    if (options.start) {
+      options.start(tagName, attrs, unary, match.start, match.end);
+    }
+  }
+
+```
+```js
+function start (tag, attrs, unary) {
+  var element = createASTElement(tag, attrs, currentParent);
+
+  // apply pre-transforms
+  for (var i = 0; i < preTransforms.length; i++) {
+    element = preTransforms[i](element, options) || element;
+  }
+
+  if (!element.processed) {
+    // structural directives
+    processFor(element);
+    processIf(element);
+    processOnce(element);
+    // element-scope stuff
+    processElement(element, options);
+  }
+
+  // tree management
+}
+
+```
+```js
+// v-if处理
+function processIf (el) {
+  var exp = getAndRemoveAttr(el, 'v-if'); // 留attrsMap的映射关系
+  if (exp) {
+    el.if = exp;
+    addIfCondition(el, {
+      exp: exp,
+      block: el
+    });
+  } else {
+    if (getAndRemoveAttr(el, 'v-else') != null) {
+      el.else = true;
+    }
+    var elseif = getAndRemoveAttr(el, 'v-else-if');
+    if (elseif) {
+      el.elseif = elseif;
+    }
+  }
+}
+
+function addIfCondition (el, condition) {
+  if (!el.ifConditions) {
+    el.ifConditions = [];
+  }
+  el.ifConditions.push(condition);
+}
+
+// 其他属性的处理
+function processElement (element, options) {
+  processKey(element);
+
+  // determine whether this is a plain element after
+  // removing structural attributes
+  element.plain = !element.key && !element.attrsList.length;
+
+  processRef(element);
+  processSlot(element);
+  processComponent(element);
+  for (var i = 0; i < transforms.length; i++) {
+    element = transforms[i](element, options) || element; // static class/style处理
+  }
+  processAttrs(element); // 剩余属性处理(modifier等)
+}
+```
+```js
+// tree management
+if (!root) {
+  root = element;
+} else if (!stack.length) {
+  // allow root elements with v-if, v-else-if and v-else
+}
+if (currentParent && !element.forbidden) {
+  if (element.elseif || element.else) {
+  } else if (element.slotScope) { // scoped slot
+  } else {
+    currentParent.children.push(element);
+    element.parent = currentParent;
+  }
+}
+if (!unary) {
+  currentParent = element;
+  stack.push(element);
+} else {
+  closeElement(element);
+}
+```
+
+##### endElement
+- 通过stack找到闭合标签对应的开始标签的ast节点, 调用`options.end`
+```js
+// 匹配后调用parseEndTag处理
+const endTagMatch = html.match(endTag)
+if (endTagMatch) {
+  const curIndex = index
+  advance(endTagMatch[0].length)
+  parseEndTag(endTagMatch[1], curIndex, index)
+  continue
+}
+
+
+function parseEndTag (tagName, start, end) {
+  let pos, lowerCasedTagName
+  if (start == null) start = index
+  if (end == null) end = index
+  // 找到最近的开始标签
+  if (tagName) {
+    for (pos = stack.length - 1; pos >= 0; pos--) {
+      if (stack[pos].lowerCasedTag === lowerCasedTagName) {
+        break
+      }
+    }
+  } else {
+    pos = 0
+  }
+  
+  if (pos >= 0) {
+    for (let i = stack.length - 1; i >= pos; i--) {
+      if (options.end) {
+        options.end(stack[i].tag, start, end)
+      }
+    }
+    stack.length = pos
+    lastTag = pos && stack[pos - 1].tag
+  } 
+  // br p标签处理
+}
+```
+
+```js
+function end () {
+  // remove trailing whitespace
+  var element = stack[stack.length - 1];
+  var lastNode = element.children[element.children.length - 1];
+  if (lastNode && lastNode.type === 3 && lastNode.text === ' ' && !inPre) {
+    element.children.pop();
+  }
+  // pop stack
+  stack.length -= 1;
+  currentParent = stack[stack.length - 1];
+  closeElement(element); //没干啥
+}
+```
+
+##### text
+- 截取文本, 创建(表达式/普通)文本节点
+
+```js
+let text, rest, next
+if (textEnd >= 0) {
+  rest = html.slice(textEnd)
+  while (
+    !endTag.test(rest) && // 剩下的字符有没有结束标签, 不是注释, 就追加文本到text
+    !startTagOpen.test(rest) &&
+    !comment.test(rest) &&
+    !conditionalComment.test(rest)
+  ) {
+    next = rest.indexOf('<', 1)
+    if (next < 0) break
+    textEnd += next
+    rest = html.slice(textEnd)
+  }
+  text = html.substring(0, textEnd)
+  advance(textEnd)
+}
+
+if (textEnd < 0) {  //template 解析完毕
+  text = html
+  html = ''
+}
+
+if (options.chars && text) {
+  options.chars(text)
+}
+```
+
+```js
+function chars (text) {
+  if (!currentParent) {
+    // template不能是纯文本, 开头不能有文本
+    return
+  }  
+  var children = currentParent.children;
+  text = inPre || text.trim()
+    ? isTextTag(currentParent) ? text : decodeHTMLCached(text)
+    // only preserve whitespace if its not right after a starting tag
+    : preserveWhitespace && children.length ? ' ' : '';
+  if (text) {
+    var res;
+    if (!inVPre && text !== ' ' && (res = parseText(text, delimiters))) {
+      children.push({
+        type: 2,
+        expression: res.expression,
+        tokens: res.tokens,
+        text: text
+      });
+    } else if (text !== ' ' || !children.length || children[children.length - 1].text !== ' ') {
+      children.push({
+        type: 3,
+        text: text
+      });
+    }
+  }
+}
+
+// 处理expression text node, 分文本token和标签token, 返回拼接的vnode创建表达式和绑定标签
+function parseText (
+  text,
+  delimiters
+) {
+  var tagRE = delimiters ? buildRegex(delimiters) : defaultTagRE;
+  if (!tagRE.test(text)) {
+    return
+  }
+  var tokens = [];
+  var rawTokens = [];
+  var lastIndex = tagRE.lastIndex = 0;
+  var match, index, tokenValue;
+  while ((match = tagRE.exec(text))) {
+    index = match.index;
+    // push text token
+    if (index > lastIndex) {
+      rawTokens.push(tokenValue = text.slice(lastIndex, index));
+      tokens.push(JSON.stringify(tokenValue));
+    }
+    // tag token
+    var exp = parseFilters(match[1].trim());
+    tokens.push(("_s(" + exp + ")"));
+    rawTokens.push({ '@binding': exp });
+    lastIndex = index + match[0].length;
+  }
+  if (lastIndex < text.length) {
+    rawTokens.push(tokenValue = text.slice(lastIndex));
+    tokens.push(JSON.stringify(tokenValue));
+  }
+  return {
+    expression: tokens.join('+'), // '_s(item)+":"+_s(index)', _s创建文本vnode
+    tokens: rawTokens  // [{'@binding':'item'},':',{'@binding':'index'}]
+  }
+}
+
+```
+
+
+#### conerCases
+- [h5元素嵌套规则](http://www.5icool.org/a/201308/a2081.html)
+- 块级元素不能放在<p>里面, `<p><div></div></p>` => `<p></p><div></div><p></p>`
+  - lastTag是p, div不是phrasing tag, 就插入结束标签, 调用`parseEndTag(lastTag);`把p从stack移除
+```js
+ function handleStartTag (match) {
+    var tagName = match.tagName;
+    var unarySlash = match.unarySlash;
+
+    if (expectHTML) {
+      if (lastTag === 'p' && isNonPhrasingTag(tagName)) {
+        parseEndTag(lastTag);
+      }
+      if (canBeLeftOpenTag$$1(tagName) && lastTag === tagName) {
+        parseEndTag(tagName); // p里嵌套p也是一样的处理
+      }
+    }
+
+    var unary = isUnaryTag$$1(tagName) || !!unarySlash;
+
+    if (!unary) {
+      stack.push({ tag: tagName, lowerCasedTag: tagName.toLowerCase(), attrs: attrs });
+      lastTag = tagName;
+    }
+
+    if (options.start) {
+      options.start(tagName, attrs, unary, match.start, match.end);
+      //  if (!unary) {
+      //   currentParent = element;
+      //   stack.push(element);
+      // }
+    }
+  }
+```
+
+```js
+ function parseEndTag (tagName, start, end) {
+    var pos, lowerCasedTagName;
+
+    // Find the closest opened tag of the same type
+    if (tagName) {
+    } else {
+      // If no tag name is provided, clean shop
+      pos = 0;
+    }
+
+    if (pos >= 0) {
+      // Close all the open elements, up the stack
+      for (var i = stack.length - 1; i >= pos; i--) {
+        if (options.end) {
+          options.end(stack[i].tag, start, end); // <p> 闭合p开始标签
+        }
+      }
+
+      // Remove the open elements from the stack
+      stack.length = pos;
+      lastTag = pos && stack[pos - 1].tag;
+    } else if (lowerCasedTagName === 'br') {
+      if (options.start) {
+        options.start(tagName, [], true, start, end);
+      }
+    } else if (lowerCasedTagName === 'p') { // </p> 闭合p结束标签
+      if (options.start) {
+        options.start(tagName, [], false, start, end);
+      }
+      if (options.end) {
+        options.end(tagName, start, end);
+      }
+    }
+  }
+  ```
 
 ### optimize
 
