@@ -992,4 +992,28 @@ console.log(a);
 - 设计模式举例, es6语法(看深浅), 工作流程/协作, webpack/gulp插件,一些思想如 面向对象/spa/dom
 
 ## 参考
-- [webpack模块化原理-commonjs](https://segmentfault.com/a/1190000010349749)
+- [webpack模块化原理-commonjs](https://segmentfault.com/a/1190000010349749) 
+
+
+### 基础
+
+#### 类型检测
+1. instanceof 在原型链上查找prototype是否存在
+- The instanceof operator tests the presence of constructor.prototype in object's prototype chain.
+- 可以通过`Object.setPrototypeOf`, `__proto__`修改instanceof的测试结果
+2. typeof 检测基础类型
+- es6前不会报错, es6后会因为TDZ报referenceError
+3. Object.prototype.toString()
+- returns a string representing the object.
+- 自定义对象可以通过覆盖`Object.prototype.toString`修改返回结果
+- 通过call/apply次此方法可以判断对象类型
+
+### 模块化
+1. 只需为 script 元素添加 type=module 属性，浏览器就会把该元素对应的内联脚本或外部脚本当成 ECMAScript 模块进行处理。
+2. [循环引用处理](https://blog.csdn.net/keji_123/article/details/78949167)
+- commonjs是同步模块加载方式，加载后缓存
+- ES6中对模块引用只是保存一个模块的引用而已，因此，即使是循环引用也不会出错。
+- requirejs中出现循环引用时，可将引用的模块用局部require进行包裹以避免错误出现：
+3. es6模块导出的区别
+- export default不需要记住变量名或函数名, 为了快速使用, 核心常用模块default导出, 
+- export default就是输出一个叫做default的变量或方法，然后系统允许你为它取任意名字
