@@ -6,7 +6,11 @@ tags: vue keep-alive
 ---
 
 ##  keep-alive
-
+- 如果需要让已渲染组件重新创建可以通过删除keep-alive内的cache执行
+```js
+this.$vnode.parent.componentInstance.$destroy()
+this.$vnode.parent.componentInstance.cache
+```
 
 ### keep-alive组件
 - abstract组件不渲染,只处理内部的$slot
@@ -105,45 +109,47 @@ function init (vnode, hydrating) {
 }
 
 function render(){
-    var slot = this.$slots.default;
-    var vnode = getFirstComponentChild(slot);
-    var componentOptions = vnode && vnode.componentOptions;
-    if (componentOptions) {
-      var ref = this;
-      if (cache[key]) {
-        vnode.componentInstance = cache[key].componentInstance;
-        // make current key freshest
-        remove(keys, key);
-        keys.push(key);
-      } else {
-        cache[key] = vnode;
-        keys.push(key);
-      }
-
-      vnode.data.keepAlive = true;
+  var slot = this.$slots.default;
+  var vnode = getFirstComponentChild(slot);
+  var componentOptions = vnode && vnode.componentOptions;
+  if (componentOptions) {
+    var ref = this;
+    if (cache[key]) {
+      vnode.componentInstance = cache[key].componentInstance;
+      // make current key freshest
+      remove(keys, key);
+      keys.push(key);
+    } else {
+      cache[key] = vnode;
+      keys.push(key);
     }
-    return vnode || (slot && slot[0])
+
+    vnode.data.keepAlive = true;
   }
+  return vnode || (slot && slot[0])
+}
 
-  function insert (vnode) {
-    var context = vnode.context;
-    var componentInstance = vnode.componentInstance;
-    if (!componentInstance._isMounted) {
-      componentInstance._isMounted = true;
-      callHook(componentInstance, 'mounted');
+// call invokeInsertHook
+function insert (vnode) {
+  var context = vnode.context;
+  var componentInstance = vnode.componentInstance;
+  if (!componentInstance._isMounted) {
+    componentInstance._isMounted = true;
+    callHook(componentInstance, 'mounted');
+  }
+  if (vnode.data.keepAlive) {
+    if (context._isMounted) {
+      // vue-router#1212
+      // During updates, a kept-alive component's child components may
+      // change, so directly walking the tree here may call activated hooks
+      // on incorrect children. Instead we push them into a queue which will
+      // be processed after the whole patch process ended.
+      queueActivatedComponent(componentInstance);
+    } else {
+      activateChildComponent(componentInstance, true /* direct */);
     }
-    if (vnode.data.keepAlive) {
-      if (context._isMounted) {
-        // vue-router#1212
-        // During updates, a kept-alive component's child components may
-        // change, so directly walking the tree here may call activated hooks
-        // on incorrect children. Instead we push them into a queue which will
-        // be processed after the whole patch process ended.
-        queueActivatedComponent(componentInstance);
-      } else {
-        activateChildComponent(componentInstance, true /* direct */);
-      }
-    }
+  }
+}
 
 function activateChildComponent (vm, direct) {
   if (vm._inactive || vm._inactive === null) {
@@ -157,7 +163,13 @@ function activateChildComponent (vm, direct) {
 ```
 
 ### 二次渲染
-- prepatch
+- patchVnode到keep-alive组件时调用prepatch触发keep-alive组件重新渲染
+- 重新渲染的vnode从缓存获取componentInstance
+- 再次到createComponent 会执行init hook,就会跳过渲染vnode的vm创建
+- 执行`initComponent` `insert`后就完成dom插入
+- keep-alive组件的patch最后执行invokeInsertHook, 执行在`initComponent`添加的包裹vnode的inserthook
+- 与首次渲染不同是activated回调通过先添加到`activatedChildren`中,再渲染完成后一并执行. 因为子组件在update的时候可能会变.
+
 ```js
  function patchVnode (){
     var i;
@@ -186,6 +198,11 @@ function updateChildComponent (
   parentVnode,
   renderChildren
 ) {
+  var needsForceUpdate = !!(
+    renderChildren ||               // has new static slots
+    vm.$options._renderChildren ||  // has old static slots
+    hasDynamicScopedSlot
+  );
     // resolve slots + force update if has children
   if (needsForceUpdate) {
     vm.$slots = resolveSlots(renderChildren, parentVnode.context);
@@ -210,23 +227,7 @@ function render(){
     return vnode || (slot && slot[0])
   }
 
-    init: function init (vnode, hydrating) {
-    if (
-      vnode.componentInstance &&
-      !vnode.componentInstance._isDestroyed &&
-      vnode.data.keepAlive
-    ) {
-      // kept-alive components, treat as a patch
-      var mountedNode = vnode; // work around flow
-      componentVNodeHooks.prepatch(mountedNode, mountedNode);
-    } else {
-      var child = vnode.componentInstance = createComponentInstanceForVnode(
-        vnode,
-        activeInstance
-      );
-      child.$mount(hydrating ? vnode.elm : undefined, hydrating);
-    }
-  },
+
 
   ```
 
@@ -252,4 +253,120 @@ function render(){
       }
     }
   }
-  ```
+
+  function init (vnode, hydrating) {
+    if (
+      vnode.componentInstance &&
+      !vnode.componentInstance._isDestroyed &&
+      vnode.data.keepAlive
+    ) {
+      // kept-alive components, treat as a patch
+      var mountedNode = vnode; // work around flow
+      componentVNodeHooks.prepatch(mountedNode, mountedNode);
+    } else {
+      var child = vnode.componentInstance = createComponentInstanceForVnode(
+        vnode,
+        activeInstance
+      );
+      child.$mount(hydrating ? vnode.elm : undefined, hydrating);
+    }
+  },
+
+  function insert (vnode) {
+    if (vnode.data.keepAlive) {
+      if (context._isMounted) {
+        // vue-router#1212
+        // During updates, a kept-alive component's child components may
+        // change, so directly walking the tree here may call activated hooks
+        // on incorrect children. Instead we push them into a queue which will
+        // be processed after the whole patch process ended.
+        queueActivatedComponent(componentInstance);
+      } else {
+        activateChildComponent(componentInstance, true /* direct */);
+      }
+    }
+  }
+  function queueActivatedComponent (vm) {
+    // setting _inactive to false here so that a render function can
+    // rely on checking whether it's in an inactive tree (e.g. router-view)
+    vm._inactive = false;
+    activatedChildren.push(vm);
+  }
+
+```
+```js
+function flushSchedulerQueue () {
+  // watcher执行
+  // call component updated and activated hooks
+  callActivatedHooks(activatedQueue);
+  callUpdatedHooks(updatedQueue);
+}
+
+function callActivatedHooks (queue) {
+  for (var i = 0; i < queue.length; i++) {
+    queue[i]._inactive = true;
+    activateChildComponent(queue[i], true /* true */);
+  }
+}
+```
+
+#### deactivated钩子
+
+
+```js
+function patch (oldVnode, vnode) {
+    // destroy old node
+    if (isDef(parentElm)) {
+      removeVnodes(parentElm, [oldVnode], 0, 0); 
+    }
+    invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch);
+    return vnode.elm
+}
+
+function removeVnodes (parentElm, vnodes, startIdx, endIdx) {
+  for (; startIdx <= endIdx; ++startIdx) {
+    var ch = vnodes[startIdx];
+    if (isDef(ch)) {
+      if (isDef(ch.tag)) {
+        removeAndInvokeRemoveHook(ch);
+        invokeDestroyHook(ch);
+      } else { // Text node
+        removeNode(ch.elm);
+      }
+    }
+  }
+}
+function invokeDestroyHook (vnode) {
+  var i, j;
+  var data = vnode.data;
+  if (isDef(data)) {
+    if (isDef(i = data.hook) && isDef(i = i.destroy)) { i(vnode); }
+    for (i = 0; i < cbs.destroy.length; ++i) { cbs.destroy[i](vnode); }
+  } 
+}
+function destroy (vnode) {
+  var componentInstance = vnode.componentInstance;
+  if (!componentInstance._isDestroyed) {
+    if (!vnode.data.keepAlive) {
+      componentInstance.$destroy();
+    } else {
+      deactivateChildComponent(componentInstance, true /* direct */);
+    }
+  }
+}
+function deactivateChildComponent (vm, direct) {
+  if (direct) {
+    vm._directInactive = true;
+    if (isInInactiveTree(vm)) {
+      return
+    }
+  }
+  if (!vm._inactive) {
+    vm._inactive = true;
+    for (var i = 0; i < vm.$children.length; i++) {
+      deactivateChildComponent(vm.$children[i]);
+    }
+    callHook(vm, 'deactivated');
+  }
+}
+```
