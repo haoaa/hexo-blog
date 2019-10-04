@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="webpack optimization," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="webpack优化webpack构建流程
+初始化：启动构建，读取与合并配置参数，加载 Plugin，实例化 Compiler。
+编译：从 Entry 发出，针对每个 Module 串行调用对应的 Loader 去翻译文件内容，再找到该 Module 依赖的 Module，递归地进行编译处理。
+输出：对编译后的 Module 组合成 Chunk，把 Chunk 转换成文件，输出到本地。
+
+_addM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack under-the-hood">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2019/02/27/2019-2019-02-27-webpack-under-the-hood/index.html">
+<meta property="og:site_name" content="Haoqi's blog-ish!">
+<meta property="og:description" content="webpack优化webpack构建流程
+初始化：启动构建，读取与合并配置参数，加载 Plugin，实例化 Compiler。
+编译：从 Entry 发出，针对每个 Module 串行调用对应的 Loader 去翻译文件内容，再找到该 Module 依赖的 Module，递归地进行编译处理。
+输出：对编译后的 Module 组合成 Chunk，把 Chunk 转换成文件，输出到本地。
+
+_addM">
+<meta property="og:image" content="https://haoaa.github.io/hexo/assets/2019/webpack-flow.png">
+<meta property="og:updated_time" content="2019-03-22T22:48:15.319Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="webpack under-the-hood">
+<meta name="twitter:description" content="webpack优化webpack构建流程
+初始化：启动构建，读取与合并配置参数，加载 Plugin，实例化 Compiler。
+编译：从 Entry 发出，针对每个 Module 串行调用对应的 Loader 去翻译文件内容，再找到该 Module 依赖的 Module，递归地进行编译处理。
+输出：对编译后的 Module 组合成 Chunk，把 Chunk 转换成文件，输出到本地。
+
+_addM">
+<meta name="twitter:image" content="https://haoaa.github.io/hexo/assets/2019/webpack-flow.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2019/02/27/2019-2019-02-27-webpack-under-the-hood/"/>
+
+
+
+
+
+  <title>webpack under-the-hood | Haoqi's blog-ish!</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <audio src="\assets\2019\Indian_Summer.mp3"></audio>
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Haoqi's blog-ish!</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">blah blah blah</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+
+<script>
+  let hasClick = 0 
+  document.querySelector('.site-subtitle').onclick = ()=>{
+    hasClick++
+    if(hasClick === 3) {
+      document.querySelector('audio').play()
+    }
+  }
+
+</script> </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/02/27/2019-2019-02-27-webpack-under-the-hood/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="浩齐">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoqi's blog-ish!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">webpack under-the-hood</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-27T15:54:32+08:00">
+                2019-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/webpack-optimization-webpack3/" itemprop="url" rel="index">
+                    <span itemprop="name">webpack optimization webpack3</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="webpack优化"><a href="#webpack优化" class="headerlink" title="webpack优化"></a>webpack优化</h2><h3 id="webpack构建流程"><a href="#webpack构建流程" class="headerlink" title="webpack构建流程"></a>webpack构建流程</h3><ul>
+<li>初始化：启动构建，读取与合并配置参数，加载 Plugin，实例化 Compiler。</li>
+<li>编译：从 Entry 发出，针对每个 Module 串行调用对应的 Loader 去翻译文件内容，再找到该 Module 依赖的 Module，递归地进行编译处理。</li>
+<li><p>输出：对编译后的 Module 组合成 Chunk，把 Chunk 转换成文件，输出到本地。</p>
+</li>
+<li><p>_addModuleChain，其完成的第二件事构建模块又可以分为三部分：</p>
+<ul>
+<li>调用loader处理模块之间的依赖</li>
+<li>将loader处理后的文件通过<a href="https://github.com/ternjs/acorn" target="_blank" rel="external">acorn</a>抽象成抽象语法树AST</li>
+<li>遍历AST，构建该模块的所有依赖</li>
+</ul>
+</li>
+</ul>
+<p><img src="/assets/2019/webpack-flow.png"></p>
+<h3 id="流程细节"><a href="#流程细节" class="headerlink" title="流程细节"></a>流程细节</h3><h4 id="1-参数处理"><a href="#1-参数处理" class="headerlink" title="1. 参数处理"></a>1. 参数处理</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// bin/webpack.js入口</span></div><div class="line"><span class="built_in">require</span>(<span class="string">"./config-yargs"</span>)(yargs);</div><div class="line"></div><div class="line">yargs.parse(process.argv.slice(<span class="number">2</span>), (err, argv, output) =&gt; &#123;</div><div class="line">  <span class="comment">// ....</span></div><div class="line">  <span class="keyword">var</span> options = <span class="built_in">require</span>(<span class="string">"./convert-argv"</span>)(yargs, argv);  </div><div class="line">  <span class="keyword">var</span> webpack = <span class="built_in">require</span>(<span class="string">"../lib/webpack.js"</span>); <span class="comment">// node_modules/webpack/bin/webpack.js:329</span></div><div class="line">  compiler = webpack(options);</div><div class="line">  <span class="keyword">if</span>(firstOptions.watch || options.watch) &#123;</div><div class="line">    compiler.watch(watchOptions, compilerCallback);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    compiler.run(compilerCallback);</div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/webpack.js入口</span></div><div class="line"><span class="comment">// `lib/webpack(options, (err, stats) =&gt; &#123;&#125;)` 在node后面执行, 没有cb就只是创建compiler.  有cb就会顺带执行compiler.run</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">webpack</span>(<span class="params">options, callback</span>) </span>&#123;</div><div class="line">  <span class="keyword">new</span> WebpackOptionsDefaulter().process(options);</div><div class="line">  compiler = <span class="keyword">new</span> Compiler();</div><div class="line">  compiler.context = options.context;</div><div class="line">  compiler.options = options;</div><div class="line">  <span class="keyword">new</span> NodeEnvironmentPlugin().apply(compiler);</div><div class="line">  <span class="keyword">if</span>(options.plugins &amp;&amp; <span class="built_in">Array</span>.isArray(options.plugins)) &#123;</div><div class="line">    compiler.apply.apply(compiler, options.plugins);</div><div class="line">  &#125;</div><div class="line">  compiler.applyPlugins(<span class="string">"environment"</span>);</div><div class="line">  <span class="comment">// node_modules/webpack/lib/webpack.js:36</span></div><div class="line">  compiler.applyPlugins(<span class="string">"after-environment"</span>);</div><div class="line">  compiler.options = <span class="keyword">new</span> WebpackOptionsApply().process(options, compiler);</div><div class="line">  </div><div class="line">  <span class="comment">// ...</span></div><div class="line">  <span class="keyword">if</span>(callback) &#123;</div><div class="line">    <span class="keyword">if</span>(options.watch === <span class="literal">true</span>) &#123;</div><div class="line">      <span class="keyword">return</span> compiler.watch(watchOptions, callback);</div><div class="line">    &#125;</div><div class="line">    compiler.run(callback);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> compiler;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>WebpackOptionsApply.process根据选项apply对应的插件,如library/externals/devtool, 包括entry-option, 后面会调用addEntry<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// webpack3写法</span></div><div class="line"><span class="comment">//node_modules/webpack/lib/WebpackOptionsApply.js:234</span></div><div class="line">compiler.apply(<span class="keyword">new</span> EntryOptionPlugin());</div><div class="line">compiler.applyPluginsBailResult(<span class="string">"entry-option"</span>, options.context, options.entry);</div><div class="line"></div><div class="line"><span class="comment">// webpack4写法</span></div><div class="line"><span class="comment">//node_modules/webpack/lib/WebpackOptionsApply.js:306</span></div><div class="line"><span class="keyword">new</span> EntryOptionPlugin().apply(compiler);</div><div class="line">compiler.hooks.entryOption.call(options.context, options.entry);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-run-触发compile"><a href="#2-run-触发compile" class="headerlink" title="2. run 触发compile"></a>2. run 触发compile</h4><ul>
+<li>在run的过程中，会触发了一些钩子：<code>beforeRun-&gt;run-&gt;beforeCompile-&gt;compile-&gt;make-&gt;seal</code></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// node_modules/webpack/lib/Compiler.js:270</span></div><div class="line"><span class="comment">// 方法继承自Tapable.prototype.applyPluginsAsync</span></div><div class="line"><span class="keyword">this</span>.applyPluginsAsync(<span class="string">"before-run"</span>, <span class="keyword">this</span>, err =&gt; &#123;</div><div class="line">  <span class="keyword">if</span>(err) <span class="keyword">return</span> callback(err);</div><div class="line"></div><div class="line">  <span class="keyword">this</span>.applyPluginsAsync(<span class="string">"run"</span>, <span class="keyword">this</span>, err =&gt; &#123;</div><div class="line">    <span class="keyword">if</span>(err) <span class="keyword">return</span> callback(err);</div><div class="line"></div><div class="line">    <span class="keyword">this</span>.readRecords(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</div><div class="line">      <span class="keyword">if</span>(err) <span class="keyword">return</span> callback(err);</div><div class="line"></div><div class="line">      <span class="keyword">this</span>.compile(onCompiled);</div><div class="line">    &#125;);</div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<ul>
+<li>当 Webpack 以开发模式运行时，每当检测到文件变化，一次新的 Compilation 将被创建。 <ul>
+<li>compiler.watch监视依赖文件的修改</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// node_modules/webpack/lib/Compiler.js:490</span></div><div class="line">compile(callback) &#123;</div><div class="line">  <span class="keyword">const</span> params = <span class="keyword">this</span>.newCompilationParams();</div><div class="line">  <span class="keyword">this</span>.applyPluginsAsync(<span class="string">"before-compile"</span>, params, err =&gt; &#123;</div><div class="line">    <span class="keyword">if</span>(err) <span class="keyword">return</span> callback(err);</div><div class="line"></div><div class="line">    <span class="keyword">this</span>.applyPlugins(<span class="string">"compile"</span>, params);</div><div class="line"></div><div class="line">    <span class="keyword">const</span> compilation = <span class="keyword">this</span>.newCompilation(params);</div><div class="line"></div><div class="line">    <span class="keyword">this</span>.applyPluginsParallel(<span class="string">"make"</span>, compilation, err =&gt; &#123;</div><div class="line">      <span class="keyword">if</span>(err) <span class="keyword">return</span> callback(err);</div><div class="line"></div><div class="line">      compilation.finish();</div><div class="line"></div><div class="line">      compilation.seal(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</div><div class="line">        <span class="keyword">if</span>(err) <span class="keyword">return</span> callback(err);</div><div class="line"></div><div class="line">        <span class="keyword">this</span>.applyPluginsAsync(<span class="string">"after-compile"</span>, compilation, err =&gt; &#123;</div><div class="line">          <span class="keyword">if</span>(err) <span class="keyword">return</span> callback(err);</div><div class="line"></div><div class="line">          <span class="keyword">return</span> callback(<span class="literal">null</span>, compilation);</div><div class="line">        &#125;);</div><div class="line">      &#125;);</div><div class="line">    &#125;);</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="3-参数处理"><a href="#3-参数处理" class="headerlink" title="3. 参数处理"></a>3. 参数处理</h4><h4 id="4-参数处理"><a href="#4-参数处理" class="headerlink" title="4. 参数处理"></a>4. 参数处理</h4><h4 id="5-参数处理"><a href="#5-参数处理" class="headerlink" title="5. 参数处理"></a>5. 参数处理</h4><h4 id="6-参数处理"><a href="#6-参数处理" class="headerlink" title="6. 参数处理"></a>6. 参数处理</h4><a id="more"></a>
+<h2 id="插件问题"><a href="#插件问题" class="headerlink" title="插件问题"></a>插件问题</h2><h3 id="日志屏蔽copy-webpack-plugin"><a href="#日志屏蔽copy-webpack-plugin" class="headerlink" title="日志屏蔽copy-webpack-plugin"></a>日志屏蔽copy-webpack-plugin</h3><ul>
+<li>这个插件每移动一个静态文件打一条日志, static下所有图片遮挡了module输出了.</li>
+<li>options.logLevel 提供以下选项<ul>
+<li>warn (default)</li>
+<li>error</li>
+<li>silent</li>
+</ul>
+</li>
+<li>options.debug 提供以下选项<ul>
+<li>warning (default)</li>
+<li>info</li>
+<li>debug</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>note: debug option was renamed to logLevel in version 5.0, it only accepts string values: trace, debug, info, warn, error and silent</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  <span class="attr">plugins</span>: [<span class="keyword">new</span> CopyPlugin(patterns, options)],</div><div class="line">&#125;;</div><div class="line"><span class="comment">// logLevel:silent全屏蔽</span></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">  <span class="attr">plugins</span>: [<span class="keyword">new</span> CopyPlugin(patterns, &#123;<span class="attr">logLevel</span>: <span class="string">'error'</span>&#125;)],</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="事实是"><a href="#事实是" class="headerlink" title="事实是:"></a>事实是:</h4><p>这个插件的option配置只是显示插件打印的信息. 默认是没打印的, 所以不需要改动.<br>然后看到webpack有个配置是关于控制bundle打印的. <code>stats: {assets: true}</code>. 但配置了不起作用. 因为那个默认是通过package.json的scripts配置去执行webpack调用的.<br>而通过node调用的要自己打印日志信息, 而这个stats的选项要另外传入.   </p>
+<p>然后发现只能配置assets不能配置excludeAssets, 看源码发现2.7版本不支持这选项.折腾了一天索然没解决问题, 但对webpack有更深入的理解.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">webpack(webpackConfig, <span class="function"><span class="keyword">function</span> (<span class="params">err, stats</span>) </span>&#123;</div><div class="line">  process.stdout.write(stats.toString(&#123;</div><div class="line">    <span class="attr">colors</span>: <span class="literal">true</span>,</div><div class="line">    <span class="attr">modules</span>: <span class="literal">false</span>,</div><div class="line">    <span class="attr">children</span>: <span class="literal">false</span>,</div><div class="line">    <span class="attr">chunks</span>: <span class="literal">false</span>,</div><div class="line">    <span class="attr">chunkModules</span>: <span class="literal">false</span></div><div class="line">  &#125;) + <span class="string">'\n\n'</span>)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<h3 id="耗时查看speed-measure-webpack-plugin"><a href="#耗时查看speed-measure-webpack-plugin" class="headerlink" title="耗时查看speed-measure-webpack-plugin"></a>耗时查看<code>speed-measure-webpack-plugin</code></h3><h4 id="usage"><a href="#usage" class="headerlink" title="usage"></a>usage</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> SpeedMeasurePlugin = <span class="built_in">require</span>(<span class="string">"speed-measure-webpack-plugin"</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> smp = <span class="keyword">new</span> SpeedMeasurePlugin();</div><div class="line"><span class="keyword">const</span> webpackConfig = smp.wrap(webpackConfig);</div></pre></td></tr></table></figure>
+<h3 id="其他webpack优化"><a href="#其他webpack优化" class="headerlink" title="其他webpack优化"></a>其他webpack优化</h3><ul>
+<li>合理配置resolve.extensions，减少文件查找</li>
+<li>module.noParse字段告诉Webpack不必解析哪些文件，可以用来排除对非模块化库文件的解析</li>
+<li>使用DllPlugin减少基础模块编译次数</li>
+<li>DevServer刷新浏览器有两种方式：<ul>
+<li>向网页中注入代理客户端代码，通过客户端发起刷新</li>
+<li>向网页装入一个iframe，通过刷新iframe实现刷新效果</li>
+</ul>
+</li>
+<li>Tree Shaking启用要关闭babel模块转换功能            </li>
+<li>首屏按需加载提高首屏交互速度<ul>
+<li><code>import(/* webpackChunkName:show */ &#39;./show&#39;).then()</code></li>
+</ul>
+</li>
+<li><p>多个页面依赖的公共代码提取到common.js中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">plugins:[</div><div class="line">new CommonsChunkPlugin(&#123;</div><div class="line">    chunks:[&apos;base&apos;,&apos;common&apos;],</div><div class="line">    name:&apos;base&apos;,</div><div class="line">    //minChunks:2, 表示文件要被提取出来需要在指定的chunks中出现的最小次数，防止common.js中没有代码的情况</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<ul>
+<li>得到基础库代码base.js，不含基础库的公共代码common.js，和页面各自的代码文件xx.js。<ul>
+<li>页面引用顺序如下：base.js–&gt; common.js–&gt; xx.js</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="HtmlWebpackPlugin优化"><a href="#HtmlWebpackPlugin优化" class="headerlink" title="HtmlWebpackPlugin优化,"></a>HtmlWebpackPlugin优化,</h4><h4 id="bundleanalyze拆分公用模块"><a href="#bundleanalyze拆分公用模块" class="headerlink" title="bundleanalyze拆分公用模块"></a>bundleanalyze拆分公用模块</h4><ul>
+<li>路由异步加载, 公用模块提到common里<h4 id="vendor-gt-dll提高打包速度"><a href="#vendor-gt-dll提高打包速度" class="headerlink" title="vendor-&gt;dll提高打包速度"></a>vendor-&gt;dll提高打包速度</h4></li>
+<li>vue全家桶打dll插件打成库</li>
+</ul>
+<h4 id="其他优化"><a href="#其他优化" class="headerlink" title="其他优化"></a>其他优化</h4><ul>
+<li>使用Scope Hoisting,需要源码采用了ES6模块化的，否则Webpack会降级处理不采用Scope Hoisting。</li>
+<li>配置babel-loader时，use: [‘babel-loader?cacheDirectory’] cacheDirectory用于缓存babel的编译结果，加快重新编译的速度。另外注意排除node_modules文件夹，因为文件都使用了ES5的语法，没必要再使用Babel转换。</li>
+<li>配置externals，排除因为已使用<code>&lt;script&gt;</code>标签引入而不用打包的代码，noParse是排除没使用模块化语句的代码。</li>
+<li>配置performance参数可以输出文件的性能检查配置。</li>
+<li>配置profile：true，是否捕捉Webpack构建的性能信息，用于分析是什么原因导致构建性能不佳。</li>
+<li>配置cache：true，是否启用缓存来提升构建速度。</li>
+<li>可以使用url-loader把小图片转换成base64嵌入到JS或CSS中，减少加载次数。</li>
+<li>通过imagemin-webpack-plugin压缩图片，通过webpack-spritesmith制作雪碧图。</li>
+<li>开发环境下将devtool设置为cheap-module-eval-source-map，因为生成这种source map的速度最快，能加速构建。在生产环境下将devtool设置为hidden-source-map</li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://segmentfault.com/a/1190000014221014" target="_blank" rel="external">webpack源码之运行流程</a><br><a href="https://blog.csdn.net/qiqingjin/article/details/60579258" target="_blank" rel="external">Webpack-源码一，使用require加载并打包模块 webpack2~3</a><br><a href="https://blog.csdn.net/qiqingjin/article/details/71092660" target="_blank" rel="external">Webpack-源码二，整体调用流程与Tapable事件流</a><br><a href="https://juejin.im/post/5a4f3791f265da3e3f4c7ee6" target="_blank" rel="external">深入Webpack-编写Loader</a><br><a href="https://juejin.im/post/5beb8875e51d455e5c4dd83f?utm_source=gold_browser_extension#heading-9" target="_blank" rel="external">干货！撸一个webpack插件(内含tapable详解+webpack流程)</a><br><a href="https://webpack.js.org/api/compiler-hooks/" target="_blank" rel="external">compiler-hooks</a><br><a href="https://webpack.js.org/contribute/writing-a-plugin/#creating-a-plugin" target="_blank" rel="external">Writing a Plugin</a><br><a href="https://juejin.im/post/5b652b036fb9a04fa01d616b" target="_blank" rel="external">三十分钟掌握Webpack性能优化</a><br><a href="https://www.cnblogs.com/kwzm/p/10333554.html" target="_blank" rel="external">理解webpack4.splitChunks之其余要点</a><br><a href="https://www.cnblogs.com/QH-Jimmy/default.html?page=7" target="_blank" rel="external">浅析webpack源码系列</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/webpack-optimization/" rel="tag"># webpack optimization</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/22/2019-2019-02-22-fe-interview/" rel="next" title="frontend interview">
+                <i class="fa fa-chevron-left"></i> frontend interview
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/03/2019-2019-03-03-事件循环/" rel="prev" title="事件循环">
+                事件循环 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">浩齐</p>
+              <p class="site-description motion-element" itemprop="description">some kind of blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack优化"><span class="nav-number">1.</span> <span class="nav-text">webpack优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack构建流程"><span class="nav-number">1.1.</span> <span class="nav-text">webpack构建流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#流程细节"><span class="nav-number">1.2.</span> <span class="nav-text">流程细节</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-参数处理"><span class="nav-number">1.2.1.</span> <span class="nav-text">1. 参数处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-run-触发compile"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. run 触发compile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-参数处理"><span class="nav-number">1.2.3.</span> <span class="nav-text">3. 参数处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-参数处理"><span class="nav-number">1.2.4.</span> <span class="nav-text">4. 参数处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-参数处理"><span class="nav-number">1.2.5.</span> <span class="nav-text">5. 参数处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-参数处理"><span class="nav-number">1.2.6.</span> <span class="nav-text">6. 参数处理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插件问题"><span class="nav-number">2.</span> <span class="nav-text">插件问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#日志屏蔽copy-webpack-plugin"><span class="nav-number">2.1.</span> <span class="nav-text">日志屏蔽copy-webpack-plugin</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#事实是"><span class="nav-number">2.1.1.</span> <span class="nav-text">事实是:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#耗时查看speed-measure-webpack-plugin"><span class="nav-number">2.2.</span> <span class="nav-text">耗时查看speed-measure-webpack-plugin</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#usage"><span class="nav-number">2.2.1.</span> <span class="nav-text">usage</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他webpack优化"><span class="nav-number">2.3.</span> <span class="nav-text">其他webpack优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HtmlWebpackPlugin优化"><span class="nav-number">2.3.1.</span> <span class="nav-text">HtmlWebpackPlugin优化,</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bundleanalyze拆分公用模块"><span class="nav-number">2.3.2.</span> <span class="nav-text">bundleanalyze拆分公用模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vendor-gt-dll提高打包速度"><span class="nav-number">2.3.3.</span> <span class="nav-text">vendor->dll提高打包速度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他优化"><span class="nav-number">2.3.4.</span> <span class="nav-text">其他优化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">2.4.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">浩齐</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

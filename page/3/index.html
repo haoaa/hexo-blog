@@ -148,6 +148,7 @@
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
+  <audio src="\assets\2019\Indian_Summer.mp3"></audio>
   <div class="site-meta ">
     
 
@@ -208,7 +209,17 @@
 
 
 
- </div>
+
+<script>
+  let hasClick = 0 
+  document.querySelector('.site-subtitle').onclick = ()=>{
+    hasClick++
+    if(hasClick === 3) {
+      document.querySelector('audio').play()
+    }
+  }
+
+</script> </div>
     </header>
 
     <main id="main" class="main">
@@ -231,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/01/01/201701-2017-01-01-angular-day7/">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2018/01/12/2018-2018-01-12-gulp-note-all-in-here/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="浩齐">
@@ -250,7 +261,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/01/01/201701-2017-01-01-angular-day7/" itemprop="url">angular-day7-controller-scope-databind</a></h1>
+                <a class="post-title-link" href="/2018/01/12/2018-2018-01-12-gulp-note-all-in-here/" itemprop="url">gulp-note-all-in-here</a></h1>
         
 
         <div class="post-meta">
@@ -262,8 +273,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-01T12:07:34+08:00">
-                2017-01-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T10:39:54+08:00">
+                2018-01-12
               </time>
             
 
@@ -285,19 +296,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/" itemprop="url" rel="index">
-                    <span itemprop="name">fe-framework</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/angular/" itemprop="url" rel="index">
-                    <span itemprop="name">angular</span>
+                  <a href="/categories/gulp/" itemprop="url" rel="index">
+                    <span itemprop="name">gulp</span>
                   </a>
                 </span>
 
@@ -334,340 +334,165 @@
 
       
         
-          <h2 id="ng-progress"><a href="#ng-progress" class="headerlink" title="ng progress"></a>ng progress</h2><ol>
-<li>angular.js included and executed</li>
-<li>angular module get created </li>
-<li>find <code>templates-dom</code>:<ul>
-<li><code>ng-*</code> attributes (directives)</li>
-<li>evaluating expression</li>
-<li>data-binding markup</li>
-</ul>
+          
+            <h2 id="This-post-is-all-about-issues-come-up-when-I-use-gulpjs"><a href="#This-post-is-all-about-issues-come-up-when-I-use-gulpjs" class="headerlink" title="This post is all about issues come up when I use gulpjs."></a>This post is all about issues come up when I use gulpjs.</h2><h3 id="Multiple-gulp-process-flow-working-with-runing-tasks-in-sequence-demand"><a href="#Multiple-gulp-process-flow-working-with-runing-tasks-in-sequence-demand" class="headerlink" title="Multiple gulp process flow working with runing tasks in sequence demand."></a>Multiple gulp process flow working with runing tasks in sequence demand.</h3><ul>
+<li><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">gulp.task(<span class="string">'someTask'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span> (gulpConfig.multi-dist)&#123;</div><div class="line">        <span class="keyword">const</span> stream = merge();</div><div class="line">        _.forEach(gulpConfig.branches, <span class="function"><span class="keyword">function</span> (<span class="params">name</span>) </span>&#123;</div><div class="line">            stream.add(</div><div class="line">            gulp.src(<span class="string">'biz/*.html'</span>)</div><div class="line">                .pipe(gulp-plumber(errorHandler))</div><div class="line">                .pipe(gulp-newer(<span class="string">'./dest/'</span> + name))</div><div class="line">                .pipe(gulp.dest(<span class="string">'./dest/'</span> + name))</div><div class="line">            );</div><div class="line">        &#125;)</div><div class="line">        <span class="keyword">return</span> stream;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 </li>
-<li>process templates<ul>
-<li>compile &amp; link</li>
-<li>transform templates </li>
-</ul>
+<li><p>By doing this, now can run this multiple working flow with other tasks in sequence.</p>
 </li>
-<li>renders to view</li>
+</ul>
+<h3 id="alter-gulp-dest-path-through-gulp-rename"><a href="#alter-gulp-dest-path-through-gulp-rename" class="headerlink" title="alter gulp dest path through gulp-rename"></a>alter gulp dest path through gulp-rename</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">srcPath = path.join(component, <span class="string">'*'</span>, <span class="string">'lib/**/*'</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getJsStream</span>(<span class="params">srcPath, distPath</span>)</span>&#123;</div><div class="line">	<span class="keyword">return</span> gulp.src(srcPath)</div><div class="line">		.pipe(gulp-plumber(errorHandler))</div><div class="line">		<span class="comment">// .pipe(gulp-logger(&#123;showChange: true&#125;))</span></div><div class="line">		.pipe(rename(<span class="function"><span class="keyword">function</span>(<span class="params">file</span>) </span>&#123;</div><div class="line">			<span class="keyword">var</span> pathArr = file.dirname.split(path.sep);</div><div class="line">			pathArr.splice(<span class="number">1</span>,<span class="number">1</span>); <span class="comment">//切掉lib</span></div><div class="line">			file.dirname = pathArr.join(path.sep);</div><div class="line">		&#125;))</div><div class="line">		.pipe(gulp-newer(distPath))</div><div class="line">		.pipe(gulp.dest(distPath));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/12/28/201705-2017-12-28-vue-cli-and-scaffold/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="浩齐">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoqi's blog-ish!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/28/201705-2017-12-28-vue-cli-and-scaffold/" itemprop="url">vue-cli-and-scaffold</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T19:51:27+08:00">
+                2017-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="babel-preset"><a href="#babel-preset" class="headerlink" title="babel preset"></a>babel <a href="http://2ality.com/2017/02/babel-preset-env.html" target="_blank" rel="external">preset</a></h3><ul>
+<li>Presets are sharable .babelrc configs or simply an array of babel plugins.</li>
+<li><code>Babel-preset-env</code> replaces es2015, es2016, es2017, latest</li>
+<li>With most of the new feature covered usually will use “stage-2”(Stage 2 - Draft: initial spec.)<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="string">"presets"</span>: [</div><div class="line">    [<span class="string">"env"</span>, &#123;</div><div class="line">      <span class="string">"modules"</span>: <span class="literal">false</span>,</div><div class="line">      <span class="string">"targets"</span>: &#123;</div><div class="line">        <span class="string">"browsers"</span>: [<span class="string">"&gt; 1%"</span>, <span class="string">"last 2 versions"</span>, <span class="string">"not ie &lt;= 8"</span>]</div><div class="line">      &#125;</div><div class="line">    &#125;],</div><div class="line">    <span class="string">"stage-2"</span> <span class="comment">// why ???</span></div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="e2e-test"><a href="#e2e-test" class="headerlink" title="e2e test"></a>e2e test</h3><ul>
+<li><code>npm i</code>的时候chromedriver下载失败, 可通过配置解决<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm config <span class="built_in">set</span>  chromedriver_cdnurl  <span class="string">"https://npm.taobao.org/mirrors/chromedriver"</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Fixing-Linting-Errors"><a href="#Fixing-Linting-Errors" class="headerlink" title="Fixing Linting Errors"></a>Fixing Linting Errors</h3><p><code>npm run lint -- --fix</code><br>(The – in the middle is necessary to ensure the –fix option is passdd to eslint, not to npm)</p>
+<h3 id="Asset-Resolving-Rules"><a href="#Asset-Resolving-Rules" class="headerlink" title="Asset Resolving Rules"></a>Asset Resolving Rules</h3><ul>
+<li>Root-relative URLs, e.g. <code>/assets/logo.png</code> are not processed at all.</li>
+<li>Relative url will be interpreted as a module dependency.<h3 id="“Real”-Static-Assets"><a href="#“Real”-Static-Assets" class="headerlink" title="“Real” Static Assets"></a>“Real” Static Assets</h3>In comparison, files in static/ are not processed by Webpack at all: they are directly copied to their final destination as-is, with the same filename.</li>
+</ul>
+<p>Any file placed in static/ should be referenced using the absolute URL /static/[filename].</p>
+<h3 id="favicon-locate"><a href="#favicon-locate" class="headerlink" title="favicon locate"></a>favicon locate</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"shortcut icon"</span> <span class="attr">type</span>=<span class="string">"image/png"</span> <span class="attr">href</span>=<span class="string">"/static/favicon.png"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>My Vue.js app<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">    ...</div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="保留滚动位置-scrollBehavior"><a href="#保留滚动位置-scrollBehavior" class="headerlink" title="保留滚动位置,scrollBehavior"></a>保留滚动位置,scrollBehavior</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Router(&#123;</div><div class="line">  routes,</div><div class="line">  <span class="attr">mode</span>: routerMode,</div><div class="line">  scrollBehavior(to, <span class="keyword">from</span>, savedPosition) &#123;</div><div class="line">    <span class="keyword">if</span> (savedPosition &amp;&amp; to.meta.keepAlive) &#123;</div><div class="line">      <span class="keyword">return</span> savedPosition;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="keyword">return</span> &#123; <span class="attr">x</span>: <span class="number">0</span>, <span class="attr">y</span>: <span class="number">0</span> &#125;;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="入口路由两种方式"><a href="#入口路由两种方式" class="headerlink" title="入口路由两种方式"></a>入口路由两种方式</h3><ol>
+<li>app组件做根路由<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//main.js</span></div><div class="line"><span class="keyword">new</span> Vue(&#123;</div><div class="line">  <span class="attr">el</span>: <span class="string">'#app'</span>,</div><div class="line">  router,</div><div class="line">  <span class="attr">template</span>: <span class="string">'&lt;App/&gt;'</span>,</div><div class="line">  <span class="attr">components</span>: &#123; App &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
 </ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/01/01/201701-2017-01-01-angular-day7/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2016/12/31/2016-2016-12-31-jason-web-tokens-day1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="浩齐">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haoqi's blog-ish!">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/31/2016-2016-12-31-jason-web-tokens-day1/" itemprop="url">jason-web-tokens-day1</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-31T10:48:21+08:00">
-                2016-12-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/security/" itemprop="url" rel="index">
-                    <span itemprop="name">security</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="jwt简单应用"><a href="#jwt简单应用" class="headerlink" title="jwt简单应用"></a>jwt简单应用</h1><h2 id="jwt应用图示"><a href="#jwt应用图示" class="headerlink" title="jwt应用图示"></a>jwt应用图示</h2><p>用来校验请求者是最初认证的.</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/31/2016-2016-12-31-jason-web-tokens-day1/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2016/12/27/2016-2016-12-27-angular-day6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="浩齐">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haoqi's blog-ish!">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/27/2016-2016-12-27-angular-day6/" itemprop="url">angular-day6</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-27T09:03:34+08:00">
-                2016-12-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/" itemprop="url" rel="index">
-                    <span itemprop="name">fe-framework</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/angular/" itemprop="url" rel="index">
-                    <span itemprop="name">angular</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="angular-directive"><a href="#angular-directive" class="headerlink" title="angular directive"></a>angular directive</h1><h2 id="concept-of-compiler"><a href="#concept-of-compiler" class="headerlink" title="concept of compiler"></a>concept of compiler</h2><p>Compiler is an Angular service which traverses the DOM looking for attributes. The compilation process happens in two phases.</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// App.vue</span></div><div class="line">&lt;template&gt;</div><div class="line">  <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></span></div><div class="line">    <span class="comment">&lt;!-- &lt;img src="./assets/logo.png"&gt; --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">router-view</span>/&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></div></pre></td></tr></table></figure>
 <ol>
-<li><p>Compile: traverse the DOM and collect all of the directives. The result is a linking function.</p>
-</li>
-<li><p>Link: combine the directives with a scope and produce a live view. Any changes in the scope model are reflected in the view, and any user interactions with the view are reflected in the scope model. This makes the scope model the single source of truth.</p>
+<li>根路由放到index.html上<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//main.js</span></div><div class="line"><span class="keyword">new</span> Vue(&#123;</div><div class="line">	router,</div><div class="line">	store,</div><div class="line">&#125;).$mount(<span class="string">'#app'</span>)</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>Some directives such as ng-repeat clone DOM elements once for each item in a collection. Having a compile and link phase improves<br> performance since the cloned template only needs to be compiled once, and then linked once for each clone instance.</p>
-<hr>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/27/2016-2016-12-27-angular-day6/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//index.html</span></div><div class="line">&lt;div id=<span class="string">"app"</span>&gt;</div><div class="line">  <span class="xml"><span class="tag">&lt;<span class="name">router-view</span>&gt;</span><span class="tag">&lt;/<span class="name">router-view</span>&gt;</span></span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="resolve-in-webpack-configuration"><a href="#resolve-in-webpack-configuration" class="headerlink" title="resolve in webpack configuration"></a>resolve in webpack configuration</h3><p>The resolver helps webpack find the module code that needs to be included in the bundle for every such <code>require/import</code> statement. </p>
+<p>Configure how modules are resolved. For example, when calling import “lodash” in ES2015, the resolve options can change where webpack goes to look for “lodash”.</p>
+
+          
         
       
     </div>
@@ -714,7 +539,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2016/12/24/2016-2016-12-24-webpack-day1/">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/05/13/201705-2017-05-13-vue-01-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="浩齐">
@@ -733,7 +558,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/12/24/2016-2016-12-24-webpack-day1/" itemprop="url">webpack-day1</a></h1>
+                <a class="post-title-link" href="/2017/05/13/201705-2017-05-13-vue-01-1/" itemprop="url">vue-unit-e2e-test</a></h1>
         
 
         <div class="post-meta">
@@ -745,8 +570,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-24T19:09:51+08:00">
-                2016-12-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-13T14:49:08+08:00">
+                2017-05-13
               </time>
             
 
@@ -768,8 +593,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/workflow/" itemprop="url" rel="index">
-                    <span itemprop="name">workflow</span>
+                  <a href="/categories/js-vue/" itemprop="url" rel="index">
+                    <span itemprop="name">js vue</span>
                   </a>
                 </span>
 
@@ -806,12 +631,13 @@
 
       
         
-          <h1 id="webpack-day1"><a href="#webpack-day1" class="headerlink" title="webpack day1"></a>webpack day1</h1><h2 id="webpack流程"><a href="#webpack流程" class="headerlink" title="webpack流程"></a>webpack流程</h2><p>Give webpack the entry point (app.js) and specify an output file (app.bundle.js):</p>
-<p><code>webpack ./app.js app.bundle.js</code></p>
-<p>webpack will read and analyze the entry point and its dependencies (including transitive dependencies).<br>Then it will bundle them all into app.bundle.js.<br>
+          <h2 id="vue测试模块"><a href="#vue测试模块" class="headerlink" title="vue测试模块"></a>vue测试模块</h2><blockquote>
+<p>vue-cli生成项目有unit和E2E测试模块. 以及项目构建的脚手架</p>
+</blockquote>
+<h2 id="测试脚本"><a href="#测试脚本" class="headerlink" title="测试脚本"></a>测试脚本</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">"scripts"</span>: &#123;</div><div class="line">    <span class="string">"unit"</span>: <span class="string">"cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run"</span>,</div><div class="line">    <span class="string">"e2e"</span>: <span class="string">"node test/e2e/runner.js"</span>,</div><div class="line">    <span class="string">"test"</span>: <span class="string">"npm run unit &amp;&amp; npm run e2e"</span>,</div><div class="line">    <span class="string">"lint"</span>: <span class="string">"eslint --ext .js,.vue src test/unit/specs test/e2e/specs"</span></div><div class="line">  &#125;</div></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/12/24/2016-2016-12-24-webpack-day1/#more" rel="contents">
+            <a class="btn" href="/2017/05/13/201705-2017-05-13-vue-01-1/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -862,7 +688,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2016/12/22/2016-2016-12-22-js-code-collection/">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/05/13/201705-2017-05-14-vue-elm-01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="浩齐">
@@ -881,7 +707,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/12/22/2016-2016-12-22-js-code-collection/" itemprop="url">js-code-collection</a></h1>
+                <a class="post-title-link" href="/2017/05/13/201705-2017-05-14-vue-elm-01/" itemprop="url">vue-elm-devServer-config</a></h1>
         
 
         <div class="post-meta">
@@ -893,8 +719,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-22T19:12:38+08:00">
-                2016-12-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-13T14:49:08+08:00">
+                2017-05-13
               </time>
             
 
@@ -916,8 +742,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/js-snippet/" itemprop="url" rel="index">
-                    <span itemprop="name">js snippet</span>
+                  <a href="/categories/js-vue/" itemprop="url" rel="index">
+                    <span itemprop="name">js vue</span>
                   </a>
                 </span>
 
@@ -954,15 +780,13 @@
 
       
         
-          <h1 id="js可分析性片段代码"><a href="#js可分析性片段代码" class="headerlink" title="js可分析性片段代码"></a>js可分析性片段代码</h1><h2 id="1-深度比较"><a href="#1-深度比较" class="headerlink" title="1. 深度比较"></a>1. 深度比较</h2><ul>
-<li>mobx.umd.js:1558<h2 id="对象的深比较"><a href="#对象的深比较" class="headerlink" title="对象的深比较"></a>对象的深比较</h2>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/22/2016-2016-12-22-js-code-collection/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
+            <h2 id="开发脚本dev-server-js"><a href="#开发脚本dev-server-js" class="headerlink" title="开发脚本dev-server.js"></a>开发脚本dev-server.js</h2><blockquote>
+<p>The compiler object represents the fully configured Webpack environment. This object is built once upon starting Webpack, and is configured with all operational settings including options, loaders, and plugins.<br>A compilation object represents a single build of versioned assets<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> config = <span class="built_in">require</span>(<span class="string">'../config'</span>)</div><div class="line"><span class="keyword">if</span> (!process.env.NODE_ENV) process.env.NODE_ENV = <span class="built_in">JSON</span>.parse(config.dev.env.NODE_ENV) <span class="comment">// "development"</span></div><div class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>)</div><div class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</div><div class="line"><span class="keyword">var</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>)</div><div class="line"><span class="keyword">var</span> opn = <span class="built_in">require</span>(<span class="string">'opn'</span>)</div><div class="line"><span class="keyword">var</span> proxyMiddleware = <span class="built_in">require</span>(<span class="string">'http-proxy-middleware'</span>)</div><div class="line"><span class="keyword">var</span> webpackConfig = <span class="built_in">require</span>(<span class="string">'./webpack.dev.conf'</span>) </div><div class="line"></div><div class="line"><span class="comment">// default port where dev server listens for incoming traffic</span></div><div class="line"><span class="keyword">var</span> port = process.env.PORT || config.dev.port</div><div class="line">    <span class="comment">// Define HTTP proxies to your custom API backend</span></div><div class="line">    <span class="comment">// https://github.com/chimurai/http-proxy-middleware</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> server = express()</div><div class="line"><span class="keyword">var</span> compiler = webpack(webpackConfig)</div><div class="line"></div><div class="line"><span class="keyword">var</span> devMiddleware = <span class="built_in">require</span>(<span class="string">'webpack-dev-middleware'</span>)(compiler, &#123; <span class="comment">// 将打包后文件放内存</span></div><div class="line">    publicPath: webpackConfig.output.publicPath, <span class="comment">//和webpack的output的一样</span></div><div class="line">    stats: &#123;</div><div class="line">        <span class="attr">colors</span>: <span class="literal">true</span>,</div><div class="line">        <span class="attr">chunks</span>: <span class="literal">false</span></div><div class="line">    &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="keyword">var</span> hotMiddleware = <span class="built_in">require</span>(<span class="string">'webpack-hot-middleware'</span>)(compiler) <span class="comment">//热重载</span></div><div class="line">    <span class="comment">// force page reload when html-webpack-plugin template changes</span></div><div class="line">    <span class="comment">//While running Webpack development middleware, a new compilation will be created each time a file change is detected, thus generating a new set of compiled assets.</span></div><div class="line">compiler.plugin(<span class="string">'compilation'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">compilation</span>) </span>&#123; <span class="comment">// webpack在compile时的回调</span></div><div class="line">    <span class="comment">//The Compiler has emitted all assets.</span></div><div class="line">    compilation.plugin(<span class="string">'html-webpack-plugin-after-emit'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data, cb</span>) </span>&#123; <span class="comment">//文件由webpack生成后 </span></div><div class="line">        hotMiddleware.publish(&#123;</div><div class="line">            <span class="attr">action</span>: <span class="string">'reload'</span></div><div class="line">        &#125;)</div><div class="line">        cb()</div><div class="line">    &#125;)</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="keyword">var</span> context = config.dev.context</div><div class="line"><span class="keyword">var</span> proxypath = config.dev.proxypath</div><div class="line"></div><div class="line"><span class="keyword">var</span> options = &#123;</div><div class="line">    <span class="attr">target</span>: proxypath,</div><div class="line">    <span class="attr">changeOrigin</span>: <span class="literal">true</span>,</div><div class="line">&#125;</div><div class="line"><span class="keyword">if</span> (context.length) &#123;</div><div class="line">    server.use(proxyMiddleware(context, options))</div><div class="line">&#125;</div><div class="line"></div><div class="line">server.use(proxyMiddleware(<span class="string">'/payapi'</span>, &#123;</div><div class="line">    <span class="attr">target</span>: <span class="string">'https://pay.ele.me'</span>,</div><div class="line">    <span class="attr">changeOrigin</span>: <span class="literal">true</span>,</div><div class="line">&#125;))</div><div class="line">server.use(proxyMiddleware(<span class="string">'/m.ele.me@json'</span>, &#123;</div><div class="line">    <span class="attr">target</span>: <span class="string">'https://crayfish.elemecdn.com'</span>,</div><div class="line">    <span class="attr">changeOrigin</span>: <span class="literal">true</span>,</div><div class="line">&#125;))</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// handle fallback for HTML5 history API</span></div><div class="line">server.use(<span class="built_in">require</span>(<span class="string">'connect-history-api-fallback'</span>)())</div><div class="line"></div><div class="line">serve webpack bundle output</div><div class="line">server.use(devMiddleware)</div><div class="line"></div><div class="line">enable hot-reload and state-preserving</div><div class="line">compilation error display</div><div class="line">server.use(hotMiddleware)</div><div class="line"></div><div class="line"><span class="comment">// serve pure static assets</span></div><div class="line"><span class="keyword">var</span> staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)</div><div class="line">server.use(staticPath, express.static(<span class="string">'./static'</span>))</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = server.listen(port, <span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (err) &#123;</div><div class="line">        <span class="built_in">console</span>.log(err)</div><div class="line">        <span class="keyword">return</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> uri = <span class="string">'http://localhost:'</span> + port</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Listening at '</span> + uri + <span class="string">'\n'</span>)</div><div class="line"></div><div class="line">    <span class="comment">// when env is testing, don't need open it</span></div><div class="line">    <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'testing'</span>) &#123;</div><div class="line">        opn(uri)</div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="webpack1-gt-webpack2迁移文档"><a href="#webpack1-gt-webpack2迁移文档" class="headerlink" title="webpack1-&gt;webpack2迁移文档"></a>webpack1-&gt;webpack2迁移文档</h2><p><a href="https://webpack.js.org/guides/migrating/" target="_blank" rel="external">https://webpack.js.org/guides/migrating/</a></p>
+
+          
         
       
     </div>
@@ -1009,7 +833,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2016/12/19/2016-2016-12-19-something-about-sass/">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/05/12/201705-2017-05-12-test/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="浩齐">
@@ -1028,7 +852,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/12/19/2016-2016-12-19-something-about-sass/" itemprop="url">something-about-sass</a></h1>
+                <a class="post-title-link" href="/2017/05/12/201705-2017-05-12-test/" itemprop="url">test</a></h1>
         
 
         <div class="post-meta">
@@ -1040,8 +864,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-19T20:20:35+08:00">
-                2016-12-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-12T19:08:10+08:00">
+                2017-05-12
               </time>
             
 
@@ -1063,8 +887,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/sass/" itemprop="url" rel="index">
-                    <span itemprop="name">sass</span>
+                  <a href="/categories/test-framework-test-runner/" itemprop="url" rel="index">
+                    <span itemprop="name">test-framework test-runner</span>
                   </a>
                 </span>
 
@@ -1101,10 +925,15 @@
 
       
         
-          <h2 id="sass"><a href="#sass" class="headerlink" title="sass"></a>sass</h2><h3 id="1-Sass的变量以-开头"><a href="#1-Sass的变量以-开头" class="headerlink" title="1 Sass的变量以$开头"></a>1 Sass的变量以$开头</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$mainColor: #0982c1;</div></pre></td></tr></table></figure>
+          <h3 id="测试套餐-testing-suites"><a href="#测试套餐-testing-suites" class="headerlink" title="测试套餐 - testing suites"></a>测试套餐 - testing suites</h3><h2 id="the-4-major-classifications-of-testing-software-are"><a href="#the-4-major-classifications-of-testing-software-are" class="headerlink" title="the 4 major classifications of testing software are:"></a>the 4 major classifications of testing software are:</h2><ol>
+<li>Test Runners =&gt; karma ava</li>
+<li>Testing Frameworks =&gt; jasmine mocha </li>
+<li>Assertion Libraries =&gt; chai</li>
+<li>Testing Plugins =&gt; sinon</li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/12/19/2016-2016-12-19-something-about-sass/#more" rel="contents">
+            <a class="btn" href="/2017/05/12/201705-2017-05-12-test/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1155,7 +984,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2016/12/14/2016-2016-12-14-hexo-tips/">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/02/12/201705-2017-02-12-react-01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="浩齐">
@@ -1174,7 +1003,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/12/14/2016-2016-12-14-hexo-tips/" itemprop="url">hexo-tips</a></h1>
+                <a class="post-title-link" href="/2017/02/12/201705-2017-02-12-react-01/" itemprop="url">react-01</a></h1>
         
 
         <div class="post-meta">
@@ -1186,8 +1015,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-14T07:40:15+08:00">
-                2016-12-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-12T16:12:50+08:00">
+                2017-02-12
               </time>
             
 
@@ -1220,8 +1049,19 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">hexo</span>
+                  <a href="/categories/fe-framework/react/" itemprop="url" rel="index">
+                    <span itemprop="name">react</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fe-framework/react/react-route/" itemprop="url" rel="index">
+                    <span itemprop="name">react-route</span>
                   </a>
                 </span>
 
@@ -1258,18 +1098,31 @@
 
       
         
-          <h3 id="hexo-config-tips"><a href="#hexo-config-tips" class="headerlink" title="hexo config tips"></a>hexo config tips</h3><h4 id="custom-files"><a href="#custom-files" class="headerlink" title="custom files"></a>custom files</h4><ul>
-<li><p>\scaffolds\post.md 等,配置了创建post的Front-matter信息 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">title: &#123;&#123; title &#125;&#125;</div><div class="line">date: &#123;&#123; date &#125;&#125;</div><div class="line">tags:</div><div class="line">---end up with these dashes</div></pre></td></tr></table></figure>
+          
+            <h2 id="react路由参数获取"><a href="#react路由参数获取" class="headerlink" title="react路由参数获取"></a>react路由参数获取</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;Route path=<span class="string">"/books/:id"</span> component=&#123;BooksList&#125;/&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">render() &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.props.params.id);</div><div class="line"><span class="comment">//...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="react路由Histories"><a href="#react路由Histories" class="headerlink" title="react路由Histories"></a>react路由Histories</h2><ul>
+<li>browserHistory(推荐使用)<ul>
+<li>缺点, 超链接在新标签打开报错,要从根路径开始</li>
+<li>优点, 地址栏不会出现<code>#</code>, 组件加载不会渲染两次</li>
+</ul>
 </li>
-<li><p>_config.yml总配置信息</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/14/2016-2016-12-14-hexo-tips/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+<li>hashHistory<ul>
+<li>缺点, 组件加载会渲染两次</li>
+<li>优点, 兼容老版本浏览器</li>
+</ul>
+</li>
+<li>createMemoryHistory(服务器端渲染使用)</li>
+</ul>
+<h2 id="组件内外跳转"><a href="#组件内外跳转" class="headerlink" title="组件内外跳转"></a>组件内外跳转</h2><ul>
+<li><p>内跳转</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">componentDidMount()&#123;</div><div class="line">    setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</div><div class="line">        <span class="keyword">this</span>.context.router.push(<span class="string">'/home'</span>);</div><div class="line">    &#125;,<span class="number">3000</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>外跳转</p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//在引入的service里通过browserHistory来跳转</span></div><div class="line">    </div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span>&#123;</div><div class="line">    getData() &#123;</div><div class="line">        setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</div><div class="line">            browserHistory.push(<span class="string">'/home'</span>)</div><div class="line">        &#125;,<span class="number">3000</span>)</div><div class="line">    &#125;,</div><div class="line"> <span class="comment">//...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          
         
       
     </div>
@@ -1316,7 +1169,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2016/11/13/2016-2016-11-13-nodejs-1/">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/01/12/201701-2017-01-12-work-tips-day1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="浩齐">
@@ -1335,7 +1188,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/11/13/2016-2016-11-13-nodejs-1/" itemprop="url">nodejs day1</a></h1>
+                <a class="post-title-link" href="/2017/01/12/201701-2017-01-12-work-tips-day1/" itemprop="url">html-css-review</a></h1>
         
 
         <div class="post-meta">
@@ -1347,8 +1200,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-13T10:20:42+08:00">
-                2016-11-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-12T15:43:48+08:00">
+                2017-01-12
               </time>
             
 
@@ -1370,8 +1223,19 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/nodejs/" itemprop="url" rel="index">
-                    <span itemprop="name">nodejs</span>
+                  <a href="/categories/html/" itemprop="url" rel="index">
+                    <span itemprop="name">html</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/html/css/" itemprop="url" rel="index">
+                    <span itemprop="name">css</span>
                   </a>
                 </span>
 
@@ -1409,14 +1273,186 @@
       
         
           
-            <h3 id="什么是Node"><a href="#什么是Node" class="headerlink" title="什么是Node"></a>什么是Node</h3><ul>
-<li>Node 就是 JavaScript 语言在服务器端的运行环境</li>
-<li>所谓“运行环境（平台）”有两层意思：<ul>
-<li>首先，JavaScript 语言通过 Node 在服务器运行，在这个意义上，Node 有点像 JavaScript 虚拟机；</li>
-<li>其次，Node 提供大量工具库，使得 JavaScript 语言与操作系统互动（比如读写文件、新建子进程），在这个意义上， Node 又是 JavaScript 的工具库。</li>
-</ul>
+            <h2 id="Meta标签介绍"><a href="#Meta标签介绍" class="headerlink" title="Meta标签介绍"></a>Meta标签介绍</h2><h3 id="meta-的属性有两种：name和http-equiv。-name属性主要用于描述网页，对应于content（网页内容）"><a href="#meta-的属性有两种：name和http-equiv。-name属性主要用于描述网页，对应于content（网页内容）" class="headerlink" title="meta 的属性有两种：name和http-equiv。 name属性主要用于描述网页，对应于content（网页内容）"></a>meta 的属性有两种：name和http-equiv。 name属性主要用于描述网页，对应于content（网页内容）</h3><ol>
+<li><meta name="Generator" contect="">用以说明生成工具（如Microsoft FrontPage 4.0）等； </li>
+<li><meta name="KEYWords" contect="">向搜索引擎说明你的网页的关键词； </li>
+<li><meta name="DEscription" contect="">告诉搜索引擎你的站点的主要内容； </li>
+<li><meta name="Author" contect="你的姓名">告诉搜索引擎你的站点的制作的作者； </li>
+<li><meta name="Robots" contect="all|none|index|noindex|follow|nofollow"> 
+
 </li>
-<li>在node中:v8执行ecmascript,libuv执行OS的API</li>
+</ol>
+<h4 id="其中的属性说明如下："><a href="#其中的属性说明如下：" class="headerlink" title="其中的属性说明如下："></a>其中的属性说明如下：</h4><ul>
+<li>设定为all：文件将被检索，且页面上的链接可以被查询； </li>
+<li>设定为none：文件将不被检索，且页面上的链接不可以被查询； </li>
+<li>设定为index：文件将被检索； </li>
+<li>设定为follow：页面上的链接可以被查询； </li>
+<li>设定为noindex：文件将不被检索，但页面上的链接可以被查询； </li>
+<li>设定为nofollow：文件将不被检索，页面上的链接可以被查询。 </li>
+</ul>
+<h3 id="http-equiv属性"><a href="#http-equiv属性" class="headerlink" title="http-equiv属性"></a>http-equiv属性</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span>   <span class="attr">contect</span>=<span class="string">"text/html"</span>;     <span class="attr">charset</span>=<span class="string">gb_2312</span>"&gt;</span> </div><div class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Refresh"</span> <span class="attr">content</span>=<span class="string">"5;url=http://www.w3school.com.cn"</span> /&gt;</span></div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/01/12/201701-2017-01-12-less-day1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="浩齐">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoqi's blog-ish!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/12/201701-2017-01-12-less-day1/" itemprop="url">less-day1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-12T09:12:26+08:00">
+                2017-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CSS-pre-processor-less/" itemprop="url" rel="index">
+                    <span itemprop="name">CSS pre-processor - less</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="less-overview"><a href="#less-overview" class="headerlink" title="less overview"></a>less overview</h2><h3 id="variables"><a href="#variables" class="headerlink" title="variables"></a>variables</h3><ul>
+<li>Variables</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="variable">@nice-blue:</span> <span class="number">#5B83AD</span>;</div><div class="line"><span class="variable">@light-blue:</span> <span class="variable">@nice-blue</span> + <span class="number">#111</span>;</div><div class="line"><span class="variable">@bd-bold :</span> <span class="number">4px</span> solid <span class="variable">@nice-blue</span>;</div><div class="line"></div><div class="line"><span class="selector-id">#header</span> &#123;</div><div class="line">  <span class="attribute">color</span>: <span class="variable">@light-blue</span>;</div><div class="line">  <span class="attribute">border</span>: <span class="variable">@bd-bold</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>output </p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-id">#header</span> &#123;</div><div class="line">  <span class="attribute">color</span>: <span class="number">#6c94be</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>mixin</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.bordered</span> &#123;</div><div class="line">  <span class="attribute">border-top</span>: dotted <span class="number">1px</span> black;</div><div class="line">  <span class="attribute">border-bottom</span>: solid <span class="number">2px</span> black;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#menu</span> <span class="selector-tag">a</span> &#123;</div><div class="line">  <span class="attribute">color</span>: <span class="number">#111</span>;</div><div class="line">  <span class="selector-class">.bordered</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.post</span> <span class="selector-tag">a</span> &#123;</div><div class="line">  <span class="attribute">color</span>: red;</div><div class="line">  <span class="selector-class">.bordered</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>Nested Rules (tlnr)</p>
+</li>
+<li><p>Nested Directives and Bubbling</p>
+</li>
+</ul>
+<p>Directives such as media or keyframe can be nested in the same way as selectors.<br>Directive is placed on top and relative order against other elements inside the same ruleset remains unchanged. This is called bubbling.</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.screen-color</span> &#123;</div><div class="line">  <span class="keyword">@media</span> screen &#123;</div><div class="line">    <span class="attribute">color</span>: green;</div><div class="line">    <span class="keyword">@media</span> (<span class="attribute">min-width</span>: <span class="number">768px</span>) &#123;</div><div class="line">      <span class="attribute">color</span>: red;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">@media</span> tv &#123;</div><div class="line">    <span class="attribute">color</span>: black;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">@<span class="keyword">media</span> screen &#123;</div><div class="line">  <span class="selector-class">.screen-color</span> &#123;</div><div class="line">    <span class="attribute">color</span>: green;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">@<span class="keyword">media</span> screen and (min-width: <span class="number">768px</span>) &#123;</div><div class="line">  <span class="selector-class">.screen-color</span> &#123;</div><div class="line">    <span class="attribute">color</span>: red;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">@<span class="keyword">media</span> tv &#123;</div><div class="line">  <span class="selector-class">.screen-color</span> &#123;</div><div class="line">    <span class="attribute">color</span>: black;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="mixin在引用时可以不加卡号-mix"><a href="#mixin在引用时可以不加卡号-mix" class="headerlink" title="mixin在引用时可以不加卡号,.mix;"></a>mixin在引用时可以不加卡号,<code>.mix;</code></h3><hr>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><ul>
+<li><a href="http://www.cnblogs.com/fsjohnhuang/p/4187675.html#a3" target="_blank" rel="external">http://www.cnblogs.com/fsjohnhuang/p/4187675.html</a></li>
 </ul>
 
           
@@ -1457,7 +1493,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1503,7 +1539,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1514,7 +1550,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -1525,7 +1561,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -1562,7 +1598,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

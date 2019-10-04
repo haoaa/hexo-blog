@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vue源码 组件化," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="anchors
+render组件时创建vnode是个深度遍历过程
+创建组件占位符vnode
+关联父子关系vnode, vm
+子组件递归patch相关代码
+
+
+merge-option
+生命周期
+异步组件
+
+题外
+组件在render的时候就调用了那些响应式属性的getter了,也就收集了依赖.
+哪个vm调用update,就是activeInstance, vm.$vnode是占位vnode, vm.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue 组件化">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2019/03/23/2019-2019-03-23-vue组件化/index.html">
+<meta property="og:site_name" content="Haoqi's blog-ish!">
+<meta property="og:description" content="anchors
+render组件时创建vnode是个深度遍历过程
+创建组件占位符vnode
+关联父子关系vnode, vm
+子组件递归patch相关代码
+
+
+merge-option
+生命周期
+异步组件
+
+题外
+组件在render的时候就调用了那些响应式属性的getter了,也就收集了依赖.
+哪个vm调用update,就是activeInstance, vm.$vnode是占位vnode, vm.">
+<meta property="og:updated_time" content="2019-03-30T13:37:48.383Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue 组件化">
+<meta name="twitter:description" content="anchors
+render组件时创建vnode是个深度遍历过程
+创建组件占位符vnode
+关联父子关系vnode, vm
+子组件递归patch相关代码
+
+
+merge-option
+生命周期
+异步组件
+
+题外
+组件在render的时候就调用了那些响应式属性的getter了,也就收集了依赖.
+哪个vm调用update,就是activeInstance, vm.$vnode是占位vnode, vm.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2019/03/23/2019-2019-03-23-vue组件化/"/>
+
+
+
+
+
+  <title>vue 组件化 | Haoqi's blog-ish!</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <audio src="\assets\2019\Indian_Summer.mp3"></audio>
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Haoqi's blog-ish!</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">blah blah blah</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+
+<script>
+  let hasClick = 0 
+  document.querySelector('.site-subtitle').onclick = ()=>{
+    hasClick++
+    if(hasClick === 3) {
+      document.querySelector('audio').play()
+    }
+  }
+
+</script> </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/03/23/2019-2019-03-23-vue组件化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="浩齐">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoqi's blog-ish!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vue 组件化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-23T11:04:16+08:00">
+                2019-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue源码-组件化/" itemprop="url" rel="index">
+                    <span itemprop="name">vue源码 组件化</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="anchors"><a href="#anchors" class="headerlink" title="anchors"></a>anchors</h3><ul>
+<li><a href="#render组件时创建vnode是个深度遍历过程">render组件时创建vnode是个深度遍历过程</a><ul>
+<li><a href="#创建组件占位符vnode">创建组件占位符vnode</a></li>
+<li><a href="#关联父子关系vnode和vm">关联父子关系vnode, vm</a></li>
+<li><a href="#子组件递归patch相关代码">子组件递归patch相关代码</a></li>
+</ul>
+</li>
+<li><a href="#merge-option">merge-option</a></li>
+<li><a href="#生命周期">生命周期</a></li>
+<li><a href="#异步组件">异步组件</a></li>
+</ul>
+<h3 id="题外"><a href="#题外" class="headerlink" title="题外"></a>题外</h3><ul>
+<li>组件在render的时候就调用了那些响应式属性的getter了,也就收集了依赖.</li>
+<li>哪个vm调用update,就是activeInstance, vm.$vnode是占位vnode, vm._vnode的渲染vnode</li>
+<li>new组件的Vue之前做option合并, 原型继承返回新constructor</li>
+<li>merge(Vue.options, vm.options)</li>
+<li>声明的component都是Vue的孙子构造函数, 在什么时候new呢? <code>createComponentInstanceForVnode</code>里执行了<code>return new vnode.componentOptions.Ctor(options)</code></li>
+<li>挂载点就是父vm里template出现的位置</li>
+</ul>
+<h3 id="render组件时创建vnode是个深度遍历过程"><a href="#render组件时创建vnode是个深度遍历过程" class="headerlink" title="render组件时创建vnode是个深度遍历过程"></a>render组件时创建vnode是个深度遍历过程</h3><h4 id="创建组件占位符vnode"><a href="#创建组件占位符vnode" class="headerlink" title="创建组件占位符vnode"></a>创建组件占位符vnode</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createComponent</span> (<span class="params"></span></span></div><div class="line">  Ctor, <span class="regexp">//</span> 组件的constructor</div><div class="line">  data,</div><div class="line">  context, <span class="regexp">//</span> 父vm</div><div class="line">  children,</div><div class="line">  tag</div><div class="line">) &#123; </div><div class="line">  <span class="keyword">var</span> baseCtor = context.$options._base;</div><div class="line"></div><div class="line">  <span class="comment">// plain options object: turn it into a constructor</span></div><div class="line">  <span class="keyword">if</span> (isObject(Ctor)) &#123;</div><div class="line">    Ctor = baseCtor.extend(Ctor);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> Ctor !== <span class="string">'function'</span>) &#123;</div><div class="line">    <span class="keyword">return</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// async component mixin, v-model省略</span></div><div class="line"></div><div class="line">  <span class="comment">// install component management hooks onto the placeholder node</span></div><div class="line">  installComponentHooks(data);</div><div class="line">  </div><div class="line"></div><div class="line">  <span class="comment">// return a placeholder vnode</span></div><div class="line">  <span class="keyword">var</span> name = Ctor.options.name || tag;</div><div class="line">  <span class="keyword">var</span> vnode = <span class="keyword">new</span> VNode(</div><div class="line">    (<span class="string">"vue-component-"</span> + (Ctor.cid) + (name ? (<span class="string">"-"</span> + name) : <span class="string">''</span>)),</div><div class="line">    data, <span class="literal">undefined</span>, <span class="literal">undefined</span>, <span class="literal">undefined</span>, context,</div><div class="line">    &#123; <span class="attr">Ctor</span>: Ctor, <span class="attr">propsData</span>: propsData, <span class="attr">listeners</span>: listeners, <span class="attr">tag</span>: tag, <span class="attr">children</span>: children &#125;,</div><div class="line">    asyncFactory</div><div class="line">  );</div><div class="line"></div><div class="line">  <span class="keyword">return</span> vnode</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="关联父子关系vnode和vm"><a href="#关联父子关系vnode和vm" class="headerlink" title="关联父子关系vnode和vm"></a>关联父子关系vnode和vm</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// render 需要获取占位符vnode上的option data</span></div><div class="line">Vue.prototype._render = <span class="function"><span class="keyword">function</span> (<span class="params"></span>): <span class="title">VNode</span> </span>&#123;</div><div class="line">  <span class="keyword">const</span> vm: Component = <span class="keyword">this</span></div><div class="line">  <span class="keyword">const</span> &#123; render, _parentVnode &#125; = vm.$options</div><div class="line">  </div><div class="line">  <span class="comment">// set parent vnode. this allows render functions to have access</span></div><div class="line">  <span class="comment">// to the data on the placeholder node.</span></div><div class="line">  vm.$vnode = _parentVnode</div><div class="line">  <span class="comment">// render self</span></div><div class="line">  <span class="keyword">let</span> vnode</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    vnode = render.call(vm._renderProxy, vm.$createElement)</div><div class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">    <span class="comment">// ...</span></div><div class="line">  &#125;</div><div class="line">  <span class="comment">// set parent</span></div><div class="line">  vnode.parent = _parentVnode</div><div class="line">  <span class="keyword">return</span> vnode</div><div class="line">&#125;</div><div class="line"></div><div class="line">Vue.prototype._update = <span class="function"><span class="keyword">function</span> (<span class="params">vnode: VNode, hydrating?: boolean</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> vm: Component = <span class="keyword">this</span></div><div class="line">  <span class="keyword">const</span> prevVnode = vm._vnode</div><div class="line">  <span class="keyword">const</span> prevActiveInstance = activeInstance</div><div class="line">  activeInstance = vm</div><div class="line">  vm._vnode = vnode <span class="comment">// _vnode表示组件渲染vnode</span></div><div class="line">  </div><div class="line">  vm.$el = vm.__patch__(prevVnode, vnode)</div><div class="line">  </div><div class="line">  activeInstance = prevActiveInstance</div><div class="line">  </div><div class="line">  <span class="comment">// if parent is an HOC, update its $el as well</span></div><div class="line">  <span class="keyword">if</span> (vm.$vnode &amp;&amp; vm.$parent &amp;&amp; vm.$vnode === vm.$parent._vnode) &#123;</div><div class="line">    vm.$parent.$el = vm.$el</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// extend负责建立继承关系</span></div><div class="line"><span class="comment">/**</span></div><div class="line">   * Class inheritance</div><div class="line">   */</div><div class="line">  Vue.extend = <span class="function"><span class="keyword">function</span> (<span class="params">extendOptions</span>) </span>&#123;</div><div class="line">    extendOptions = extendOptions || &#123;&#125;;</div><div class="line">    <span class="keyword">var</span> Super = <span class="keyword">this</span>;</div><div class="line">    <span class="keyword">var</span> SuperId = Super.cid;</div><div class="line">    </div><div class="line">    <span class="comment">//constructor 缓存</span></div><div class="line">    <span class="keyword">var</span> Sub = <span class="function"><span class="keyword">function</span> <span class="title">VueComponent</span> (<span class="params">options</span>) </span>&#123;</div><div class="line">      <span class="keyword">this</span>._init(options);</div><div class="line">    &#125;;</div><div class="line">    Sub.prototype = <span class="built_in">Object</span>.create(Super.prototype);</div><div class="line">    Sub.prototype.constructor = Sub;</div><div class="line">    Sub.cid = cid++;</div><div class="line">    Sub.options = mergeOptions(</div><div class="line">      Super.options,</div><div class="line">      extendOptions</div><div class="line">    );</div><div class="line">    Sub[<span class="string">'super'</span>] = Super;</div><div class="line"></div><div class="line">    <span class="comment">// 一些初始化, 基础功能绑定等</span></div><div class="line">    </div><div class="line">    Sub.superOptions = Super.options;</div><div class="line">    Sub.extendOptions = extendOptions;</div><div class="line">    Sub.sealedOptions = extend(&#123;&#125;, Sub.options);</div><div class="line"></div><div class="line">    <span class="comment">// cache constructor</span></div><div class="line">    cachedCtors[SuperId] = Sub;</div><div class="line">    <span class="keyword">return</span> Sub</div><div class="line">  &#125;;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// initMixin给子组件混入Vue生命周期和关联父子关系vnode, vm(render/update时候会用到)</span></div><div class="line">Vue.prototype._init = <span class="function"><span class="keyword">function</span> (<span class="params">options</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> vm = <span class="keyword">this</span>;</div><div class="line">    <span class="comment">// a uid</span></div><div class="line">    vm._uid = uid$<span class="number">3</span>++;</div><div class="line">  <span class="comment">// a flag to avoid this being observed</span></div><div class="line">    vm._isVue = <span class="literal">true</span>;</div><div class="line">    <span class="comment">// merge options</span></div><div class="line">    <span class="keyword">if</span> (options &amp;&amp; options._isComponent) &#123;</div><div class="line">      <span class="comment">// optimize internal component instantiation</span></div><div class="line">      <span class="comment">// since dynamic options merging is pretty slow, and none of the</span></div><div class="line">      <span class="comment">// internal component options needs special treatment.</span></div><div class="line">      initInternalComponent(vm, options);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">initInternalComponent</span> (<span class="params">vm, options</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> opts = vm.$options = <span class="built_in">Object</span>.create(vm.constructor.options);</div><div class="line">  <span class="comment">// doing this because it's faster than dynamic enumeration.</span></div><div class="line">  <span class="keyword">var</span> parentVnode = options._parentVnode;</div><div class="line">  opts.parent = options.parent;</div><div class="line">  opts._parentVnode = parentVnode;</div><div class="line"></div><div class="line">  <span class="comment">// 父vnode上的数据复给子vm.$options</span></div><div class="line">  <span class="keyword">var</span> vnodeComponentOptions = parentVnode.componentOptions;</div><div class="line">  opts.propsData = vnodeComponentOptions.propsData;</div><div class="line">  opts._parentListeners = vnodeComponentOptions.listeners;</div><div class="line">  opts._renderChildren = vnodeComponentOptions.children;</div><div class="line">  opts._componentTag = vnodeComponentOptions.tag;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (options.render) &#123;</div><div class="line">    opts.render = options.render;</div><div class="line">    opts.staticRenderFns = options.staticRenderFns;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="子组件递归patch相关代码"><a href="#子组件递归patch相关代码" class="headerlink" title="子组件递归patch相关代码"></a>子组件递归patch相关代码</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div></pre></td><td class="code"><pre><div class="line">  <span class="comment">// patch phase</span></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">createElm</span> (<span class="params"></span></span></div><div class="line">    vnode,</div><div class="line">    insertedVnodeQueue,</div><div class="line">    parentElm,</div><div class="line">    refElm,</div><div class="line">    nested,</div><div class="line">    ownerArray,</div><div class="line">    index</div><div class="line">  ) &#123;</div><div class="line">    <span class="keyword">if</span> (isDef(vnode.elm) &amp;&amp; isDef(ownerArray)) &#123;</div><div class="line">      <span class="comment">// This vnode was used in a previous render!</span></div><div class="line">      <span class="comment">// now it's used as a new node, overwriting its elm would cause</span></div><div class="line">      <span class="comment">// potential patch errors down the road when it's used as an insertion</span></div><div class="line">      <span class="comment">// reference node. Instead, we clone the node on-demand before creating</span></div><div class="line">      <span class="comment">// associated DOM element for it.</span></div><div class="line">      vnode = ownerArray[index] = cloneVNode(vnode);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    vnode.isRootInsert = !nested; <span class="comment">// for transition enter check</span></div><div class="line">    <span class="comment">// vnode在创建对应node, 如果是组件vnode,就new 组件vnode的constructor, 然后有去执行组件vnode的render/path, 组件vnode patch后就return了吧往下执行.</span></div><div class="line">    <span class="keyword">if</span> (createComponent(vnode, insertedVnodeQueue, parentElm, refElm)) &#123;</div><div class="line">      <span class="keyword">return</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> data = vnode.data;</div><div class="line">    <span class="keyword">var</span> children = vnode.children;</div><div class="line">    <span class="keyword">var</span> tag = vnode.tag;</div><div class="line">    <span class="keyword">if</span> (isDef(tag)) &#123;</div><div class="line">      <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (data &amp;&amp; data.pre) &#123;</div><div class="line">          creatingElmInVPre++;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (isUnknownElement$$<span class="number">1</span>(vnode, creatingElmInVPre)) &#123;</div><div class="line">          warn(</div><div class="line">            <span class="string">'Unknown custom element: &lt;'</span> + tag + <span class="string">'&gt; - did you '</span> +</div><div class="line">            <span class="string">'register the component correctly? For recursive components, '</span> +</div><div class="line">            <span class="string">'make sure to provide the "name" option.'</span>,</div><div class="line">            vnode.context</div><div class="line">          );</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      vnode.elm = vnode.ns</div><div class="line">        ? nodeOps.createElementNS(vnode.ns, tag)</div><div class="line">        : nodeOps.createElement(tag, vnode);</div><div class="line">      setScope(vnode);</div><div class="line"></div><div class="line">      <span class="comment">/* istanbul ignore if */</span></div><div class="line">      &#123;</div><div class="line">        createChildren(vnode, children, insertedVnodeQueue);</div><div class="line">        <span class="keyword">if</span> (isDef(data)) &#123;</div><div class="line">          invokeCreateHooks(vnode, insertedVnodeQueue);</div><div class="line">        &#125;</div><div class="line">        insert(parentElm, vnode.elm, refElm);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp; data &amp;&amp; data.pre) &#123;</div><div class="line">        creatingElmInVPre--;</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isTrue(vnode.isComment)) &#123;</div><div class="line">      vnode.elm = nodeOps.createComment(vnode.text);</div><div class="line">      insert(parentElm, vnode.elm, refElm);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      vnode.elm = nodeOps.createTextNode(vnode.text);</div><div class="line">      insert(parentElm, vnode.elm, refElm);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">createComponent</span> (<span class="params">vnode, insertedVnodeQueue, parentElm, refElm</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> i = vnode.data;</div><div class="line">    <span class="keyword">if</span> (isDef(i)) &#123;</div><div class="line">      <span class="keyword">var</span> isReactivated = isDef(vnode.componentInstance) &amp;&amp; i.keepAlive;</div><div class="line">      <span class="keyword">if</span> (isDef(i = i.hook) &amp;&amp; isDef(i = i.init)) &#123;</div><div class="line">        i(vnode, <span class="literal">false</span> <span class="comment">/* hydrating */</span>);</div><div class="line">      &#125;</div><div class="line">      <span class="comment">// after calling the init hook, if the vnode is a child component</span></div><div class="line">      <span class="comment">// it should've created a child instance and mounted it. the child</span></div><div class="line">      <span class="comment">// component also has set the placeholder vnode's elm.</span></div><div class="line">      <span class="comment">// in that case we can just return the element and be done.</span></div><div class="line">      <span class="keyword">if</span> (isDef(vnode.componentInstance)) &#123;</div><div class="line">        initComponent(vnode, insertedVnodeQueue);</div><div class="line">        insert(parentElm, vnode.elm, refElm);</div><div class="line">        <span class="keyword">if</span> (isTrue(isReactivated)) &#123;</div><div class="line">          reactivateComponent(vnode, insertedVnodeQueue, parentElm, refElm);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"><span class="keyword">var</span> componentVNodeHooks = &#123;</div><div class="line">  <span class="attr">init</span>: <span class="function"><span class="keyword">function</span> <span class="title">init</span> (<span class="params">vnode, hydrating</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (</div><div class="line">      vnode.componentInstance &amp;&amp;</div><div class="line">      !vnode.componentInstance._isDestroyed &amp;&amp;</div><div class="line">      vnode.data.keepAlive</div><div class="line">    ) &#123;</div><div class="line">      <span class="comment">// kept-alive components, treat as a patch</span></div><div class="line">      <span class="keyword">var</span> mountedNode = vnode; <span class="comment">// work around flow</span></div><div class="line">      componentVNodeHooks.prepatch(mountedNode, mountedNode);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="keyword">var</span> child = vnode.componentInstance = createComponentInstanceForVnode(</div><div class="line">        vnode,</div><div class="line">        activeInstance</div><div class="line">      );</div><div class="line">      <span class="comment">// 走$mount -&gt; render -&gt; update/patch那一套</span></div><div class="line">      child.$mount(hydrating ? vnode.elm : <span class="literal">undefined</span>, hydrating);</div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line">   <span class="attr">insert</span>: <span class="function"><span class="keyword">function</span> <span class="title">insert</span> (<span class="params">vnode</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> context = vnode.context;</div><div class="line">    <span class="keyword">var</span> componentInstance = vnode.componentInstance;</div><div class="line">    <span class="keyword">if</span> (!componentInstance._isMounted) &#123;</div><div class="line">      componentInstance._isMounted = <span class="literal">true</span>;</div><div class="line">      callHook(componentInstance, <span class="string">'mounted'</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (vnode.data.keepAlive) &#123;</div><div class="line">      <span class="keyword">if</span> (context._isMounted) &#123;</div><div class="line">        <span class="comment">// vue-router#1212</span></div><div class="line">        <span class="comment">// During updates, a kept-alive component's child components may</span></div><div class="line">        <span class="comment">// change, so directly walking the tree here may call activated hooks</span></div><div class="line">        <span class="comment">// on incorrect children. Instead we push them into a queue which will</span></div><div class="line">        <span class="comment">// be processed after the whole patch process ended.</span></div><div class="line">        queueActivatedComponent(componentInstance);</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        activateChildComponent(componentInstance, <span class="literal">true</span> <span class="comment">/* direct */</span>);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 用组件constructor创建实例,记录父vm, vnode(占位符)</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createComponentInstanceForVnode</span> (<span class="params"></span></span></div><div class="line">  vnode, <span class="regexp">//</span> we know it<span class="string">'s MountedComponentVNode but flow doesn'</span>t</div><div class="line">  parent <span class="regexp">//</span> activeInstance in lifecycle state</div><div class="line">) &#123;</div><div class="line">  <span class="keyword">var</span> options = &#123;</div><div class="line">    <span class="attr">_isComponent</span>: <span class="literal">true</span>,</div><div class="line">    <span class="attr">_parentVnode</span>: vnode,</div><div class="line">    <span class="attr">parent</span>: parent</div><div class="line">  &#125;;</div><div class="line">  <span class="comment">// check inline-template render functions</span></div><div class="line">  <span class="keyword">var</span> inlineTemplate = vnode.data.inlineTemplate;</div><div class="line">  <span class="keyword">if</span> (isDef(inlineTemplate)) &#123;</div><div class="line">    options.render = inlineTemplate.render;</div><div class="line">    options.staticRenderFns = inlineTemplate.staticRenderFns;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> vnode.componentOptions.Ctor(options)</div><div class="line">&#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">initComponent</span> (<span class="params">vnode, insertedVnodeQueue</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (isDef(vnode.data.pendingInsert)) &#123;</div><div class="line">      insertedVnodeQueue.push.apply(insertedVnodeQueue, vnode.data.pendingInsert);</div><div class="line">      vnode.data.pendingInsert = <span class="literal">null</span>;</div><div class="line">    &#125;</div><div class="line">    vnode.elm = vnode.componentInstance.$el;</div><div class="line">    <span class="keyword">if</span> (isPatchable(vnode)) &#123;</div><div class="line">      invokeCreateHooks(vnode, insertedVnodeQueue);</div><div class="line">      setScope(vnode);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="comment">// empty component root.</span></div><div class="line">      <span class="comment">// skip all element-related modules except for ref (#3455)</span></div><div class="line">      registerRef(vnode);</div><div class="line">      <span class="comment">// make sure to invoke the insert hook</span></div><div class="line">      insertedVnodeQueue.push(vnode);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">invokeCreateHooks</span> (<span class="params">vnode, insertedVnodeQueue</span>) </span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i$<span class="number">1</span> = <span class="number">0</span>; i$<span class="number">1</span> &lt; cbs.create.length; ++i$<span class="number">1</span>) &#123;</div><div class="line">      cbs.create[i$<span class="number">1</span>](emptyNode, vnode);</div><div class="line">    &#125;</div><div class="line">    i = vnode.data.hook; <span class="comment">// Reuse variable</span></div><div class="line">    <span class="keyword">if</span> (isDef(i)) &#123; <span class="comment">// insert hook在这里调用</span></div><div class="line">      <span class="keyword">if</span> (isDef(i.create)) &#123; i.create(emptyNode, vnode); &#125;</div><div class="line">      <span class="keyword">if</span> (isDef(i.insert)) &#123; insertedVnodeQueue.push(vnode); &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h3 id="merge-option"><a href="#merge-option" class="headerlink" title="merge-option"></a>merge-option</h3><ul>
+<li><p>extend,mixin都会调用merge options</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">mergeOptions</span> (<span class="params"></span></span></div><div class="line">  parent,</div><div class="line">  child,</div><div class="line">  vm</div><div class="line">) &#123;</div><div class="line">  <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</div><div class="line">    checkComponents(child);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> child === <span class="string">'function'</span>) &#123;</div><div class="line">    child = child.options;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  normalizeProps(child, vm);</div><div class="line">  normalizeInject(child, vm);</div><div class="line">  normalizeDirectives(child);</div><div class="line"></div><div class="line">  <span class="comment">// Apply extends and mixins on the child options,</span></div><div class="line">  <span class="comment">// but only if it is a raw options object that isn't</span></div><div class="line">  <span class="comment">// the result of another mergeOptions call.</span></div><div class="line">  <span class="comment">// Only merged options has the _base property.</span></div><div class="line">  <span class="keyword">if</span> (!child._base) &#123;</div><div class="line">    <span class="keyword">if</span> (child.extends) &#123;</div><div class="line">      parent = mergeOptions(parent, child.extends, vm);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (child.mixins) &#123;</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, l = child.mixins.length; i &lt; l; i++) &#123;</div><div class="line">        parent = mergeOptions(parent, child.mixins[i], vm);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> options = &#123;&#125;;</div><div class="line">  <span class="keyword">var</span> key;</div><div class="line">  <span class="keyword">for</span> (key <span class="keyword">in</span> parent) &#123;</div><div class="line">    mergeField(key);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">for</span> (key <span class="keyword">in</span> child) &#123;</div><div class="line">    <span class="keyword">if</span> (!hasOwn(parent, key)) &#123;</div><div class="line">      mergeField(key);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">mergeField</span> (<span class="params">key</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> strat = strats[key] || defaultStrat;</div><div class="line">    <span class="comment">// 合并策略,覆盖执行还是叠加执行</span></div><div class="line">    options[key] = strat(parent[key], child[key], vm, key);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> options</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>子组件的merge option</p>
+<ul>
+<li>extend时合并了选项后执行initInternalComponent, 追加几个子组件选项</li>
+<li>执行 new vnode.componentOptions.Ctor(options) 接着执行 this._init(options)，因为 options._isComponent 为 true，那么合并 options 的过程走到了 initInternalComponent(vm, options) 逻辑</li>
+<li>子组件的option通过原型继承父组件的options</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 局部组件</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createComponent</span> (<span class="params">Ctor, data, context, children, tag</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> baseCtor = context.$options._base;</div><div class="line"></div><div class="line">  <span class="comment">// plain options object: turn it into a constructor</span></div><div class="line">  <span class="keyword">if</span> (isObject(Ctor)) &#123;</div><div class="line">    Ctor = baseCtor.extend(Ctor); <span class="comment">//</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// 全局注册</span></div><div class="line"><span class="function"><span class="keyword">function</span> (<span class="params"> id, definition</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (type === <span class="string">'component'</span> &amp;&amp; isPlainObject(definition)) &#123;</div><div class="line">      definition.name = definition.name || id;</div><div class="line">      definition = <span class="keyword">this</span>.options._base.extend(definition); <span class="comment">//</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">this</span>.options[type + <span class="string">'s'</span>][id] = definition;</div><div class="line">    <span class="keyword">return</span> definition</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">initInternalComponent</span> (<span class="params">vm, options</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> opts = vm.$options = <span class="built_in">Object</span>.create(vm.constructor.options);</div><div class="line">  <span class="comment">// doing this because it's faster than dynamic enumeration.</span></div><div class="line">  <span class="keyword">var</span> parentVnode = options._parentVnode;</div><div class="line">  opts.parent = options.parent;</div><div class="line">  opts._parentVnode = parentVnode;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> vnodeComponentOptions = parentVnode.componentOptions;</div><div class="line">  opts.propsData = vnodeComponentOptions.propsData;</div><div class="line">  opts._parentListeners = vnodeComponentOptions.listeners;</div><div class="line">  opts._renderChildren = vnodeComponentOptions.children;</div><div class="line">  opts._componentTag = vnodeComponentOptions.tag;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (options.render) &#123;</div><div class="line">    opts.render = options.render;</div><div class="line">    opts.staticRenderFns = options.staticRenderFns;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h3><ul>
+<li>beforeCreate <code>vue-router 和 vuex</code>都混合了beforeCreate做一些处理</li>
+<li>做初始化, 响应式</li>
+<li>created 可以访问 props、data </li>
+<li>beforeMount 先父后子</li>
+<li>mounted 先子后父. 根组件在<code>mountComponent</code>调用,子组件在<code>componentVNodeHooks.insert</code> 中调用</li>
+<li>beforeUpdate 渲染watcher<code>非首次patch</code> <code>vm._isMounted</code> 才调用</li>
+<li>updated <code>flushSchedulerQueue</code>里满足 <code>if (vm._watcher === watcher &amp;&amp; vm._isMounted)</code>调用 </li>
+<li>beforeDestroy 先父后子</li>
+<li>destroyed 先子后父</li>
+</ul>
+<h3 id="异步组件"><a href="#异步组件" class="headerlink" title="异步组件"></a>异步组件</h3><ul>
+<li>异步组件第一次patch后, 渲染了个注释节点. <ul>
+<li>render时通过<code>resolveAsyncComponent</code>,设置异步回调resolve(模板加载后, extend constructor, 通过forceUpdate重新渲染.)</li>
+<li>通过require引入的组件直接注入resolve, import引入的在then里注入</li>
+</ul>
+</li>
+<li>高级异步组件通过<code>resolveAsyncComponent</code>在delay后forceUpdate <code>loading</code>组件, 加载超过timeout则返回<code>factory.errorComp</code>组件</li>
+<li>二次渲染过程和普通组件一样</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// .component定义异步组件时不走extend,直接返回</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">component</span>(<span class="params">id, definition</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (type === <span class="string">'component'</span> &amp;&amp; isPlainObject(definition)) &#123;</div><div class="line">    definition.name = definition.name || id;</div><div class="line">    definition = <span class="keyword">this</span>.options._base.extend(definition);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">this</span>.options[type + <span class="string">'s'</span>][id] = definition;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// render时调用</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createComponent</span> (<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> asyncFactory;</div><div class="line">  <span class="keyword">if</span> (isUndef(Ctor.cid)) &#123;</div><div class="line">    asyncFactory = Ctor;</div><div class="line">    Ctor = resolveAsyncComponent(asyncFactory, baseCtor);</div><div class="line">    <span class="comment">// 异步组件resolve前返回undefined创建注释vnode, resolve后继续往下执行</span></div><div class="line">    <span class="keyword">if</span> (Ctor === <span class="literal">undefined</span>) &#123;</div><div class="line">      <span class="comment">// return a placeholder node for async component, which is rendered</span></div><div class="line">      <span class="comment">// as a comment node but preserves all the raw information for the node.</span></div><div class="line">      <span class="comment">// the information will be used for async server-rendering and hydration.</span></div><div class="line">      <span class="keyword">return</span> createAsyncPlaceholder(</div><div class="line">        asyncFactory,</div><div class="line">        data,</div><div class="line">        context,</div><div class="line">        children,</div><div class="line">        tag</div><div class="line">      )</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  installComponentHooks(data);</div><div class="line"></div><div class="line">  <span class="comment">// return a placeholder vnode</span></div><div class="line">  <span class="keyword">var</span> name = Ctor.options.name || tag;</div><div class="line">  <span class="keyword">var</span> vnode = <span class="keyword">new</span> VNode(</div><div class="line">    (<span class="string">"vue-component-"</span> + (Ctor.cid) + (name ? (<span class="string">"-"</span> + name) : <span class="string">''</span>)),</div><div class="line">    data, <span class="literal">undefined</span>, <span class="literal">undefined</span>, <span class="literal">undefined</span>, context,</div><div class="line">    &#123; <span class="attr">Ctor</span>: Ctor, <span class="attr">propsData</span>: propsData, <span class="attr">listeners</span>: listeners, <span class="attr">tag</span>: tag, <span class="attr">children</span>: children &#125;,</div><div class="line">    asyncFactory</div><div class="line">  );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">resolveAsyncComponent</span> (<span class="params"></span></span></div><div class="line">  factory,</div><div class="line">  baseCtor</div><div class="line">) &#123;</div><div class="line">  <span class="keyword">if</span> (isTrue(factory.error) &amp;&amp; isDef(factory.errorComp)) &#123;</div><div class="line">    <span class="keyword">return</span> factory.errorComp</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (isDef(factory.resolved)) &#123;</div><div class="line">    <span class="keyword">return</span> factory.resolved</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> owner = currentRenderingInstance;</div><div class="line">  <span class="keyword">if</span> (owner &amp;&amp; isDef(factory.owners) &amp;&amp; factory.owners.indexOf(owner) === <span class="number">-1</span>) &#123;</div><div class="line">    <span class="comment">// already pending</span></div><div class="line">    factory.owners.push(owner);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (isTrue(factory.loading) &amp;&amp; isDef(factory.loadingComp)) &#123;</div><div class="line">    <span class="keyword">return</span> factory.loadingComp</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (owner &amp;&amp; !isDef(factory.owners)) &#123;</div><div class="line">    <span class="keyword">var</span> owners = factory.owners = [owner];</div><div class="line">    <span class="keyword">var</span> sync = <span class="literal">true</span>;</div><div class="line">    <span class="keyword">var</span> timerLoading = <span class="literal">null</span>;</div><div class="line">    <span class="keyword">var</span> timerTimeout = <span class="literal">null</span></div><div class="line"></div><div class="line">    ;(owner).$on(<span class="string">'hook:destroyed'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> remove(owners, owner); &#125;);</div><div class="line"></div><div class="line">    <span class="keyword">var</span> forceRender = <span class="function"><span class="keyword">function</span> (<span class="params">renderCompleted</span>) </span>&#123;</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, l = owners.length; i &lt; l; i++) &#123;</div><div class="line">        (owners[i]).$forceUpdate();</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (renderCompleted) &#123;</div><div class="line">        owners.length = <span class="number">0</span>;</div><div class="line">        <span class="keyword">if</span> (timerLoading !== <span class="literal">null</span>) &#123;</div><div class="line">          clearTimeout(timerLoading);</div><div class="line">          timerLoading = <span class="literal">null</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (timerTimeout !== <span class="literal">null</span>) &#123;</div><div class="line">          clearTimeout(timerTimeout);</div><div class="line">          timerTimeout = <span class="literal">null</span>;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;;</div><div class="line">    <span class="comment">// 异步组件加载完成后进行 extend =&gt; render/update</span></div><div class="line">    <span class="keyword">var</span> resolve = once(<span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</div><div class="line">      <span class="comment">// cache resolved</span></div><div class="line">      factory.resolved = ensureCtor(res, baseCtor);</div><div class="line">      <span class="comment">// invoke callbacks only if this is not a synchronous resolve</span></div><div class="line">      <span class="comment">// (async resolves are shimmed as synchronous during SSR)</span></div><div class="line">      <span class="keyword">if</span> (!sync) &#123;</div><div class="line">        forceRender(<span class="literal">true</span>);</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        owners.length = <span class="number">0</span>;</div><div class="line">      &#125;</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    <span class="keyword">var</span> reject = once(<span class="function"><span class="keyword">function</span> (<span class="params">reason</span>) </span>&#123;</div><div class="line">      process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp; warn(</div><div class="line">        <span class="string">"Failed to resolve async component: "</span> + (<span class="built_in">String</span>(factory)) +</div><div class="line">        (reason ? (<span class="string">"\nReason: "</span> + reason) : <span class="string">''</span>)</div><div class="line">      );</div><div class="line">      <span class="keyword">if</span> (isDef(factory.errorComp)) &#123;</div><div class="line">        factory.error = <span class="literal">true</span>;</div><div class="line">        forceRender(<span class="literal">true</span>);</div><div class="line">      &#125;</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    <span class="keyword">var</span> res = factory(resolve, reject);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (isObject(res)) &#123;</div><div class="line">      <span class="keyword">if</span> (isPromise(res)) &#123;</div><div class="line">        <span class="comment">// () =&gt; Promise</span></div><div class="line">        <span class="keyword">if</span> (isUndef(factory.resolved)) &#123;</div><div class="line">          res.then(resolve, reject);</div><div class="line">        &#125;</div><div class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isPromise(res.component)) &#123;</div><div class="line">        res.component.then(resolve, reject);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (isDef(res.error)) &#123;</div><div class="line">          factory.errorComp = ensureCtor(res.error, baseCtor);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (isDef(res.loading)) &#123;</div><div class="line">          factory.loadingComp = ensureCtor(res.loading, baseCtor);</div><div class="line">          <span class="keyword">if</span> (res.delay === <span class="number">0</span>) &#123;</div><div class="line">            factory.loading = <span class="literal">true</span>;</div><div class="line">          &#125; <span class="keyword">else</span> &#123;</div><div class="line">            timerLoading = setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">              timerLoading = <span class="literal">null</span>;</div><div class="line">              <span class="keyword">if</span> (isUndef(factory.resolved) &amp;&amp; isUndef(factory.error)) &#123;</div><div class="line">                factory.loading = <span class="literal">true</span>;</div><div class="line">                forceRender(<span class="literal">false</span>);</div><div class="line">              &#125;</div><div class="line">            &#125;, res.delay || <span class="number">200</span>);</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (isDef(res.timeout)) &#123;</div><div class="line">          timerTimeout = setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">            timerTimeout = <span class="literal">null</span>;</div><div class="line">            <span class="keyword">if</span> (isUndef(factory.resolved)) &#123;</div><div class="line">              reject(</div><div class="line">                process.env.NODE_ENV !== <span class="string">'production'</span></div><div class="line">                  ? (<span class="string">"timeout ("</span> + (res.timeout) + <span class="string">"ms)"</span>)</div><div class="line">                  : <span class="literal">null</span></div><div class="line">              );</div><div class="line">            &#125;</div><div class="line">          &#125;, res.timeout);</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    sync = <span class="literal">false</span>;</div><div class="line">    <span class="comment">// return in case resolved synchronously</span></div><div class="line">    <span class="keyword">return</span> factory.loading</div><div class="line">      ? factory.loadingComp</div><div class="line">      : factory.resolved</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 为异步组件首次patch创建vnode</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createAsyncPlaceholder</span> (<span class="params"></span></span></div><div class="line">  factory,</div><div class="line">  data,</div><div class="line">  context,</div><div class="line">  children,</div><div class="line">  tag</div><div class="line">) &#123;</div><div class="line">  <span class="keyword">var</span> node = createEmptyVNode();</div><div class="line">  node.asyncFactory = factory;</div><div class="line">  node.asyncMeta = &#123; <span class="attr">data</span>: data, <span class="attr">context</span>: context, <span class="attr">children</span>: children, <span class="attr">tag</span>: tag &#125;;</div><div class="line">  <span class="keyword">return</span> node</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Vue.prototype.$forceUpdate = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> vm = <span class="keyword">this</span>;</div><div class="line">  <span class="keyword">if</span> (vm._watcher) &#123;</div><div class="line">    vm._watcher.update();</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue源码-组件化/" rel="tag"># vue源码 组件化</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/03/2019-2019-03-03-事件循环/" rel="next" title="事件循环">
+                <i class="fa fa-chevron-left"></i> 事件循环
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/28/2019-2019-03-28-vue-reactivity/" rel="prev" title="vue reactivity">
+                vue reactivity <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">浩齐</p>
+              <p class="site-description motion-element" itemprop="description">some kind of blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#anchors"><span class="nav-number">1.</span> <span class="nav-text">anchors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题外"><span class="nav-number">2.</span> <span class="nav-text">题外</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#render组件时创建vnode是个深度遍历过程"><span class="nav-number">3.</span> <span class="nav-text">render组件时创建vnode是个深度遍历过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建组件占位符vnode"><span class="nav-number">3.1.</span> <span class="nav-text">创建组件占位符vnode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关联父子关系vnode和vm"><span class="nav-number">3.2.</span> <span class="nav-text">关联父子关系vnode和vm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子组件递归patch相关代码"><span class="nav-number">3.3.</span> <span class="nav-text">子组件递归patch相关代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#merge-option"><span class="nav-number">4.</span> <span class="nav-text">merge-option</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生命周期"><span class="nav-number">5.</span> <span class="nav-text">生命周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步组件"><span class="nav-number">6.</span> <span class="nav-text">异步组件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">浩齐</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

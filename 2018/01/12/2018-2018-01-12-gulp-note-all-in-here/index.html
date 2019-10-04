@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="vue reactivity," />
+  <meta name="keywords" content="gulp," />
 
 
 
@@ -79,24 +79,19 @@
 
 
 
-<meta name="description" content="vue reactivityHow Changes Are Tracked
-Walk through data properties and convert them to getter/setter using Object.defineProperty. 
-Every component instance has a corresponding watcher instance, which">
+<meta name="description" content="This post is all about issues come up when I use gulpjs.Multiple gulp process flow working with runing tasks in sequence demand.
+1234567891011121314gulp.task(&apos;someTask&apos;, function()&amp;#123;    if (gulpCo">
 <meta property="og:type" content="article">
-<meta property="og:title" content="vue-mechanism">
-<meta property="og:url" content="https://haoaa.github.io/hexo/2018/02/05/2018-01-2018-02-05-vue-mechanism/index.html">
+<meta property="og:title" content="gulp-note-all-in-here">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2018/01/12/2018-2018-01-12-gulp-note-all-in-here/index.html">
 <meta property="og:site_name" content="Haoqi's blog-ish!">
-<meta property="og:description" content="vue reactivityHow Changes Are Tracked
-Walk through data properties and convert them to getter/setter using Object.defineProperty. 
-Every component instance has a corresponding watcher instance, which">
-<meta property="og:image" content="https://vuejs.org/images/data.png">
-<meta property="og:updated_time" content="2018-02-05T03:54:12.647Z">
+<meta property="og:description" content="This post is all about issues come up when I use gulpjs.Multiple gulp process flow working with runing tasks in sequence demand.
+1234567891011121314gulp.task(&apos;someTask&apos;, function()&amp;#123;    if (gulpCo">
+<meta property="og:updated_time" content="2019-03-22T22:48:15.319Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="vue-mechanism">
-<meta name="twitter:description" content="vue reactivityHow Changes Are Tracked
-Walk through data properties and convert them to getter/setter using Object.defineProperty. 
-Every component instance has a corresponding watcher instance, which">
-<meta name="twitter:image" content="https://vuejs.org/images/data.png">
+<meta name="twitter:title" content="gulp-note-all-in-here">
+<meta name="twitter:description" content="This post is all about issues come up when I use gulpjs.Multiple gulp process flow working with runing tasks in sequence demand.
+1234567891011121314gulp.task(&apos;someTask&apos;, function()&amp;#123;    if (gulpCo">
 
 
 
@@ -126,13 +121,13 @@ Every component instance has a corresponding watcher instance, which">
 
 
 
-  <link rel="canonical" href="https://haoaa.github.io/hexo/2018/02/05/2018-01-2018-02-05-vue-mechanism/"/>
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2018/01/12/2018-2018-01-12-gulp-note-all-in-here/"/>
 
 
 
 
 
-  <title>vue-mechanism | Haoqi's blog-ish!</title>
+  <title>gulp-note-all-in-here | Haoqi's blog-ish!</title>
   
 
 
@@ -156,6 +151,7 @@ Every component instance has a corresponding watcher instance, which">
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
+  <audio src="\assets\2019\Indian_Summer.mp3"></audio>
   <div class="site-meta ">
     
 
@@ -216,7 +212,17 @@ Every component instance has a corresponding watcher instance, which">
 
 
 
- </div>
+
+<script>
+  let hasClick = 0 
+  document.querySelector('.site-subtitle').onclick = ()=>{
+    hasClick++
+    if(hasClick === 3) {
+      document.querySelector('audio').play()
+    }
+  }
+
+</script> </div>
     </header>
 
     <main id="main" class="main">
@@ -239,7 +245,7 @@ Every component instance has a corresponding watcher instance, which">
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2018/02/05/2018-01-2018-02-05-vue-mechanism/">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2018/01/12/2018-2018-01-12-gulp-note-all-in-here/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="浩齐">
@@ -256,7 +262,7 @@ Every component instance has a corresponding watcher instance, which">
 
         
         
-          <h1 class="post-title" itemprop="name headline">vue-mechanism</h1>
+          <h1 class="post-title" itemprop="name headline">gulp-note-all-in-here</h1>
         
 
         <div class="post-meta">
@@ -268,8 +274,8 @@ Every component instance has a corresponding watcher instance, which">
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-05T11:37:09+08:00">
-                2018-02-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T10:39:54+08:00">
+                2018-01-12
               </time>
             
 
@@ -291,8 +297,8 @@ Every component instance has a corresponding watcher instance, which">
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vue/" itemprop="url" rel="index">
-                    <span itemprop="name">vue</span>
+                  <a href="/categories/gulp/" itemprop="url" rel="index">
+                    <span itemprop="name">gulp</span>
                   </a>
                 </span>
 
@@ -328,36 +334,14 @@ Every component instance has a corresponding watcher instance, which">
       
 
       
-        <h2 id="vue-reactivity"><a href="#vue-reactivity" class="headerlink" title="vue reactivity"></a>vue reactivity</h2><h3 id="How-Changes-Are-Tracked"><a href="#How-Changes-Are-Tracked" class="headerlink" title="How Changes Are Tracked"></a>How Changes Are Tracked</h3><ul>
-<li>Walk through data properties and convert them to getter/setter using Object.defineProperty. </li>
-<li>Every component instance has a corresponding watcher instance, which records any properties “touched” during the component’s render as dependencies. Later on when a dependency’s setter is triggered, it notifies the watcher, which in turn causes the component to re-render.<br><img src="https://vuejs.org/images/data.png"><h3 id="Add-properties-to-an-already-created-instance"><a href="#Add-properties-to-an-already-created-instance" class="headerlink" title="Add properties to an already created instance."></a>Add properties to an already created instance.</h3></li>
-</ul>
-<ol>
-<li><code>Vue.set(vm.someObject, &#39;b&#39;, 2)</code> or <code>this.$set(this.someObject, &#39;b&#39;, 2)</code></li>
-<li>this.someObject = Object.assign({}, this.someObject, { a: 1, b: 2 })</li>
-</ol>
-<a id="more"></a>
-<h3 id="list-rendering-caveats"><a href="#list-rendering-caveats" class="headerlink" title="list rendering caveats"></a>list rendering caveats</h3><h4 id="Array-Mutation-Methods"><a href="#Array-Mutation-Methods" class="headerlink" title="Array Mutation Methods"></a>Array Mutation Methods</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">push</div><div class="line">pop</div><div class="line">shift</div><div class="line">unshift</div><div class="line">splice</div><div class="line">sort</div><div class="line">reverse</div></pre></td></tr></table></figure>
-<h4 id="deal-with-caveats"><a href="#deal-with-caveats" class="headerlink" title="deal with  caveats"></a>deal with  caveats</h4><ol>
-<li><p>set an item</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Vue.set</span></div><div class="line">Vue.set(example1.items, indexOfItem, newValue)</div><div class="line"><span class="comment">// Array.prototype.splice</span></div><div class="line">example1.items.splice(indexOfItem, <span class="number">1</span>, newValue)</div></pre></td></tr></table></figure>
+        <h2 id="This-post-is-all-about-issues-come-up-when-I-use-gulpjs"><a href="#This-post-is-all-about-issues-come-up-when-I-use-gulpjs" class="headerlink" title="This post is all about issues come up when I use gulpjs."></a>This post is all about issues come up when I use gulpjs.</h2><h3 id="Multiple-gulp-process-flow-working-with-runing-tasks-in-sequence-demand"><a href="#Multiple-gulp-process-flow-working-with-runing-tasks-in-sequence-demand" class="headerlink" title="Multiple gulp process flow working with runing tasks in sequence demand."></a>Multiple gulp process flow working with runing tasks in sequence demand.</h3><ul>
+<li><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">gulp.task(<span class="string">'someTask'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span> (gulpConfig.multi-dist)&#123;</div><div class="line">        <span class="keyword">const</span> stream = merge();</div><div class="line">        _.forEach(gulpConfig.branches, <span class="function"><span class="keyword">function</span> (<span class="params">name</span>) </span>&#123;</div><div class="line">            stream.add(</div><div class="line">            gulp.src(<span class="string">'biz/*.html'</span>)</div><div class="line">                .pipe(gulp-plumber(errorHandler))</div><div class="line">                .pipe(gulp-newer(<span class="string">'./dest/'</span> + name))</div><div class="line">                .pipe(gulp.dest(<span class="string">'./dest/'</span> + name))</div><div class="line">            );</div><div class="line">        &#125;)</div><div class="line">        <span class="keyword">return</span> stream;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 </li>
-<li><p>modify the length of an array</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">example1.items.splice(newLength)</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="view-updated-callback-Vue-nextTick"><a href="#view-updated-callback-Vue-nextTick" class="headerlink" title="view updated callback Vue.nextTick"></a>view updated callback Vue.nextTick</h3><ul>
-<li>Vue performs DOM updates asynchronously<ul>
-<li>push data changes to <strong>Async Update Queue</strong></li>
-<li>in the next event loop “tick” performs the actual work asynchronously  with promise/setTimeout</li>
-</ul>
-</li>
-<li>this.$nextTick &amp; Vue.nextTick<ul>
-<li>this.$nextTick doesn’t need global Vue and its callback’s this context will be automatically bound to the current Vue instance </li>
-</ul>
+<li><p>By doing this, now can run this multiple working flow with other tasks in sequence.</p>
 </li>
 </ul>
-
+<h3 id="alter-gulp-dest-path-through-gulp-rename"><a href="#alter-gulp-dest-path-through-gulp-rename" class="headerlink" title="alter gulp dest path through gulp-rename"></a>alter gulp dest path through gulp-rename</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">srcPath = path.join(component, <span class="string">'*'</span>, <span class="string">'lib/**/*'</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getJsStream</span>(<span class="params">srcPath, distPath</span>)</span>&#123;</div><div class="line">	<span class="keyword">return</span> gulp.src(srcPath)</div><div class="line">		.pipe(gulp-plumber(errorHandler))</div><div class="line">		<span class="comment">// .pipe(gulp-logger(&#123;showChange: true&#125;))</span></div><div class="line">		.pipe(rename(<span class="function"><span class="keyword">function</span>(<span class="params">file</span>) </span>&#123;</div><div class="line">			<span class="keyword">var</span> pathArr = file.dirname.split(path.sep);</div><div class="line">			pathArr.splice(<span class="number">1</span>,<span class="number">1</span>); <span class="comment">//切掉lib</span></div><div class="line">			file.dirname = pathArr.join(path.sep);</div><div class="line">		&#125;))</div><div class="line">		.pipe(gulp-newer(distPath))</div><div class="line">		.pipe(gulp.dest(distPath));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
       
     </div>
     
@@ -374,7 +358,7 @@ Every component instance has a corresponding watcher instance, which">
       
         <div class="post-tags">
           
-            <a href="/tags/vue-reactivity/" rel="tag"># vue reactivity</a>
+            <a href="/tags/gulp/" rel="tag"># gulp</a>
           
         </div>
       
@@ -387,8 +371,8 @@ Every component instance has a corresponding watcher instance, which">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/12/2018-01-2018-01-12-gulp-note-all-in-here/" rel="next" title="gulp-note-all-in-here">
-                <i class="fa fa-chevron-left"></i> gulp-note-all-in-here
+              <a href="/2017/12/28/201705-2017-12-28-vue-cli-and-scaffold/" rel="next" title="vue-cli-and-scaffold">
+                <i class="fa fa-chevron-left"></i> vue-cli-and-scaffold
               </a>
             
           </div>
@@ -397,8 +381,8 @@ Every component instance has a corresponding watcher instance, which">
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/02/22/2018-2018-02-22-fe-interview/" rel="prev" title="前端面试了解一下">
-                前端面试了解一下 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/02/05/2018-2018-02-05-vue-mechanism/" rel="prev" title="vue-mechanism">
+                vue-mechanism <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -476,7 +460,7 @@ Every component instance has a corresponding watcher instance, which">
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -487,7 +471,7 @@ Every component instance has a corresponding watcher instance, which">
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -498,7 +482,7 @@ Every component instance has a corresponding watcher instance, which">
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -531,7 +515,7 @@ Every component instance has a corresponding watcher instance, which">
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-reactivity"><span class="nav-number">1.</span> <span class="nav-text">vue reactivity</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-Changes-Are-Tracked"><span class="nav-number">1.1.</span> <span class="nav-text">How Changes Are Tracked</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Add-properties-to-an-already-created-instance"><span class="nav-number">1.2.</span> <span class="nav-text">Add properties to an already created instance.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#list-rendering-caveats"><span class="nav-number">1.3.</span> <span class="nav-text">list rendering caveats</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Array-Mutation-Methods"><span class="nav-number">1.3.1.</span> <span class="nav-text">Array Mutation Methods</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#deal-with-caveats"><span class="nav-number">1.3.2.</span> <span class="nav-text">deal with  caveats</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#view-updated-callback-Vue-nextTick"><span class="nav-number">1.4.</span> <span class="nav-text">view updated callback Vue.nextTick</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#This-post-is-all-about-issues-come-up-when-I-use-gulpjs"><span class="nav-number">1.</span> <span class="nav-text">This post is all about issues come up when I use gulpjs.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Multiple-gulp-process-flow-working-with-runing-tasks-in-sequence-demand"><span class="nav-number">1.1.</span> <span class="nav-text">Multiple gulp process flow working with runing tasks in sequence demand.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter-gulp-dest-path-through-gulp-rename"><span class="nav-number">1.2.</span> <span class="nav-text">alter gulp dest path through gulp-rename</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -551,7 +535,7 @@ Every component instance has a corresponding watcher instance, which">
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

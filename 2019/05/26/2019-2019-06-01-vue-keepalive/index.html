@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vue keep-alive," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="keep-alive
+如果需要让已渲染组件重新创建可以通过删除keep-alive内的cache执行12this.$vnode.parent.componentInstance.$destroy()this.$vnode.parent.componentInstance.cache
+
+
+keep-alive组件
+abstract组件不渲染,只处理内部的$slot
+
+1234567891011121">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue-keep-alive">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2019/05/26/2019-2019-06-01-vue-keepalive/index.html">
+<meta property="og:site_name" content="Haoqi's blog-ish!">
+<meta property="og:description" content="keep-alive
+如果需要让已渲染组件重新创建可以通过删除keep-alive内的cache执行12this.$vnode.parent.componentInstance.$destroy()this.$vnode.parent.componentInstance.cache
+
+
+keep-alive组件
+abstract组件不渲染,只处理内部的$slot
+
+1234567891011121">
+<meta property="og:updated_time" content="2019-10-04T06:54:49.946Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue-keep-alive">
+<meta name="twitter:description" content="keep-alive
+如果需要让已渲染组件重新创建可以通过删除keep-alive内的cache执行12this.$vnode.parent.componentInstance.$destroy()this.$vnode.parent.componentInstance.cache
+
+
+keep-alive组件
+abstract组件不渲染,只处理内部的$slot
+
+1234567891011121">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2019/05/26/2019-2019-06-01-vue-keepalive/"/>
+
+
+
+
+
+  <title>vue-keep-alive | Haoqi's blog-ish!</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <audio src="\assets\2019\Indian_Summer.mp3"></audio>
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Haoqi's blog-ish!</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">blah blah blah</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+
+<script>
+  let hasClick = 0 
+  document.querySelector('.site-subtitle').onclick = ()=>{
+    hasClick++
+    if(hasClick === 3) {
+      document.querySelector('audio').play()
+    }
+  }
+
+</script> </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/05/26/2019-2019-06-01-vue-keepalive/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="浩齐">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoqi's blog-ish!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vue-keep-alive</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-26T11:04:16+08:00">
+                2019-05-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue-keep-alive/" itemprop="url" rel="index">
+                    <span itemprop="name">vue keep-alive</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="keep-alive"><a href="#keep-alive" class="headerlink" title="keep-alive"></a>keep-alive</h2><ul>
+<li>如果需要让已渲染组件重新创建可以通过删除keep-alive内的cache执行<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.$vnode.parent.componentInstance.$destroy()</div><div class="line"><span class="keyword">this</span>.$vnode.parent.componentInstance.cache</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="keep-alive组件"><a href="#keep-alive组件" class="headerlink" title="keep-alive组件"></a>keep-alive组件</h3><ul>
+<li>abstract组件不渲染,只处理内部的$slot</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> KeepAlive = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'keep-alive'</span>,</div><div class="line">  <span class="attr">abstract</span>: <span class="literal">true</span>,</div><div class="line"></div><div class="line">  <span class="attr">props</span>: &#123;</div><div class="line">    <span class="attr">include</span>: patternTypes,</div><div class="line">    <span class="attr">exclude</span>: patternTypes,</div><div class="line">    <span class="attr">max</span>: [<span class="built_in">String</span>, <span class="built_in">Number</span>]</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  <span class="attr">created</span>: <span class="function"><span class="keyword">function</span> <span class="title">created</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.cache = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</div><div class="line">    <span class="keyword">this</span>.keys = [];</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  <span class="attr">destroyed</span>: <span class="function"><span class="keyword">function</span> <span class="title">destroyed</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> <span class="keyword">this</span>.cache) &#123;</div><div class="line">      pruneCacheEntry(<span class="keyword">this</span>.cache, key, <span class="keyword">this</span>.keys);</div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  <span class="attr">mounted</span>: <span class="function"><span class="keyword">function</span> <span class="title">mounted</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> <span class="keyword">this</span>$<span class="number">1</span> = <span class="keyword">this</span>;</div><div class="line"></div><div class="line">    <span class="keyword">this</span>.$watch(<span class="string">'include'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">val</span>) </span>&#123;</div><div class="line">      pruneCache(<span class="keyword">this</span>$<span class="number">1</span>, <span class="function"><span class="keyword">function</span> (<span class="params">name</span>) </span>&#123; <span class="keyword">return</span> matches(val, name); &#125;);</div><div class="line">    &#125;);</div><div class="line">    <span class="keyword">this</span>.$watch(<span class="string">'exclude'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">val</span>) </span>&#123;</div><div class="line">      pruneCache(<span class="keyword">this</span>$<span class="number">1</span>, <span class="function"><span class="keyword">function</span> (<span class="params">name</span>) </span>&#123; <span class="keyword">return</span> !matches(val, name); &#125;);</div><div class="line">    &#125;);</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  <span class="attr">render</span>: <span class="function"><span class="keyword">function</span> <span class="title">render</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// ...</span></div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>### </p>
+<ul>
+<li>建立父子关系. 对keep-alive而言,parent的children没有自己, 但自己的parent还是parent.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">initLifecycle</span> (<span class="params">vm</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> options = vm.$options;</div><div class="line"></div><div class="line">  <span class="comment">// locate first non-abstract parent</span></div><div class="line">  <span class="keyword">var</span> parent = options.parent;</div><div class="line">  <span class="keyword">if</span> (parent &amp;&amp; !options.abstract) &#123;</div><div class="line">    <span class="keyword">while</span> (parent.$options.abstract &amp;&amp; parent.$parent) &#123;</div><div class="line">      parent = parent.$parent;</div><div class="line">    &#125;</div><div class="line">    parent.$children.push(vm);</div><div class="line">  &#125;</div><div class="line">  vm.$parent = parent;</div><div class="line">  vm.$root = parent ? parent.$root : vm;</div><div class="line">&#125;</div><div class="line">    <span class="comment">// keep-alive渲染时的调用栈</span></div><div class="line">    at initLifecycle (vue.esm.js?efeb:<span class="number">3916</span>) vm._uid === <span class="number">1</span></div><div class="line">    at VueComponent.Vue._init (vue.esm.js?efeb:<span class="number">5005</span>)</div><div class="line">    at <span class="keyword">new</span> VueComponent (vue.esm.js?efeb:<span class="number">5158</span>)</div><div class="line">    at createComponentInstanceForVnode (vue.esm.js?efeb:<span class="number">3292</span>)</div><div class="line">    at init (vue.esm.js?efeb:<span class="number">3123</span>)</div><div class="line">    at createComponent (vue.esm.js?efeb:<span class="number">5984</span>)</div><div class="line">    at createElm (vue.esm.js?efeb:<span class="number">5931</span>)</div><div class="line">    at createChildren (vue.esm.js?efeb:<span class="number">6059</span>)</div><div class="line">    at createElm (vue.esm.js?efeb:<span class="number">5960</span>)</div><div class="line">    at Vue.patch [<span class="keyword">as</span> __patch__] (vue.esm.js?efeb:<span class="number">6522</span>)</div></pre></td></tr></table></figure>
+<h3 id="首次渲染"><a href="#首次渲染" class="headerlink" title="首次渲染"></a>首次渲染</h3><ul>
+<li>patch根节点到keep-alive组件,init的时候createComponentInstanceForVnode-&gt;new VueComponent </li>
+<li>keep-alive $mount $render接入render函数, 返回包裹的内容的vnode, update该vnode</li>
+<li>内容vnode的vm实例的parent是keep-alive的父元素(如上面代码)</li>
+<li>根节点patch结束之前调用<code>invokeInsertHook</code>,  会调用<code>activateChildComponent</code>触发activated回调<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">init</span> (<span class="params">vnode, hydrating</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (</div><div class="line">    vnode.componentInstance &amp;&amp;</div><div class="line">    !vnode.componentInstance._isDestroyed &amp;&amp;</div><div class="line">    vnode.data.keepAlive</div><div class="line">  ) &#123;</div><div class="line">    <span class="comment">// kept-alive components, treat as a patch</span></div><div class="line">    <span class="keyword">var</span> mountedNode = vnode; <span class="comment">// work around flow</span></div><div class="line">    componentVNodeHooks.prepatch(mountedNode, mountedNode);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">var</span> child = vnode.componentInstance = createComponentInstanceForVnode(</div><div class="line">      vnode,</div><div class="line">      activeInstance</div><div class="line">    );</div><div class="line">    child.$mount(hydrating ? vnode.elm : <span class="literal">undefined</span>, hydrating);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> slot = <span class="keyword">this</span>.$slots.default;</div><div class="line">  <span class="keyword">var</span> vnode = getFirstComponentChild(slot);</div><div class="line">  <span class="keyword">var</span> componentOptions = vnode &amp;&amp; vnode.componentOptions;</div><div class="line">  <span class="keyword">if</span> (componentOptions) &#123;</div><div class="line">    <span class="keyword">var</span> ref = <span class="keyword">this</span>;</div><div class="line">    <span class="keyword">if</span> (cache[key]) &#123;</div><div class="line">      vnode.componentInstance = cache[key].componentInstance;</div><div class="line">      <span class="comment">// make current key freshest</span></div><div class="line">      remove(keys, key);</div><div class="line">      keys.push(key);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      cache[key] = vnode;</div><div class="line">      keys.push(key);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    vnode.data.keepAlive = <span class="literal">true</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> vnode || (slot &amp;&amp; slot[<span class="number">0</span>])</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// call invokeInsertHook</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">insert</span> (<span class="params">vnode</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> context = vnode.context;</div><div class="line">  <span class="keyword">var</span> componentInstance = vnode.componentInstance;</div><div class="line">  <span class="keyword">if</span> (!componentInstance._isMounted) &#123;</div><div class="line">    componentInstance._isMounted = <span class="literal">true</span>;</div><div class="line">    callHook(componentInstance, <span class="string">'mounted'</span>);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">if</span> (vnode.data.keepAlive) &#123;</div><div class="line">    <span class="keyword">if</span> (context._isMounted) &#123;</div><div class="line">      <span class="comment">// vue-router#1212</span></div><div class="line">      <span class="comment">// During updates, a kept-alive component's child components may</span></div><div class="line">      <span class="comment">// change, so directly walking the tree here may call activated hooks</span></div><div class="line">      <span class="comment">// on incorrect children. Instead we push them into a queue which will</span></div><div class="line">      <span class="comment">// be processed after the whole patch process ended.</span></div><div class="line">      queueActivatedComponent(componentInstance);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      activateChildComponent(componentInstance, <span class="literal">true</span> <span class="comment">/* direct */</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">activateChildComponent</span> (<span class="params">vm, direct</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (vm._inactive || vm._inactive === <span class="literal">null</span>) &#123;</div><div class="line">    vm._inactive = <span class="literal">false</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; vm.$children.length; i++) &#123;</div><div class="line">      activateChildComponent(vm.$children[i]);</div><div class="line">    &#125;</div><div class="line">    callHook(vm, <span class="string">'activated'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="二次渲染"><a href="#二次渲染" class="headerlink" title="二次渲染"></a>二次渲染</h3><ul>
+<li>patchVnode到keep-alive组件时调用prepatch触发keep-alive组件重新渲染</li>
+<li>重新渲染的vnode从缓存获取componentInstance</li>
+<li>再次到createComponent 会执行init hook,就会跳过渲染vnode的vm创建</li>
+<li>执行<code>initComponent</code> <code>insert</code>后就完成dom插入</li>
+<li>keep-alive组件的patch最后执行invokeInsertHook, 执行在<code>initComponent</code>添加的包裹vnode的inserthook</li>
+<li>与首次渲染不同是activated回调通过先添加到<code>activatedChildren</code>中,再渲染完成后一并执行. 因为子组件在update的时候可能会变.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">patchVnode</span> (<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> i;</div><div class="line">    <span class="keyword">var</span> data = vnode.data;</div><div class="line">    <span class="keyword">if</span> (isDef(data) &amp;&amp; isDef(i = data.hook) &amp;&amp; isDef(i = i.prepatch)) &#123;</div><div class="line">      i(oldVnode, vnode);</div><div class="line">    &#125;</div><div class="line"> &#125;</div><div class="line"></div><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">prepatch</span> (<span class="params">oldVnode, vnode</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> options = vnode.componentOptions;</div><div class="line">    <span class="keyword">var</span> child = vnode.componentInstance = oldVnode.componentInstance;</div><div class="line">    updateChildComponent(</div><div class="line">      child,</div><div class="line">      options.propsData, <span class="comment">// updated props</span></div><div class="line">      options.listeners, <span class="comment">// updated listeners</span></div><div class="line">      vnode, <span class="comment">// new parent vnode</span></div><div class="line">      options.children <span class="comment">// new children</span></div><div class="line">    );</div><div class="line">  &#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateChildComponent</span> (<span class="params"></span></span></div><div class="line">  vm,</div><div class="line">  propsData,</div><div class="line">  listeners,</div><div class="line">  parentVnode,</div><div class="line">  renderChildren</div><div class="line">) &#123;</div><div class="line">  <span class="keyword">var</span> needsForceUpdate = !!(</div><div class="line">    renderChildren ||               <span class="comment">// has new static slots</span></div><div class="line">    vm.$options._renderChildren ||  <span class="comment">// has old static slots</span></div><div class="line">    hasDynamicScopedSlot</div><div class="line">  );</div><div class="line">    <span class="comment">// resolve slots + force update if has children</span></div><div class="line">  <span class="keyword">if</span> (needsForceUpdate) &#123;</div><div class="line">    vm.$slots = resolveSlots(renderChildren, parentVnode.context);</div><div class="line">    vm.$forceUpdate();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> slot = <span class="keyword">this</span>.$slots.default;</div><div class="line">    <span class="keyword">var</span> vnode = getFirstComponentChild(slot);</div><div class="line">    <span class="keyword">var</span> componentOptions = vnode &amp;&amp; vnode.componentOptions;</div><div class="line">    <span class="keyword">if</span> (componentOptions) &#123;</div><div class="line">     <span class="keyword">if</span> (cache[key]) &#123;</div><div class="line">        vnode.componentInstance = cache[key].componentInstance;</div><div class="line">        <span class="comment">// make current key freshest</span></div><div class="line">        remove(keys, key);</div><div class="line">        keys.push(key);</div><div class="line">      &#125;</div><div class="line">      vnode.data.keepAlive = <span class="literal">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> vnode || (slot &amp;&amp; slot[<span class="number">0</span>])</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+  <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createComponent</span> (<span class="params">vnode, insertedVnodeQueue, parentElm, refElm</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> i = vnode.data;</div><div class="line">  <span class="keyword">if</span> (isDef(i)) &#123;</div><div class="line">    <span class="keyword">var</span> isReactivated = isDef(vnode.componentInstance) &amp;&amp; i.keepAlive;</div><div class="line">    <span class="keyword">if</span> (isDef(i = i.hook) &amp;&amp; isDef(i = i.init)) &#123;</div><div class="line">      i(vnode, <span class="literal">false</span> <span class="comment">/* hydrating */</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// after calling the init hook, if the vnode is a child component</span></div><div class="line">    <span class="comment">// it should've created a child instance and mounted it. the child</span></div><div class="line">    <span class="comment">// component also has set the placeholder vnode's elm.</span></div><div class="line">    <span class="comment">// in that case we can just return the element and be done.</span></div><div class="line">    <span class="keyword">if</span> (isDef(vnode.componentInstance)) &#123;</div><div class="line">      initComponent(vnode, insertedVnodeQueue);</div><div class="line">      insert(parentElm, vnode.elm, refElm);</div><div class="line">      <span class="keyword">if</span> (isTrue(isReactivated)) &#123;</div><div class="line">        reactivateComponent(vnode, insertedVnodeQueue, parentElm, refElm);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">init</span> (<span class="params">vnode, hydrating</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (</div><div class="line">    vnode.componentInstance &amp;&amp;</div><div class="line">    !vnode.componentInstance._isDestroyed &amp;&amp;</div><div class="line">    vnode.data.keepAlive</div><div class="line">  ) &#123;</div><div class="line">    <span class="comment">// kept-alive components, treat as a patch</span></div><div class="line">    <span class="keyword">var</span> mountedNode = vnode; <span class="comment">// work around flow</span></div><div class="line">    componentVNodeHooks.prepatch(mountedNode, mountedNode);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">var</span> child = vnode.componentInstance = createComponentInstanceForVnode(</div><div class="line">      vnode,</div><div class="line">      activeInstance</div><div class="line">    );</div><div class="line">    child.$mount(hydrating ? vnode.elm : <span class="literal">undefined</span>, hydrating);</div><div class="line">  &#125;</div><div class="line">&#125;,</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">insert</span> (<span class="params">vnode</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (vnode.data.keepAlive) &#123;</div><div class="line">    <span class="keyword">if</span> (context._isMounted) &#123;</div><div class="line">      <span class="comment">// vue-router#1212</span></div><div class="line">      <span class="comment">// During updates, a kept-alive component's child components may</span></div><div class="line">      <span class="comment">// change, so directly walking the tree here may call activated hooks</span></div><div class="line">      <span class="comment">// on incorrect children. Instead we push them into a queue which will</span></div><div class="line">      <span class="comment">// be processed after the whole patch process ended.</span></div><div class="line">      queueActivatedComponent(componentInstance);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      activateChildComponent(componentInstance, <span class="literal">true</span> <span class="comment">/* direct */</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">queueActivatedComponent</span> (<span class="params">vm</span>) </span>&#123;</div><div class="line">  <span class="comment">// setting _inactive to false here so that a render function can</span></div><div class="line">  <span class="comment">// rely on checking whether it's in an inactive tree (e.g. router-view)</span></div><div class="line">  vm._inactive = <span class="literal">false</span>;</div><div class="line">  activatedChildren.push(vm);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">flushSchedulerQueue</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// watcher执行</span></div><div class="line">  <span class="comment">// call component updated and activated hooks</span></div><div class="line">  callActivatedHooks(activatedQueue);</div><div class="line">  callUpdatedHooks(updatedQueue);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">callActivatedHooks</span> (<span class="params">queue</span>) </span>&#123;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; queue.length; i++) &#123;</div><div class="line">    queue[i]._inactive = <span class="literal">true</span>;</div><div class="line">    activateChildComponent(queue[i], <span class="literal">true</span> <span class="comment">/* true */</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="deactivated钩子"><a href="#deactivated钩子" class="headerlink" title="deactivated钩子"></a>deactivated钩子</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">patch</span> (<span class="params">oldVnode, vnode</span>) </span>&#123;</div><div class="line">    <span class="comment">// destroy old node</span></div><div class="line">    <span class="keyword">if</span> (isDef(parentElm)) &#123;</div><div class="line">      removeVnodes(parentElm, [oldVnode], <span class="number">0</span>, <span class="number">0</span>); </div><div class="line">    &#125;</div><div class="line">    invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch);</div><div class="line">    <span class="keyword">return</span> vnode.elm</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">removeVnodes</span> (<span class="params">parentElm, vnodes, startIdx, endIdx</span>) </span>&#123;</div><div class="line">  <span class="keyword">for</span> (; startIdx &lt;= endIdx; ++startIdx) &#123;</div><div class="line">    <span class="keyword">var</span> ch = vnodes[startIdx];</div><div class="line">    <span class="keyword">if</span> (isDef(ch)) &#123;</div><div class="line">      <span class="keyword">if</span> (isDef(ch.tag)) &#123;</div><div class="line">        removeAndInvokeRemoveHook(ch);</div><div class="line">        invokeDestroyHook(ch);</div><div class="line">      &#125; <span class="keyword">else</span> &#123; <span class="comment">// Text node</span></div><div class="line">        removeNode(ch.elm);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">invokeDestroyHook</span> (<span class="params">vnode</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> i, j;</div><div class="line">  <span class="keyword">var</span> data = vnode.data;</div><div class="line">  <span class="keyword">if</span> (isDef(data)) &#123;</div><div class="line">    <span class="keyword">if</span> (isDef(i = data.hook) &amp;&amp; isDef(i = i.destroy)) &#123; i(vnode); &#125;</div><div class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; cbs.destroy.length; ++i) &#123; cbs.destroy[i](vnode); &#125;</div><div class="line">  &#125; </div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">destroy</span> (<span class="params">vnode</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> componentInstance = vnode.componentInstance;</div><div class="line">  <span class="keyword">if</span> (!componentInstance._isDestroyed) &#123;</div><div class="line">    <span class="keyword">if</span> (!vnode.data.keepAlive) &#123;</div><div class="line">      componentInstance.$destroy();</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      deactivateChildComponent(componentInstance, <span class="literal">true</span> <span class="comment">/* direct */</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">deactivateChildComponent</span> (<span class="params">vm, direct</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (direct) &#123;</div><div class="line">    vm._directInactive = <span class="literal">true</span>;</div><div class="line">    <span class="keyword">if</span> (isInInactiveTree(vm)) &#123;</div><div class="line">      <span class="keyword">return</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">if</span> (!vm._inactive) &#123;</div><div class="line">    vm._inactive = <span class="literal">true</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; vm.$children.length; i++) &#123;</div><div class="line">      deactivateChildComponent(vm.$children[i]);</div><div class="line">    &#125;</div><div class="line">    callHook(vm, <span class="string">'deactivated'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue-keep-alive/" rel="tag"># vue keep-alive</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/26/2019-2019-05-26-vue-slot/" rel="next" title="vue-slot">
+                <i class="fa fa-chevron-left"></i> vue-slot
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/22/2019-2019-06-22-vue-transition/" rel="prev" title="vue-transition">
+                vue-transition <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">浩齐</p>
+              <p class="site-description motion-element" itemprop="description">some kind of blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#keep-alive"><span class="nav-number">1.</span> <span class="nav-text">keep-alive</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#keep-alive组件"><span class="nav-number">1.1.</span> <span class="nav-text">keep-alive组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#首次渲染"><span class="nav-number">1.2.</span> <span class="nav-text">首次渲染</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二次渲染"><span class="nav-number">1.3.</span> <span class="nav-text">二次渲染</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#deactivated钩子"><span class="nav-number">1.3.1.</span> <span class="nav-text">deactivated钩子</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">浩齐</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

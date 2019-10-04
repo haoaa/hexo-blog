@@ -79,123 +79,42 @@
 
 
 
-<meta name="description" content="笔记
-
-6, 11, 12, 23
-
-
-
-
-Number
-Content
-
-
-
-
-1
-BAT及各大互联网公司2014前端笔试面试题–Html,Css篇
-
-
-2
-BAT及各大互联网公司2014前端笔试面试题–JavaScript篇
-
-
-3
-javascript面试题
-
-
-4
-javascript puzzlers
-
-
-5
-9个JQuery和5个JavaScript经典面试题
-
-
-6
-前端开发面试题">
+<meta name="description" content="笔记年羹
+前端基础
+JS 原型链机制的理解
+作用域和this
+代码在一个环境中执行时，会创建变量对象的一个作用域链
+每个函数都有自己的作用域(函数作用域, let引入块作用域), 作用域可以层层嵌套, 子作用域变量覆盖父级作用域
+声明提前: js函数里所有变量声明(var)都被提前至函数体顶部.
+es6: temporal dead zone, let代码段(if/for/switch)变量声明前">
 <meta property="og:type" content="article">
-<meta property="og:title" content="前端面试了解一下">
-<meta property="og:url" content="https://haoaa.github.io/hexo/2018/02/22/2018-2018-02-22-fe-interview/index.html">
+<meta property="og:title" content="frontend interview">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2019/02/22/2019-2019-02-22-fe-interview/index.html">
 <meta property="og:site_name" content="Haoqi's blog-ish!">
-<meta property="og:description" content="笔记
-
-6, 11, 12, 23
-
-
-
-
-Number
-Content
-
-
-
-
-1
-BAT及各大互联网公司2014前端笔试面试题–Html,Css篇
-
-
-2
-BAT及各大互联网公司2014前端笔试面试题–JavaScript篇
-
-
-3
-javascript面试题
-
-
-4
-javascript puzzlers
-
-
-5
-9个JQuery和5个JavaScript经典面试题
-
-
-6
-前端开发面试题">
+<meta property="og:description" content="笔记年羹
+前端基础
+JS 原型链机制的理解
+作用域和this
+代码在一个环境中执行时，会创建变量对象的一个作用域链
+每个函数都有自己的作用域(函数作用域, let引入块作用域), 作用域可以层层嵌套, 子作用域变量覆盖父级作用域
+声明提前: js函数里所有变量声明(var)都被提前至函数体顶部.
+es6: temporal dead zone, let代码段(if/for/switch)变量声明前">
 <meta property="og:image" content="https://showme.codes/assets/images/2017-2-20-292372-323411d0bb2d7232.png">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e7eaa2a664e8?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="og:image" content="http://f.wetest.qq.com/gqop/10000/20000/LabImage_af779f66f361c5cbf002d4683084ae43.png">
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/789055/201704/789055-20170426213837647-1576415902.jpg">
 <meta property="og:image" content="http://taligarsiel.com/Projects/webkitflow.png">
-<meta property="og:updated_time" content="2018-03-14T07:45:36.061Z">
+<meta property="og:updated_time" content="2019-05-18T05:45:39.898Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="前端面试了解一下">
-<meta name="twitter:description" content="笔记
-
-6, 11, 12, 23
-
-
-
-
-Number
-Content
-
-
-
-
-1
-BAT及各大互联网公司2014前端笔试面试题–Html,Css篇
-
-
-2
-BAT及各大互联网公司2014前端笔试面试题–JavaScript篇
-
-
-3
-javascript面试题
-
-
-4
-javascript puzzlers
-
-
-5
-9个JQuery和5个JavaScript经典面试题
-
-
-6
-前端开发面试题">
+<meta name="twitter:title" content="frontend interview">
+<meta name="twitter:description" content="笔记年羹
+前端基础
+JS 原型链机制的理解
+作用域和this
+代码在一个环境中执行时，会创建变量对象的一个作用域链
+每个函数都有自己的作用域(函数作用域, let引入块作用域), 作用域可以层层嵌套, 子作用域变量覆盖父级作用域
+声明提前: js函数里所有变量声明(var)都被提前至函数体顶部.
+es6: temporal dead zone, let代码段(if/for/switch)变量声明前">
 <meta name="twitter:image" content="https://showme.codes/assets/images/2017-2-20-292372-323411d0bb2d7232.png">
 
 
@@ -226,13 +145,13 @@ javascript puzzlers
 
 
 
-  <link rel="canonical" href="https://haoaa.github.io/hexo/2018/02/22/2018-2018-02-22-fe-interview/"/>
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2019/02/22/2019-2019-02-22-fe-interview/"/>
 
 
 
 
 
-  <title>前端面试了解一下 | Haoqi's blog-ish!</title>
+  <title>frontend interview | Haoqi's blog-ish!</title>
   
 
 
@@ -256,6 +175,7 @@ javascript puzzlers
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
+  <audio src="\assets\2019\Indian_Summer.mp3"></audio>
   <div class="site-meta ">
     
 
@@ -316,7 +236,17 @@ javascript puzzlers
 
 
 
- </div>
+
+<script>
+  let hasClick = 0 
+  document.querySelector('.site-subtitle').onclick = ()=>{
+    hasClick++
+    if(hasClick === 3) {
+      document.querySelector('audio').play()
+    }
+  }
+
+</script> </div>
     </header>
 
     <main id="main" class="main">
@@ -339,7 +269,7 @@ javascript puzzlers
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2018/02/22/2018-2018-02-22-fe-interview/">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/02/22/2019-2019-02-22-fe-interview/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="浩齐">
@@ -356,7 +286,7 @@ javascript puzzlers
 
         
         
-          <h1 class="post-title" itemprop="name headline">前端面试了解一下</h1>
+          <h1 class="post-title" itemprop="name headline">frontend interview</h1>
         
 
         <div class="post-meta">
@@ -368,8 +298,8 @@ javascript puzzlers
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-22T11:04:43+08:00">
-                2018-02-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-22T11:04:43+08:00">
+                2019-02-22
               </time>
             
 
@@ -428,7 +358,139 @@ javascript puzzlers
       
 
       
-        <p><a href="#笔记">笔记</a></p>
+        <p><a href="#笔记">笔记年羹</a></p>
+<h2 id="前端基础"><a href="#前端基础" class="headerlink" title="前端基础"></a>前端基础</h2><ul>
+<li>JS 原型链机制的理解</li>
+<li><a href="https://juejin.im/post/58500a02128fe10069319d83#heading-1" target="_blank" rel="external">作用域和this</a><ul>
+<li>代码在一个环境中执行时，会创建变量对象的一个作用域链</li>
+<li>每个函数都有自己的作用域(函数作用域, let引入块作用域), 作用域可以层层嵌套, 子作用域变量覆盖父级作用域</li>
+<li>声明提前: js函数里所有变量声明(var)都被提前至函数体顶部.</li>
+<li>es6: temporal dead zone, let代码段(if/for/switch)变量声明前引用会报ReferenceError</li>
+<li><a href="https://juejin.im/post/5c5d0b495188256282695206#heading-7" target="_blank" rel="external">JS专题之严格模式</a></li>
+<li>this四种绑定<ul>
+<li>默认绑定全局window</li>
+<li>隐式绑定,最近的一个调用该函数的上下文对象(context object)<ul>
+<li>在函数上下文中，也就是在任何函数体内部，this 指代调用函数的那个对象。严格模式下,this禁止指向window</li>
+</ul>
+</li>
+<li>显式绑定(call/apply/bind), bind在定义函数时候就绑定this，call和apply在调用函数时候才绑定this<ul>
+<li><a href="https://github.com/Abiel1024/blog/issues/16" target="_blank" rel="external">call、apply和bind的实现</a></li>
+</ul>
+</li>
+<li>new绑定<ul>
+<li>一个全新的对象会凭空创建（就是被构建）</li>
+<li>这个新构建的对象会被接入原形链（[[Prototype]]-linked）</li>
+<li>这个新构建的对象被设置为函数调用的this绑定</li>
+<li>除非函数返回一个它自己的其他 对象，这个被new调用的函数将 自动返回这个新构建的对象</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>闭包: 只有函数内部的子函数才能读取函数的局部变量. 闭包内的变量因为引用计数, 不会在函数调用完后清除.<ul>
+<li>闭包做对象缓存, 模块化代码. 闭包会使得函数中的变量都被保存在内存中.滥用导致内测泄露.</li>
+<li>调用 f.bind(someObject) 会创建一个与 f 具有相同函数体和作用域的函数，但是在这个新函数中，this 将永久地被绑定到了 bind 的第一个参数，无论这个函数是如何被</li>
+</ul>
+</li>
+<li><p>对象: </p>
+<ul>
+<li>基础类型<code>string,number,boolean,null,undefined,object</code>, build-in对象类型<code>String,Number,Boolean,Object,Function,Array,Date,RegExp,Error</code></li>
+<li>defineProperties: <ul>
+<li>[[Configurable]]：表示能否通过delete删除属性从而重新定义属性，能否修改属性的特性，或者能否把属性修改为数据属性。默认值为true。</li>
+<li>[[Enumerable]]：表示能否通过for…in…循环遍历到该属性，默认值为true。</li>
+<li>访问器属性 [[Get]]：在读取属性时调用的函数。默认值为undefined。</li>
+<li>访问器属性 [[Set]]：在写入属性时调用的函数。默认值为undefined。</li>
+<li>数据属性 [[Writable]]：表示能否修改属性的值，默认为true。</li>
+<li>数据属性 [[Value]]：该属性的数值。</li>
+</ul>
+</li>
+<li><code>...</code>,<code>assign</code>都是浅拷贝</li>
+</ul>
+</li>
+<li><p>设计模式：了解基本的前端设计模式，单例、适配器、工厂、观察者、迭代器、发布/订阅。</p>
+<ul>
+<li><a href="https://www.jianshu.com/p/11918dd0f694" target="_blank" rel="external">es6实现工厂/单例模式</a></li>
+</ul>
+</li>
+<li><p>跨域的方式、同源策<br>略、为什么有同源策略、如何做安全防范：新=的- H5的跨域方式（cors、postmessage）。</p>
+</li>
+<li>安全，对攻击方式、安全的防范上的了解 。</li>
+<li>http、TCP 协议的知识，如：什么是无状态，http 状态码的分类。<ul>
+<li>CDN的域名不要和主站的域名一样，这样会防止访问CDN时还携带主站cookie的问题。</li>
+</ul>
+</li>
+<li>知晓 CSS 布局原理，什么是BFC，如何实现垂直居中，绝对定位相对位置。</li>
+<li>如何做自适应布局，怎么计算 REM</li>
+<li>websocket, WebRTC, EventSource 的区别</li>
+</ul>
+<h2 id="框架、组件化"><a href="#框架、组件化" class="headerlink" title="框架、组件化"></a>框架、组件化</h2><ul>
+<li>架构分层</li>
+<li>模块解耦：理解接口、事件通讯的两种方式。</li>
+<li>组件化趋势： shadow dom，react和vue 。</li>
+<li>Virtual DOM 的优势以及缺陷<ul>
+<li>减少dom的增删开支, 增加js计算消耗. </li>
+<li>未命中sameNode, 还是一样的dom增删消耗, 同级修改, 添加key.</li>
+<li>dom结构越庞大, 优化的效果越明显.</li>
+<li>snabbdom的怕patch算法和vue的一致.</li>
+</ul>
+</li>
+<li>实践中如何解耦 UI 状态和领域状态</li>
+<li>目录结构如何规划</li>
+</ul>
+<h2 id="前端构建方案"><a href="#前端构建方案" class="headerlink" title="前端构建方案"></a>前端构建方案</h2><ul>
+<li>工程化的理解以及解决的问题如 gulp。</li>
+<li>如何拆分 SPA 中的大型代码</li>
+<li>有没有写过 webpack loader/ plugin, 以及这个 loader 是为了解决什么问题</li>
+<li>做过什么打包优化, 分离全家桶, 脚本构建npm/yarn</li>
+<li>ts项目搭建</li>
+<li><h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2></li>
+<li><p>webview的优化：对静态资源缓存到native的原理和流程 ，- webview缓存、版本号管理、线下调试。</p>
+</li>
+<li>如何加快首屏加载速度，Server Render 的实践。</li>
+<li>网页渲染性能优化，layout, paint, compose 三步骤的理解。</li>
+<li>css 动画、SVG、canvas 的运用</li>
+<li>针对前端框架的性能优化，如 showComponentUpdate 的使用</li>
+<li>如何带领团队优化：制定量化指标，寻找性能瓶颈，集中优化。</li>
+<li>浏览器资源加载, 解析, 渲染. </li>
+<li><a href="/2019/03/03/2019-2019-03-03-事件循环">事件循环, 异步promise理解</a></li>
+<li><p>案例:</p>
+<ol>
+<li><a href="https://juejin.im/post/5b960fcae51d450e9d645c5f" target="_blank" rel="external">Vue 应用性能优化指南</a><a id="more"></a>
+<h2 id="质量保障"><a href="#质量保障" class="headerlink" title="质量保障"></a>质量保障</h2></li>
+</ol>
+</li>
+<li><p>eslint、tslint 如何跟开发流程集成</p>
+</li>
+<li>单元测试覆盖率</li>
+<li>如何面对需求变更带来的测试用例失效</li>
+<li>前端灰度方案</li>
+<li>如何排查内存泄漏</li>
+<li><p>Jest/jasmine puppeteer/nightmare</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2></li>
+<li><p>期望：偏技术或偏管理</p>
+</li>
+<li>觉得一个前端专家应具备的技能和素质：综合、系统能力，需要理解- 系统和框架的原理，对前端前沿技术有所关注。</li>
+<li>前沿技术的了解</li>
+<li>对前端未来走向的判断</li>
+<li>对领域设计的理解</li>
+<li></li>
+</ul>
+<h2 id="遇到过的问题"><a href="#遇到过的问题" class="headerlink" title="遇到过的问题"></a>遇到过的问题</h2><ul>
+<li>v-for在checker上引起的不更新</li>
+</ul>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><ul>
+<li><a href="https://github.com/CyC2018/CS-Notes" target="_blank" rel="external">技术面试必备基础知识</a></li>
+<li><a href="https://github.com/stephentian/33-js-concepts#%E7%9B%AE%E5%BD%95" target="_blank" rel="external">JavaScript开发者应懂的33个概念 
+</a></li>
+<li><a href="https://juejin.im/post/5c0115e2e51d4539a175a15c" target="_blank" rel="external">前端面试之路一(HTML+CSS面试整理)</a></li>
+<li><a href="https://juejin.im/post/5c62b92de51d457fd77b22ce" target="_blank" rel="external">前端面试之路二(javaScript基础整理)</a></li>
+<li><a href="https://juejin.im/post/5c1cd35c6fb9a049aa6f0f69#heading-26" target="_blank" rel="external">前端面试之路三(javaScript高级篇)</a></li>
+<li><a href="https://juejin.im/post/5c011e0c5188252ea66afdfa" target="_blank" rel="external">前端面试之路四(web性能优化篇)</a></li>
+<li><a href="https://juejin.im/post/5c226efe51882514440e4c46" target="_blank" rel="external">前端面试之路五(网络HTTP篇)</a></li>
+<li><a href="https://juejin.im/post/5c1d1f04e51d4544d544b600" target="_blank" rel="external">前端面试之路六(Javascript设计模式篇)</a></li>
+</ul>
+<hr>
 <ul>
 <li><strong>6, 11, 12, 23</strong></li>
 </ul>
@@ -455,10 +517,6 @@ javascript puzzlers
 <tr>
 <td>4</td>
 <td><a href="http://javascript-puzzlers.herokuapp.com/" target="_blank" rel="external">javascript puzzlers</a></td>
-</tr>
-<tr>
-<td>5</td>
-<td><a href="http://www.voidcn.com/blog/u010227447/article/p-3561418.html" target="_blank" rel="external">9个JQuery和5个JavaScript经典面试题</a></td>
 </tr>
 <tr>
 <td>6</td>
@@ -610,55 +668,6 @@ javascript puzzlers
 </tr>
 </tbody>
 </table>
-<a id="more"></a>
-<h1 id="面试题目录calabash519-interview-q-collection"><a href="#面试题目录calabash519-interview-q-collection" class="headerlink" title="面试题目录calabash519/interview-q-collection"></a>面试题目录<a href="https://github.com/calabash519/interview-questions" target="_blank" rel="external">calabash519/interview-q-collection</a></h1><h1 id="时允-前端面试提纲"><a href="#时允-前端面试提纲" class="headerlink" title="时允-前端面试提纲"></a>时允-前端面试<a href="https://segmentfault.com/a/1190000010969779" target="_blank" rel="external">提纲</a></h1><h2 id="前端基础"><a href="#前端基础" class="headerlink" title="前端基础"></a>前端基础</h2><ul>
-<li>JS 原型链机制的理解</li>
-<li>设计模式：了解基本的前端设计模式，单例、适配器、工厂、观察者。</li>
-<li>跨域的方式、同源策略、为什么有同源策略、如何做安全防范：新的- H5的跨域方式（cors、postmessage）。</li>
-<li>安全，对攻击方式、安全的防范上的了解 。</li>
-<li>http、TCP 协议的知识，如：什么是无状态，http 状态码的分类。</li>
-<li>知晓 CSS 布局原理，什么是BFC，如何实现垂直居中，绝对定位相对位置。</li>
-<li>如何做自适应布局，怎么计算 REM</li>
-<li>websocket, WebRTC, EventSource 的区别</li>
-</ul>
-<h2 id="框架、组件化"><a href="#框架、组件化" class="headerlink" title="框架、组件化"></a>框架、组件化</h2><ul>
-<li>架构分层</li>
-<li>模块解耦：理解接口、事件通讯的两种方式。</li>
-<li>组件化趋势： shadow dom，react和vue 。</li>
-<li>Virtual DOM 的优势以及缺陷</li>
-<li>实践中如何解耦 UI 状态和领域状态</li>
-<li>目录结构如何规划</li>
-</ul>
-<h2 id="前端构建方案"><a href="#前端构建方案" class="headerlink" title="前端构建方案"></a>前端构建方案</h2><ul>
-<li>工程化的理解以及解决的问题如 gulp。</li>
-<li>gulp与其他构建工具的对比。</li>
-<li>如何拆分 SPA 中的大型代码</li>
-<li>如何做异步加载</li>
-<li>有没有写过 webpack loader, 以及这个 loader 是为了解决什么问题</li>
-</ul>
-<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><ul>
-<li>webview的优化：对静态资源缓存到native的原理和流程 ，- webview缓存、版本号管理、线下调试。</li>
-<li>如何加快首屏加载速度，Server Render 的实践。</li>
-<li>网页渲染性能优化，layout, paint, compose 三步骤的理解。</li>
-<li>css 动画、SVG、canvas 的运用</li>
-<li>针对前端框架的性能优化，如 showComponentUpdate 的使用</li>
-<li>如何带领团队优化：制定量化指标，寻找性能瓶颈，集中优化。</li>
-</ul>
-<h2 id="质量保障"><a href="#质量保障" class="headerlink" title="质量保障"></a>质量保障</h2><ul>
-<li>eslint、tslint 如何跟开发流程集成</li>
-<li>单元测试覆盖率</li>
-<li>如何面对需求变更带来的测试用例失效</li>
-<li>前端灰度方案</li>
-<li>如何排查内存泄漏</li>
-</ul>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
-<li>期望：偏技术或偏管理</li>
-<li>觉得一个前端专家应具备的技能和素质：综合、系统能力，需要理解- 系统和框架的原理，对前端前沿技术有所关注。</li>
-<li>前沿技术的了解</li>
-<li>对前端未来走向的判断</li>
-<li>对领域设计的理解</li>
-<li></li>
-</ul>
 <h1 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h1><blockquote>
 <p>链接: <a href="#http/https/websocket">http</a> , <a href="#js">js</a>, <a href="#css">css</a>, <a href="#框架">框架</a> , <a href="#性能优化">性能优化</a>  </p>
 </blockquote>
@@ -735,6 +744,7 @@ javascript puzzlers
 <h2 id="框架-TODO"><a href="#框架-TODO" class="headerlink" title="框架 TODO"></a>框架 TODO</h2><h3 id="vue-轻量-相关技术栈齐全-有饿了么和阿里大公司使用和支持"><a href="#vue-轻量-相关技术栈齐全-有饿了么和阿里大公司使用和支持" class="headerlink" title="vue 轻量/相关技术栈齐全/有饿了么和阿里大公司使用和支持"></a>vue 轻量/相关技术栈齐全/有饿了么和阿里大公司使用和支持</h3><ol>
 <li>父组件和子组件、子组件和子组件如何传递数据 props down emit up<br>兄弟组件要么用一个Vue对象做通信bus, 要么vuex</li>
 <li>dom更新机制<ul>
+<li>vue初始化时通过Object.defineProperty给data设置setter/getter函数，用来实现reactivity以及依赖收集. get会往闭包内的dep添加watcher, set会调dep.notify遍历watcher</li>
 <li>reativity通过nexttick触发diff算法进行局部DOM更新<br><img src="https://user-gold-cdn.xitu.io/2017/12/19/1606e7eaa2a664e8?imageView2/0/w/1280/h/960/format/webp/ignore-error/1"></li>
 </ul>
 </li>
@@ -742,13 +752,32 @@ javascript puzzlers
 </ol>
 <ul>
 <li>其实「依赖收集」的过程就是把 Watcher 实例存放到对应的 Dep 对象中去。get 方法可以让当前的 Watcher 对象（Dep.target）存放到它的 subs 中（addSub）方法，在数据变化时，set 会调用 Dep 对象的 notify 方法通知它内部所有的 Watcher 对象进行视图更新。  </li>
-<li>vuex. install方法里给Vue混入初始化方法. 初始化获取store到data上. commit方法遍历执行mutation, dispatch方法用promise执行action.<h4 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h4></li>
+<li>vuex. install方法里给Vue混入初始化方法. 初始化获取store到data上. commit方法遍历执行mutation, dispatch方法用promise执行action.</li>
+</ul>
+<ol>
+<li>compile</li>
+</ol>
+<ul>
+<li>parse 用正则遍历template形成ast, 遍历获取标签,属性,文本, 指令,层级关系等</li>
+<li>optimize 标记静态节点(没有v-if/v-for属性的文本节点type===3),在patch比对的时候可以直接跳过来优化</li>
+<li>generate 将 AST 转化成 render funtion 字符串</li>
+</ul>
+<ol>
+<li>diff</li>
+</ol>
+<ul>
 <li>调patch方法比vnode<ul>
 <li>只有当 key、 tag、 isComment就是sameVnode, 不是就替换realDom</li>
 <li>调用patchVnode ,通过静态节点, 两个都有子虚节点比对更新childVnode</li>
 </ul>
 </li>
-<li>优化: 尽量不要跨层级的修改dom, 设置key可以最大化的利用节点<h4 id="nexttick"><a href="#nexttick" class="headerlink" title="nexttick"></a>nexttick</h4></li>
+<li>优化: 尽量不要跨层级的修改dom, 设置key可以最大化的重复利用节点</li>
+</ul>
+<ol>
+<li>nexttick</li>
+</ol>
+<ul>
+<li>调用nexttick回调会被放在队列里,然后异步批量执行</li>
 <li>Internally Vue tries native Promise.then and MessageChannel for the asynchronous queuing and falls back to setTimeout(fn, 0).</li>
 <li>Vue异步更新dom, notify后 watch的run会通过nextTick下个周期执行, watch只会添加进队列一次<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.message = <span class="string">'updated'</span> <span class="comment">// setter触发update,将watcher的run加入nextTick回调</span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>.$el.textContent) <span class="comment">// =&gt; 'not updated'</span></div><div class="line"><span class="keyword">this</span>.$nextTick(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.$el.textContent) <span class="comment">// =&gt; 'updated'</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
 </li>
@@ -780,7 +809,7 @@ javascript puzzlers
 </li>
 </ul>
 <h4 id="expression-filter"><a href="#expression-filter" class="headerlink" title="expression|filter"></a>expression|filter</h4><ul>
-<li>表达式解析过程: lexer词法解析 -&gt; tokens -&gt; astBuilder生成ast -&gt; astCompiler -&gt; 生成表达式</li>
+<li>表达式解析过程: lexer词法解析 -&gt; tokens -&gt; astBuilder生成ast -&gt; astCompiler -&gt; new Function生成函数表达式</li>
 <li>expect预读token</li>
 <li>astCompile的时候,操作符优先级通过<code>()</code>实现的</li>
 <li>$watch与parse结合的时候为了提升效率,引入$$watchDelegate. 将特殊情况的表达式特殊处理(constant watch执行一次后就把watcher移除).</li>
@@ -991,10 +1020,12 @@ javascript puzzlers
 <ol>
 <li>希望一个变量长期驻扎在内存中</li>
 <li>避免全局变量的污染</li>
-<li>私有成员的存在<h3 id="前端路由的原理"><a href="#前端路由的原理" class="headerlink" title="前端路由的原理"></a>前端路由的原理</h3>什么是路由？简单的说，路由是根据不同的 url 地址展示不同的内容或页面</li>
+<li>私有成员的存在</li>
 </ol>
-<ul>
-<li>使用场景？前端路由更多用在单页应用上, 也就是SPA, 因为单页应用, 基本上都是前后端分离的, 后端自然也就不会给前端提供路由。<br>前端的路由和后端的路由在实现技术上不一样，但是原理都是一样的。在 HTML5 的 history API 出现之前，前端的路由都是通过 hash 来实现的，hash 能兼容低版本的浏览器。</li>
+<h3 id="前端路由的原理"><a href="#前端路由的原理" class="headerlink" title="前端路由的原理"></a>前端路由的原理</h3><ul>
+<li>什么是路由？简单的说，路由是根据不同的 url 地址展示不同的内容或页面</li>
+<li>使用场景？前端路由更多用在单页应用上, 也就是SPA, 因为单页应用, 基本上都是前后端分离的, 后端自然也就不会给前端提供路由。</li>
+<li>前端的路由和后端的路由在实现技术上不一样，但是原理都是一样的。在 HTML5 的 history API 出现之前，前端的路由都是通过 hash 来实现的，hash 能兼容低版本的浏览器。</li>
 <li>两种实现前端路由的方式<ul>
 <li>HTML5 History两个新增的API：history.pushState 和 history.replaceState，两个 API 都会操作浏览器的历史记录，而不会引起页面的刷新。</li>
 <li>Hash就是url 中看到 # ,我们需要一个根据监听哈希变化触发的事件( hashchange) 事件。我们用 window.location 处理哈希的改变时不会重新渲染页面，而是当作新页面加到历史记录中，这样我们跳转页面就可以在 hashchange 事件中注册 ajax 从而改变页面内容。</li>
@@ -1062,18 +1093,49 @@ javascript puzzlers
 </ul>
 </li>
 </ul>
-<h1 id="todo"><a href="#todo" class="headerlink" title="todo"></a>todo</h1><p>就是把myangular写一遍,ydkjs看一遍,elm项目滤了一遍vueroute/vuex<br>某陆解决过问题:<br>1,decorator重复点击<br>2,gulp多目标 通过项目参数, 在打包的时候引入项目的配置信息, 样式等.<br>修改gulp任务时src只有一个,dist确需要多个.而且任务要按顺序来,sprite生成less后才能执行less任务编译成CSS.<br> 查资料和测试后用merge stream的方式来实现, gulp-rename做路径修改<br>3.三个密码用promise all<br>4.less和sprite相互依赖/return steam callback ,runsequence<br>5.调盾,人脸指纹,密码接口<br>6.1px边框用,伪元素做边框, transform scaleY(0.5)</p>
-<ul>
-<li>你最近在学什么?接下来的半年你打算学习什么?你平时如何去学习了解新的技术?<ul>
-<li>gulp插件/webpack gitchat看完</li>
-<li>函数式编程</li>
-<li>react stack</li>
-<li>pwa</li>
-</ul>
-</li>
+<h1 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h1><p>解决过问题:<br>1,decorator重复点击, 代理模式在ng-clicklink之前帮一个事件监听stopImmediatePropagation,定时截流<br>2,gulp多目标 通过项目参数, 在打包的时候引入项目的配置信息, 样式等.<br>修改gulp任务时src只有一个,dist确需要多个.而且任务要按顺序来,sprite生成less后才能执行less任务编译成CSS.<br> 查资料和测试后用merge stream的方式来实现, gulp-rename做路径修改<br>3.三个密码用promise all<br>4.less和sprite相互依赖/return steam callback ,runsequence<br>5.调盾,人脸指纹,密码接口<br>6.1px边框用,伪元素做边框, transform scaleY(0.5)</p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><ul>
+<li>设计模式举例, es6语法(看深浅), 工作流程/协作, webpack/gulp插件,一些思想如 面向对象/spa/dom</li>
 </ul>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://segmentfault.com/a/1190000010349749" target="_blank" rel="external">webpack模块化原理-commonjs</a></li>
+<li><a href="https://segmentfault.com/a/1190000010349749" target="_blank" rel="external">webpack模块化原理-commonjs</a> </li>
+</ul>
+<h3 id="基础-1"><a href="#基础-1" class="headerlink" title="基础"></a>基础</h3><h4 id="类型检测"><a href="#类型检测" class="headerlink" title="类型检测"></a>类型检测</h4><ol>
+<li>instanceof 在原型链上查找prototype是否存在</li>
+</ol>
+<ul>
+<li>The instanceof operator tests the presence of constructor.prototype in object’s prototype chain.</li>
+<li>可以通过<code>Object.setPrototypeOf</code>, <code>__proto__</code>修改instanceof的测试结果</li>
+</ul>
+<ol>
+<li>typeof 检测基础类型</li>
+</ol>
+<ul>
+<li>es6前不会报错, es6后会因为TDZ报referenceError</li>
+</ul>
+<ol>
+<li>Object.prototype.toString()</li>
+</ol>
+<ul>
+<li>returns a string representing the object.</li>
+<li>自定义对象可以通过覆盖<code>Object.prototype.toString</code>修改返回结果</li>
+<li>通过call/apply次此方法可以判断对象类型</li>
+</ul>
+<h3 id="模块化"><a href="#模块化" class="headerlink" title="模块化"></a>模块化</h3><ol>
+<li>只需为 script 元素添加 type=module 属性，浏览器就会把该元素对应的内联脚本或外部脚本当成 ECMAScript 模块进行处理。</li>
+<li><a href="https://blog.csdn.net/keji_123/article/details/78949167" target="_blank" rel="external">循环引用处理</a></li>
+</ol>
+<ul>
+<li>commonjs是同步模块加载方式，加载后缓存</li>
+<li>ES6中对模块引用只是保存一个模块的引用而已，因此，即使是循环引用也不会出错。</li>
+<li>requirejs中出现循环引用时，可将引用的模块用局部require进行包裹以避免错误出现：</li>
+</ul>
+<ol>
+<li>es6模块导出的区别</li>
+</ol>
+<ul>
+<li>export default不需要记住变量名或函数名, 为了快速使用, 核心常用模块default导出, </li>
+<li>export default就是输出一个叫做default的变量或方法，然后系统允许你为它取任意名字</li>
 </ul>
 
       
@@ -1105,7 +1167,7 @@ javascript puzzlers
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/02/05/2018-01-2018-02-05-vue-mechanism/" rel="next" title="vue-mechanism">
+              <a href="/2018/02/05/2018-2018-02-05-vue-mechanism/" rel="next" title="vue-mechanism">
                 <i class="fa fa-chevron-left"></i> vue-mechanism
               </a>
             
@@ -1114,6 +1176,10 @@ javascript puzzlers
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/27/2019-2019-02-27-webpack-under-the-hood/" rel="prev" title="webpack under-the-hood">
+                webpack under-the-hood <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -1190,7 +1256,7 @@ javascript puzzlers
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1201,7 +1267,7 @@ javascript puzzlers
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -1212,7 +1278,7 @@ javascript puzzlers
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -1245,7 +1311,7 @@ javascript puzzlers
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#面试题目录calabash519-interview-q-collection"><span class="nav-number">1.</span> <span class="nav-text">面试题目录calabash519/interview-q-collection</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#时允-前端面试提纲"><span class="nav-number">2.</span> <span class="nav-text">时允-前端面试提纲</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前端基础"><span class="nav-number">2.1.</span> <span class="nav-text">前端基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#框架、组件化"><span class="nav-number">2.2.</span> <span class="nav-text">框架、组件化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端构建方案"><span class="nav-number">2.3.</span> <span class="nav-text">前端构建方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能优化"><span class="nav-number">2.4.</span> <span class="nav-text">性能优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#质量保障"><span class="nav-number">2.5.</span> <span class="nav-text">质量保障</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">2.6.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#笔记"><span class="nav-number">3.</span> <span class="nav-text">笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#http-https-websocket"><span class="nav-number">3.1.</span> <span class="nav-text">http/https/websocket</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#http"><span class="nav-number">3.1.1.</span> <span class="nav-text">http</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#https"><span class="nav-number">3.1.2.</span> <span class="nav-text">https</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#https通信步骤"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">https通信步骤:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#js"><span class="nav-number">3.2.</span> <span class="nav-text">js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#es6"><span class="nav-number">3.2.1.</span> <span class="nav-text">es6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#js-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">js</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JS继承的实现方式"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">JS继承的实现方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试sinon-jasmine"><span class="nav-number">3.2.3.</span> <span class="nav-text">单元测试sinon/jasmine</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#css"><span class="nav-number">3.3.</span> <span class="nav-text">css</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一个高度100px，另一个填满剩下的高度。"><span class="nav-number">3.3.1.</span> <span class="nav-text">一个高度100px，另一个填满剩下的高度。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#品字布局"><span class="nav-number">3.3.2.</span> <span class="nav-text">品字布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#固定宽高布局"><span class="nav-number">3.3.3.</span> <span class="nav-text">固定宽高布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#满屏布局"><span class="nav-number">3.3.4.</span> <span class="nav-text">满屏布局</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#框架-TODO"><span class="nav-number">3.4.</span> <span class="nav-text">框架 TODO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vue-轻量-相关技术栈齐全-有饿了么和阿里大公司使用和支持"><span class="nav-number">3.4.1.</span> <span class="nav-text">vue 轻量/相关技术栈齐全/有饿了么和阿里大公司使用和支持</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#diff"><span class="nav-number">3.4.1.1.</span> <span class="nav-text">diff</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nexttick"><span class="nav-number">3.4.1.2.</span> <span class="nav-text">nexttick</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#路由"><span class="nav-number">3.4.1.3.</span> <span class="nav-text">路由</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#angular"><span class="nav-number">3.4.2.</span> <span class="nav-text">angular</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指令间通信方式"><span class="nav-number">3.4.2.1.</span> <span class="nav-text">指令间通信方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#双向绑定"><span class="nav-number">3.4.2.2.</span> <span class="nav-text">双向绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#controller-as-name"><span class="nav-number">3.4.2.3.</span> <span class="nav-text">controller as name</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scope"><span class="nav-number">3.4.2.4.</span> <span class="nav-text">scope</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#expression-filter"><span class="nav-number">3.4.2.5.</span> <span class="nav-text">expression|filter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DI"><span class="nav-number">3.4.2.6.</span> <span class="nav-text">DI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Utils"><span class="nav-number">3.4.2.7.</span> <span class="nav-text">Utils</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#promise"><span class="nav-number">3.4.2.7.1.</span> <span class="nav-text">promise</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#http-1"><span class="nav-number">3.4.2.7.2.</span> <span class="nav-text">http</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#directive"><span class="nav-number">3.4.2.8.</span> <span class="nav-text">directive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#双向绑定-1"><span class="nav-number">3.4.2.9.</span> <span class="nav-text">双向绑定</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gulp原理"><span class="nav-number">3.5.</span> <span class="nav-text">gulp原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用插件"><span class="nav-number">3.5.1.</span> <span class="nav-text">常用插件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack的原理-常用插件"><span class="nav-number">3.6.</span> <span class="nav-text">webpack的原理/常用插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack插件原理"><span class="nav-number">3.6.1.</span> <span class="nav-text">webpack插件原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#webapck模块化机制"><span class="nav-number">3.6.2.</span> <span class="nav-text">webapck模块化机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack异步加载-code-split-参考"><span class="nav-number">3.6.3.</span> <span class="nav-text">webpack异步加载/code split 参考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用plugin"><span class="nav-number">3.6.4.</span> <span class="nav-text">常用plugin</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能优化-1"><span class="nav-number">3.7.</span> <span class="nav-text">性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优化细则"><span class="nav-number">3.7.1.</span> <span class="nav-text">优化细则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#http缓存优化"><span class="nav-number">3.7.2.</span> <span class="nav-text">http缓存优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#强制缓存与对比缓存"><span class="nav-number">3.7.2.1.</span> <span class="nav-text">强制缓存与对比缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缓存涉及头参数"><span class="nav-number">3.7.2.2.</span> <span class="nav-text">缓存涉及头参数:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他-1"><span class="nav-number">3.7.3.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端安全"><span class="nav-number">3.8.</span> <span class="nav-text">前端安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#XSS，CSRF-CSRF是利用了系统对页面浏览器的信任，XSS则利用了系统对用户的信任。"><span class="nav-number">3.8.1.</span> <span class="nav-text">XSS，CSRF(CSRF是利用了系统对页面浏览器的信任，XSS则利用了系统对用户的信任。)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CSP-参考"><span class="nav-number">3.8.2.</span> <span class="nav-text">CSP 参考</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#笔试题"><span class="nav-number">3.9.</span> <span class="nav-text">笔试题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-任意异步任务同步执行"><span class="nav-number">3.9.1.</span> <span class="nav-text">1.任意异步任务同步执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-数组去重"><span class="nav-number">3.9.2.</span> <span class="nav-text">2.数组去重</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-深拷贝"><span class="nav-number">3.9.3.</span> <span class="nav-text">3.深拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-快速排序"><span class="nav-number">3.9.4.</span> <span class="nav-text">4.快速排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事件委托"><span class="nav-number">3.9.5.</span> <span class="nav-text">事件委托</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包应用场景原理"><span class="nav-number">3.9.6.</span> <span class="nav-text">闭包应用场景原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前端路由的原理"><span class="nav-number">3.9.7.</span> <span class="nav-text">前端路由的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器内核渲染的原理？"><span class="nav-number">3.9.8.</span> <span class="nav-text">浏览器内核渲染的原理？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nd-q-amp-a"><span class="nav-number">3.9.9.</span> <span class="nav-text">nd q&a</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#todo"><span class="nav-number">4.</span> <span class="nav-text">todo</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前端基础"><span class="nav-number">1.</span> <span class="nav-text">前端基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#框架、组件化"><span class="nav-number">2.</span> <span class="nav-text">框架、组件化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端构建方案"><span class="nav-number">3.</span> <span class="nav-text">前端构建方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能优化"><span class="nav-number">4.</span> <span class="nav-text">性能优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#质量保障"><span class="nav-number">5.</span> <span class="nav-text">质量保障</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">6.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到过的问题"><span class="nav-number">7.</span> <span class="nav-text">遇到过的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础"><span class="nav-number">8.</span> <span class="nav-text">基础</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#笔记"><span class="nav-number"></span> <span class="nav-text">笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#http-https-websocket"><span class="nav-number">1.</span> <span class="nav-text">http/https/websocket</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#http"><span class="nav-number">1.1.</span> <span class="nav-text">http</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#https"><span class="nav-number">1.2.</span> <span class="nav-text">https</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#https通信步骤"><span class="nav-number">1.2.1.</span> <span class="nav-text">https通信步骤:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#js"><span class="nav-number">2.</span> <span class="nav-text">js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#es6"><span class="nav-number">2.1.</span> <span class="nav-text">es6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#js-1"><span class="nav-number">2.2.</span> <span class="nav-text">js</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JS继承的实现方式"><span class="nav-number">2.2.1.</span> <span class="nav-text">JS继承的实现方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试sinon-jasmine"><span class="nav-number">2.3.</span> <span class="nav-text">单元测试sinon/jasmine</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#css"><span class="nav-number">3.</span> <span class="nav-text">css</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一个高度100px，另一个填满剩下的高度。"><span class="nav-number">3.1.</span> <span class="nav-text">一个高度100px，另一个填满剩下的高度。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#品字布局"><span class="nav-number">3.2.</span> <span class="nav-text">品字布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#固定宽高布局"><span class="nav-number">3.3.</span> <span class="nav-text">固定宽高布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#满屏布局"><span class="nav-number">3.4.</span> <span class="nav-text">满屏布局</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#框架-TODO"><span class="nav-number">4.</span> <span class="nav-text">框架 TODO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vue-轻量-相关技术栈齐全-有饿了么和阿里大公司使用和支持"><span class="nav-number">4.1.</span> <span class="nav-text">vue 轻量/相关技术栈齐全/有饿了么和阿里大公司使用和支持</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#路由"><span class="nav-number">4.1.1.</span> <span class="nav-text">路由</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#angular"><span class="nav-number">4.2.</span> <span class="nav-text">angular</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指令间通信方式"><span class="nav-number">4.2.1.</span> <span class="nav-text">指令间通信方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#双向绑定"><span class="nav-number">4.2.2.</span> <span class="nav-text">双向绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#controller-as-name"><span class="nav-number">4.2.3.</span> <span class="nav-text">controller as name</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scope"><span class="nav-number">4.2.4.</span> <span class="nav-text">scope</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#expression-filter"><span class="nav-number">4.2.5.</span> <span class="nav-text">expression|filter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DI"><span class="nav-number">4.2.6.</span> <span class="nav-text">DI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Utils"><span class="nav-number">4.2.7.</span> <span class="nav-text">Utils</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#promise"><span class="nav-number">4.2.7.1.</span> <span class="nav-text">promise</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#http-1"><span class="nav-number">4.2.7.2.</span> <span class="nav-text">http</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#directive"><span class="nav-number">4.2.8.</span> <span class="nav-text">directive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#双向绑定-1"><span class="nav-number">4.2.9.</span> <span class="nav-text">双向绑定</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gulp原理"><span class="nav-number">5.</span> <span class="nav-text">gulp原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用插件"><span class="nav-number">5.1.</span> <span class="nav-text">常用插件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack的原理-常用插件"><span class="nav-number">6.</span> <span class="nav-text">webpack的原理/常用插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack插件原理"><span class="nav-number">6.1.</span> <span class="nav-text">webpack插件原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#webapck模块化机制"><span class="nav-number">6.2.</span> <span class="nav-text">webapck模块化机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack异步加载-code-split-参考"><span class="nav-number">6.3.</span> <span class="nav-text">webpack异步加载/code split 参考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用plugin"><span class="nav-number">6.4.</span> <span class="nav-text">常用plugin</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能优化-1"><span class="nav-number">7.</span> <span class="nav-text">性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优化细则"><span class="nav-number">7.1.</span> <span class="nav-text">优化细则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#http缓存优化"><span class="nav-number">7.2.</span> <span class="nav-text">http缓存优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#强制缓存与对比缓存"><span class="nav-number">7.2.1.</span> <span class="nav-text">强制缓存与对比缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缓存涉及头参数"><span class="nav-number">7.2.2.</span> <span class="nav-text">缓存涉及头参数:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他-1"><span class="nav-number">7.3.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端安全"><span class="nav-number">8.</span> <span class="nav-text">前端安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#XSS，CSRF-CSRF是利用了系统对页面浏览器的信任，XSS则利用了系统对用户的信任。"><span class="nav-number">8.1.</span> <span class="nav-text">XSS，CSRF(CSRF是利用了系统对页面浏览器的信任，XSS则利用了系统对用户的信任。)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CSP-参考"><span class="nav-number">8.2.</span> <span class="nav-text">CSP 参考</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#笔试题"><span class="nav-number">9.</span> <span class="nav-text">笔试题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-任意异步任务同步执行"><span class="nav-number">9.1.</span> <span class="nav-text">1.任意异步任务同步执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-数组去重"><span class="nav-number">9.2.</span> <span class="nav-text">2.数组去重</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-深拷贝"><span class="nav-number">9.3.</span> <span class="nav-text">3.深拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-快速排序"><span class="nav-number">9.4.</span> <span class="nav-text">4.快速排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事件委托"><span class="nav-number">9.5.</span> <span class="nav-text">事件委托</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包应用场景原理"><span class="nav-number">9.6.</span> <span class="nav-text">闭包应用场景原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前端路由的原理"><span class="nav-number">9.7.</span> <span class="nav-text">前端路由的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器内核渲染的原理？"><span class="nav-number">9.8.</span> <span class="nav-text">浏览器内核渲染的原理？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nd-q-amp-a"><span class="nav-number">9.9.</span> <span class="nav-text">nd q&a</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#summary"><span class="nav-number"></span> <span class="nav-text">summary</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常见问题"><span class="nav-number">1.</span> <span class="nav-text">常见问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础-1"><span class="nav-number">2.1.</span> <span class="nav-text">基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型检测"><span class="nav-number">2.1.1.</span> <span class="nav-text">类型检测</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模块化"><span class="nav-number">2.2.</span> <span class="nav-text">模块化</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -1265,7 +1331,7 @@ javascript puzzlers
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

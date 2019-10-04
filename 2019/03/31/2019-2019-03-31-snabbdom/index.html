@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="virtual-dom diff js," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="createVnode
+snabbdom创建vnode比较简单, 就是遍历创建对象
+相当于Vue里的 vm.$createElement(自己写render的时候调用,alwaysNormalize是true)或vm._c1234567891011121314151617function h(sel, data, children) &amp;#123;    // option adapter    /">
+<meta property="og:type" content="article">
+<meta property="og:title" content="snabbdom, jsx学习">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2019/03/31/2019-2019-03-31-snabbdom/index.html">
+<meta property="og:site_name" content="Haoqi's blog-ish!">
+<meta property="og:description" content="createVnode
+snabbdom创建vnode比较简单, 就是遍历创建对象
+相当于Vue里的 vm.$createElement(自己写render的时候调用,alwaysNormalize是true)或vm._c1234567891011121314151617function h(sel, data, children) &amp;#123;    // option adapter    /">
+<meta property="og:updated_time" content="2019-05-18T05:45:39.902Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="snabbdom, jsx学习">
+<meta name="twitter:description" content="createVnode
+snabbdom创建vnode比较简单, 就是遍历创建对象
+相当于Vue里的 vm.$createElement(自己写render的时候调用,alwaysNormalize是true)或vm._c1234567891011121314151617function h(sel, data, children) &amp;#123;    // option adapter    /">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2019/03/31/2019-2019-03-31-snabbdom/"/>
+
+
+
+
+
+  <title>snabbdom, jsx学习 | Haoqi's blog-ish!</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <audio src="\assets\2019\Indian_Summer.mp3"></audio>
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Haoqi's blog-ish!</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">blah blah blah</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+
+<script>
+  let hasClick = 0 
+  document.querySelector('.site-subtitle').onclick = ()=>{
+    hasClick++
+    if(hasClick === 3) {
+      document.querySelector('audio').play()
+    }
+  }
+
+</script> </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/03/31/2019-2019-03-31-snabbdom/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="浩齐">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoqi's blog-ish!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">snabbdom, jsx学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-31T11:04:16+08:00">
+                2019-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/virtual-dom-snabbdom/" itemprop="url" rel="index">
+                    <span itemprop="name">virtual-dom snabbdom</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="createVnode"><a href="#createVnode" class="headerlink" title="createVnode"></a>createVnode</h2><ul>
+<li>snabbdom创建vnode比较简单, 就是遍历创建对象</li>
+<li>相当于Vue里的 vm.$createElement(自己写render的时候调用,alwaysNormalize是true)或vm._c<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">h</span>(<span class="params">sel, data, children</span>) </span>&#123;</div><div class="line">    <span class="comment">// option adapter</span></div><div class="line">    <span class="comment">// ...</span></div><div class="line">    <span class="keyword">if</span> (is.array(children)) &#123;</div><div class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; children.length; ++i) &#123;</div><div class="line">            <span class="keyword">if</span> (is.primitive(children[i]))</div><div class="line">                children[i] = vnode_1.vnode(<span class="literal">undefined</span>, <span class="literal">undefined</span>, <span class="literal">undefined</span>, children[i]);</div><div class="line">        &#125;</div><div class="line">    &#125; </div><div class="line">    <span class="keyword">return</span> vnode_1.vnode(sel, data, children, text, <span class="literal">undefined</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">vnode</span>(<span class="params">sel, data, children, text, elm</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> key = data === <span class="literal">undefined</span> ? <span class="literal">undefined</span> : data.key;</div><div class="line">    <span class="keyword">return</span> &#123; <span class="attr">sel</span>: sel, <span class="attr">data</span>: data, <span class="attr">children</span>: children,</div><div class="line">        <span class="attr">text</span>: text, <span class="attr">elm</span>: elm, <span class="attr">key</span>: key &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="patch"><a href="#patch" class="headerlink" title="patch"></a>patch</h2><ul>
+<li>patch时和Vue是相似的, 第一次patch 对于根节点old vnode是要挂载的dom(组件的话会是undefined), 之后便是vnode的对比</li>
+<li>第一次patch就是为vnode创建node, 然后替换掉el</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> vnode = h(<span class="string">'div#container.two.classes'</span>, &#123;<span class="attr">on</span>: &#123;<span class="attr">click</span>: someFn&#125;&#125;, [</div><div class="line">  h(<span class="string">'span'</span>, &#123;<span class="attr">style</span>: &#123;<span class="attr">fontWeight</span>: <span class="string">'bold'</span>&#125;&#125;, <span class="string">'This is bold'</span>),</div><div class="line">  <span class="string">' and this is just normal text'</span>,</div><div class="line">  h(<span class="string">'a'</span>, &#123;<span class="attr">props</span>: &#123;<span class="attr">href</span>: <span class="string">'/foo'</span>&#125;&#125;, <span class="string">'I\'ll take you places!'</span>)</div><div class="line">]);</div><div class="line"><span class="comment">// Patch into empty DOM element – this modifies the DOM as a side effect</span></div><div class="line">patch(container, vnode);</div><div class="line"></div><div class="line"><span class="keyword">var</span> newVnode = h(<span class="string">'div#container.two.classes'</span>, &#123;<span class="attr">on</span>: &#123;<span class="attr">click</span>: anotherEventHandler&#125;&#125;, [</div><div class="line">  h(<span class="string">'span'</span>, &#123;<span class="attr">style</span>: &#123;<span class="attr">fontWeight</span>: <span class="string">'normal'</span>, <span class="attr">fontStyle</span>: <span class="string">'italic'</span>&#125;&#125;, <span class="string">'This is now italic type'</span>),</div><div class="line">  <span class="string">' and this is still just normal text'</span>,</div><div class="line">  h(<span class="string">'a'</span>, &#123;<span class="attr">props</span>: &#123;<span class="attr">href</span>: <span class="string">'/bar'</span>&#125;&#125;, <span class="string">'I\'ll take you places!'</span>)</div><div class="line">]);</div><div class="line"><span class="comment">// Second `patch` invocation</span></div><div class="line">patch(vnode, newVnode); <span class="comment">// Snabbdom efficiently updates the old view to the new state</span></div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> isRealElement = isDef(oldVnode.nodeType);</div><div class="line"><span class="keyword">if</span> (!isRealElement &amp;&amp; sameVnode(oldVnode, vnode)) &#123;</div><div class="line">  <span class="comment">// patch existing root node</span></div><div class="line">  patchVnode(oldVnode, vnode, insertedVnodeQueue, <span class="literal">null</span>, <span class="literal">null</span>,removeOnly);</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  <span class="keyword">if</span> (isRealElement) &#123;</div><div class="line">      oldVnode = emptyNodeAt(oldVnode);</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// create new node for new vnode</span></div><div class="line">  createElm(...)</div><div class="line">  <span class="comment">// destroy old node</span></div><div class="line">  <span class="keyword">if</span> (isDef(parentElm)) &#123;</div><div class="line">      removeVnodes(parentElm, [oldVnode], <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isDef(oldVnode.tag)) &#123;</div><div class="line">      invokeDestroyHook(oldVnode);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// new vnode 的 dom插入后回调</span></div><div class="line">invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch);</div><div class="line"><span class="keyword">return</span> vnode.elm</div></pre></td></tr></table></figure>
+<h2 id="hooks"><a href="#hooks" class="headerlink" title="hooks"></a>hooks</h2><ul>
+<li>create</li>
+<li>insert<h3 id="vue里的vnode-hooks"><a href="#vue里的vnode-hooks" class="headerlink" title="vue里的vnode hooks"></a>vue里的vnode hooks</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- 0: &quot;init&quot;</div><div class="line">- 1: &quot;prepatch&quot;</div><div class="line">- 2: &quot;insert&quot; 组件vm的mount在这里触发 callHook(componentInstance, &apos;mounted&apos;);</div><div class="line">- 3: &quot;destroy&quot;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="jsx"><a href="#jsx" class="headerlink" title="jsx"></a>jsx</h2><h3 id="babel7"><a href="#babel7" class="headerlink" title="babel7"></a>babel7</h3><ul>
+<li><a href="https://github.com/vuejs/jsx#installation" target="_blank" rel="external">https://github.com/vuejs/jsx#installation</a><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Install the preset with:</div><div class="line"></div><div class="line">npm install @vue/babel-preset-jsx @vue/babel-helper-vue-jsx-merge-props</div><div class="line">Then add the preset to .babelrc:</div><div class="line"></div><div class="line">&#123;</div><div class="line">  &quot;presets&quot;: [&quot;@vue/babel-preset-jsx&quot;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="babel6"><a href="#babel6" class="headerlink" title="babel6"></a>babel6</h3><ul>
+<li><a href="https://github.com/vuejs/babel-plugin-transform-vue-jsx" target="_blank" rel="external">https://github.com/vuejs/babel-plugin-transform-vue-jsx</a></li>
+<li>Starting with version 3.4.0 we automatically inject const h = this.$createElement in any method and getter</li>
+</ul>
+<h4 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">babel-plugin-syntax-jsx\</div><div class="line">babel-plugin-transform-vue-jsx\</div><div class="line">babel-helper-vue-jsx-merge-props\</div><div class="line">babel-preset-env\</div></pre></td></tr></table></figure>
+<h3 id="写法"><a href="#写法" class="headerlink" title="写法"></a>写法</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">Vue.component(<span class="string">'jsx-example'</span>, &#123;</div><div class="line">  render () &#123; <span class="comment">// h will be injected</span></div><div class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"foo"</span>&gt;</span>bar<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">myMethod</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="comment">// h will not be injected</span></div><div class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"foo"</span>&gt;</span>bar<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">someOtherMethod</span>: <span class="function"><span class="params">()</span> =&gt;</span> &#123; <span class="comment">// h will not be injected</span></div><div class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"foo"</span>&gt;</span>bar<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></div><div class="line">  &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line">@Component</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">Vue</span> </span>&#123;</div><div class="line">  get computed () &#123; <span class="comment">// h will be injected</span></div><div class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"foo"</span>&gt;</span>bar<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">Vue.component(<span class="string">'jsx-example'</span>, &#123;</div><div class="line">  data() &#123;</div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">      <span class="attr">text</span>: <span class="string">'xxx'</span></div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">methods</span>: &#123;</div><div class="line">    <span class="attr">clickHandler</span> : <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'clickHandler '</span>, e);</div><div class="line">    &#125;,</div><div class="line">    nativeClickHandler(e) &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'nativeClickHandler '</span>, e);</div><div class="line">    &#125;,</div><div class="line">  &#125;,</div><div class="line"> </div><div class="line">  render (h) &#123;</div><div class="line">    <span class="keyword">const</span> data = &#123;</div><div class="line">      <span class="attr">class</span>: [<span class="string">'b'</span>, <span class="string">'c'</span>]</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">const</span> vnode = <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"a"</span> &#123;<span class="attr">...data</span>&#125;/&gt;</span></span></div><div class="line">    console.log(vnode)</div><div class="line">    return (</div><div class="line">      <span class="tag">&lt;<span class="name">div</span></span></div><div class="line">        // <span class="attr">normal</span> <span class="attr">attributes</span> <span class="attr">or</span> <span class="attr">component</span> <span class="attr">props.</span></div><div class="line">        <span class="attr">id</span>=<span class="string">"foo"</span></div><div class="line">        // <span class="attr">DOM</span> <span class="attr">properties</span> <span class="attr">are</span> <span class="attr">prefixed</span> <span class="attr">with</span> `<span class="attr">domProps</span>`</div><div class="line">        <span class="attr">domPropsInnerHTML</span>=<span class="string">"bar"</span></div><div class="line">        // <span class="attr">event</span> <span class="attr">listeners</span> <span class="attr">are</span> <span class="attr">prefixed</span> <span class="attr">with</span> `<span class="attr">on</span>` <span class="attr">or</span> `<span class="attr">nativeOn</span>`</div><div class="line">        <span class="attr">onClick</span>=<span class="string">&#123;this.clickHandler&#125;</span></div><div class="line">        <span class="attr">nativeOnClick</span>=<span class="string">&#123;this.nativeClickHandler&#125;</span></div><div class="line">        // <span class="attr">other</span> <span class="attr">special</span> <span class="attr">top-level</span> <span class="attr">properties</span></div><div class="line">        <span class="attr">class</span>=<span class="string">&#123;&#123;</span> <span class="attr">foo:</span> <span class="attr">true</span>, <span class="attr">bar:</span> <span class="attr">false</span> &#125;&#125;</div><div class="line">        <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">color:</span> '<span class="attr">red</span>', <span class="attr">fontSize:</span> '<span class="attr">14px</span>' &#125;&#125;</div><div class="line">        <span class="attr">key</span>=<span class="string">"key"</span></div><div class="line">        <span class="attr">ref</span>=<span class="string">"ref"</span></div><div class="line">        // <span class="attr">assign</span> <span class="attr">the</span> `<span class="attr">ref</span>` <span class="attr">is</span> <span class="attr">used</span> <span class="attr">on</span> <span class="attr">elements</span>/<span class="attr">components</span> <span class="attr">with</span> <span class="attr">v-for</span></div><div class="line">        <span class="attr">refInFor</span></div><div class="line">        <span class="attr">slot</span>=<span class="string">"slot"</span>&gt;</div><div class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    )</div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/virtual-dom-diff-js/" rel="tag"># virtual-dom diff js</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/28/2019-2019-03-28-vue-reactivity/" rel="next" title="vue reactivity">
+                <i class="fa fa-chevron-left"></i> vue reactivity
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/01/2019-2019-04-01-vue-computed-watch/" rel="prev" title="vue computed watch">
+                vue computed watch <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">浩齐</p>
+              <p class="site-description motion-element" itemprop="description">some kind of blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#createVnode"><span class="nav-number">1.</span> <span class="nav-text">createVnode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#patch"><span class="nav-number">2.</span> <span class="nav-text">patch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hooks"><span class="nav-number">3.</span> <span class="nav-text">hooks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vue里的vnode-hooks"><span class="nav-number">3.1.</span> <span class="nav-text">vue里的vnode hooks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jsx"><span class="nav-number">4.</span> <span class="nav-text">jsx</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#babel7"><span class="nav-number">4.1.</span> <span class="nav-text">babel7</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#babel6"><span class="nav-number">4.2.</span> <span class="nav-text">babel6</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#依赖"><span class="nav-number">4.2.1.</span> <span class="nav-text">依赖</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写法"><span class="nav-number">4.3.</span> <span class="nav-text">写法</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">浩齐</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vue源码 响应式," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="anchors
+定义响应式
+定义响应式流程
+user-watcher响应式流程
+
+
+依赖收集
+派发更新
+vue-nextTick
+手动设置响应式和数组响应式
+
+题外
+watcher定义后会立即执行一次getter(不是cb) this.value = this.lazy ? undefined : this.get();
+Observe里面有dep, defineReactivity里也有dep.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue reactivity">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2019/03/28/2019-2019-03-28-vue-reactivity/index.html">
+<meta property="og:site_name" content="Haoqi's blog-ish!">
+<meta property="og:description" content="anchors
+定义响应式
+定义响应式流程
+user-watcher响应式流程
+
+
+依赖收集
+派发更新
+vue-nextTick
+手动设置响应式和数组响应式
+
+题外
+watcher定义后会立即执行一次getter(不是cb) this.value = this.lazy ? undefined : this.get();
+Observe里面有dep, defineReactivity里也有dep.">
+<meta property="og:updated_time" content="2019-05-18T05:45:39.901Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue reactivity">
+<meta name="twitter:description" content="anchors
+定义响应式
+定义响应式流程
+user-watcher响应式流程
+
+
+依赖收集
+派发更新
+vue-nextTick
+手动设置响应式和数组响应式
+
+题外
+watcher定义后会立即执行一次getter(不是cb) this.value = this.lazy ? undefined : this.get();
+Observe里面有dep, defineReactivity里也有dep.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2019/03/28/2019-2019-03-28-vue-reactivity/"/>
+
+
+
+
+
+  <title>vue reactivity | Haoqi's blog-ish!</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <audio src="\assets\2019\Indian_Summer.mp3"></audio>
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Haoqi's blog-ish!</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">blah blah blah</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+
+<script>
+  let hasClick = 0 
+  document.querySelector('.site-subtitle').onclick = ()=>{
+    hasClick++
+    if(hasClick === 3) {
+      document.querySelector('audio').play()
+    }
+  }
+
+</script> </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/03/28/2019-2019-03-28-vue-reactivity/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="浩齐">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoqi's blog-ish!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vue reactivity</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-28T21:11:55+08:00">
+                2019-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue源码-响应式/" itemprop="url" rel="index">
+                    <span itemprop="name">vue源码 响应式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="anchors"><a href="#anchors" class="headerlink" title="anchors"></a>anchors</h3><ul>
+<li><a href="#定义响应式">定义响应式</a><ul>
+<li><a href="#定义响应式流程">定义响应式流程</a></li>
+<li><a href="#user-watcher响应式流程">user-watcher响应式流程</a></li>
+</ul>
+</li>
+<li><a href="#依赖收集">依赖收集</a></li>
+<li><a href="#派发更新">派发更新</a></li>
+<li><a href="#vue-nextTick">vue-nextTick</a></li>
+<li><a href="#手动设置响应式和数组响应式">手动设置响应式和数组响应式</a></li>
+</ul>
+<h3 id="题外"><a href="#题外" class="headerlink" title="题外"></a>题外</h3><ul>
+<li>watcher定义后会立即执行一次getter(不是cb) <code>this.value = this.lazy ? undefined : this.get();</code></li>
+<li>Observe里面有dep, defineReactivity里也有dep.</li>
+<li>defineReactive为在模型上的每个属性, 创建dep. 谁get那个属性就把target watcher添加到dep.subs里去. </li>
+<li>render watcher执行一次get后, 让不再引用的的属性的dep取消订阅自己.</li>
+</ul>
+<h3 id="定义响应式"><a href="#定义响应式" class="headerlink" title="定义响应式"></a>定义响应式</h3><h4 id="定义响应式流程"><a href="#定义响应式流程" class="headerlink" title="定义响应式流程"></a>定义响应式流程</h4><ul>
+<li>遍历属性对象, 通过getter定义代理到vm上</li>
+<li>为属性对象添加observer, <code>data.__ob__ = new Observer(data)</code></li>
+<li>关系为data有dep, dep里有watcher, watcher里有dep.循环依赖?</li>
+<li>defineReactive内部又new dep去notify和depend, 那observer里的dep有什么用?<ul>
+<li><code>childOb.dep.depend();</code><a id="more"></a>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div></pre></td><td class="code"><pre><div class="line">initState(vm);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">initState</span> (<span class="params">vm</span>) </span>&#123;</div><div class="line">  vm._watchers = [];</div><div class="line">  <span class="keyword">var</span> opts = vm.$options;</div><div class="line">  <span class="keyword">if</span> (opts.props) &#123; initProps(vm, opts.props); &#125;</div><div class="line">  <span class="keyword">if</span> (opts.data) &#123;</div><div class="line">    initData(vm);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    observe(vm._data = &#123;&#125;, <span class="literal">true</span> <span class="comment">/* asRootData */</span>);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">if</span> (opts.computed) &#123; initComputed(vm, opts.computed); &#125;</div><div class="line">  <span class="keyword">if</span> (opts.watch &amp;&amp; opts.watch !== nativeWatch) &#123;</div><div class="line">    initWatch(vm, opts.watch);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">initData</span> (<span class="params">vm</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> data = vm._data = vm.$options.data</div><div class="line"></div><div class="line">  <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(data);</div><div class="line">  <span class="keyword">var</span> i = keys.length;</div><div class="line">  <span class="keyword">while</span> (i--) &#123;</div><div class="line">    <span class="keyword">var</span> key = keys[i]; </div><div class="line">    proxy(vm, <span class="string">"_data"</span>, key);</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// observe data 定义响应式</span></div><div class="line">  observe(data, <span class="literal">true</span> <span class="comment">/* asRootData */</span>);</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">observe</span> (<span class="params">value, asRootData</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> ob;</div><div class="line">  <span class="keyword">if</span> (hasOwn(value, <span class="string">'__ob__'</span>) &amp;&amp; value.__ob__ <span class="keyword">instanceof</span> Observer) &#123;</div><div class="line">    ob = value.__ob__;</div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (</div><div class="line">    shouldObserve &amp;&amp;</div><div class="line">    !isServerRendering() &amp;&amp;</div><div class="line">    (<span class="built_in">Array</span>.isArray(value) || isPlainObject(value)) &amp;&amp;</div><div class="line">    <span class="built_in">Object</span>.isExtensible(value) &amp;&amp;</div><div class="line">    !value._isVue</div><div class="line">  ) &#123;</div><div class="line">    ob = <span class="keyword">new</span> Observer(value);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">if</span> (asRootData &amp;&amp; ob) &#123;</div><div class="line">    ob.vmCount++;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> ob</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> Observer = <span class="function"><span class="keyword">function</span> <span class="title">Observer</span> (<span class="params">value</span>) </span>&#123;</div><div class="line">  <span class="keyword">this</span>.value = value;</div><div class="line">  <span class="keyword">this</span>.dep = <span class="keyword">new</span> Dep(); <span class="comment">// dep.subs收集watcher</span></div><div class="line">  <span class="keyword">this</span>.vmCount = <span class="number">0</span>;</div><div class="line">  def(value, <span class="string">'__ob__'</span>, <span class="keyword">this</span>); <span class="comment">// 不可枚举属性</span></div><div class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(value)) &#123;</div><div class="line">    <span class="keyword">var</span> augment = hasProto</div><div class="line">      ? protoAugment</div><div class="line">      : copyAugment;</div><div class="line">    augment(value, arrayMethods, arrayKeys);</div><div class="line">    <span class="keyword">this</span>.observeArray(value);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">this</span>.walk(value);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Walk through each property and convert them into</div><div class="line"> * getter/setters. This method should only be called when</div><div class="line"> * value type is Object.</div><div class="line"> */</div><div class="line">Observer.prototype.walk = <span class="function"><span class="keyword">function</span> <span class="title">walk</span> (<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(obj);</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; keys.length; i++) &#123;</div><div class="line">    defineReactive(obj, keys[i]);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Observe a list of Array items.</div><div class="line"> */</div><div class="line">Observer.prototype.observeArray = <span class="function"><span class="keyword">function</span> <span class="title">observeArray</span> (<span class="params">items</span>) </span>&#123;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, l = items.length; i &lt; l; i++) &#123;</div><div class="line">    observe(items[i]);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">defineReactive</span> (<span class="params"></span></span></div><div class="line">  obj,</div><div class="line">  key,</div><div class="line">  val,</div><div class="line">  customSetter,</div><div class="line">  shallow</div><div class="line">) &#123;</div><div class="line">  <span class="keyword">var</span> dep = <span class="keyword">new</span> Dep();</div><div class="line"></div><div class="line">  <span class="keyword">var</span> property = <span class="built_in">Object</span>.getOwnPropertyDescriptor(obj, key);</div><div class="line">  <span class="keyword">if</span> (property &amp;&amp; property.configurable === <span class="literal">false</span>) &#123;</div><div class="line">    <span class="keyword">return</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// cater for pre-defined getter/setters</span></div><div class="line">  <span class="keyword">var</span> getter = property &amp;&amp; property.get;</div><div class="line">  <span class="keyword">if</span> (!getter &amp;&amp; <span class="built_in">arguments</span>.length === <span class="number">2</span>) &#123;</div><div class="line">    val = obj[key];</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">var</span> setter = property &amp;&amp; property.set;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> childOb = !shallow &amp;&amp; observe(val);</div><div class="line">  <span class="built_in">Object</span>.defineProperty(obj, key, &#123;</div><div class="line">    <span class="attr">enumerable</span>: <span class="literal">true</span>,</div><div class="line">    <span class="attr">configurable</span>: <span class="literal">true</span>,</div><div class="line">    <span class="attr">get</span>: <span class="function"><span class="keyword">function</span> <span class="title">reactiveGetter</span> (<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> value = getter ? getter.call(obj) : val;</div><div class="line">      <span class="keyword">if</span> (Dep.target) &#123;</div><div class="line">        dep.depend();</div><div class="line">        <span class="keyword">if</span> (childOb) &#123;</div><div class="line">          childOb.dep.depend();</div><div class="line">          <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(value)) &#123;</div><div class="line">            dependArray(value);</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> value</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">set</span>: <span class="function"><span class="keyword">function</span> <span class="title">reactiveSetter</span> (<span class="params">newVal</span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> value = getter ? getter.call(obj) : val;</div><div class="line">      <span class="comment">/* eslint-disable no-self-compare */</span></div><div class="line">      <span class="keyword">if</span> (newVal === value || (newVal !== newVal &amp;&amp; value !== value)) &#123;</div><div class="line">        <span class="keyword">return</span></div><div class="line">      &#125;</div><div class="line">      <span class="comment">/* eslint-enable no-self-compare */</span></div><div class="line">      <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp; customSetter) &#123;</div><div class="line">        customSetter();</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">if</span> (setter) &#123;</div><div class="line">        setter.call(obj, newVal);</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        val = newVal;</div><div class="line">      &#125;</div><div class="line">      childOb = !shallow &amp;&amp; observe(newVal);</div><div class="line">      dep.notify();</div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 属性proxy</span></div><div class="line"><span class="keyword">var</span> sharedPropertyDefinition = &#123;</div><div class="line">  <span class="attr">enumerable</span>: <span class="literal">true</span>,</div><div class="line">  <span class="attr">configurable</span>: <span class="literal">true</span>,</div><div class="line">  <span class="attr">get</span>: noop,</div><div class="line">  <span class="attr">set</span>: noop</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">proxy</span> (<span class="params">target, sourceKey, key</span>) </span>&#123;</div><div class="line">  sharedPropertyDefinition.get = <span class="function"><span class="keyword">function</span> <span class="title">proxyGetter</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>[sourceKey][key]</div><div class="line">  &#125;;</div><div class="line">  sharedPropertyDefinition.set = <span class="function"><span class="keyword">function</span> <span class="title">proxySetter</span> (<span class="params">val</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>[sourceKey][key] = val;</div><div class="line">  &#125;;</div><div class="line">  <span class="built_in">Object</span>.defineProperty(target, key, sharedPropertyDefinition);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="user-watcher响应式流程"><a href="#user-watcher响应式流程" class="headerlink" title="user-watcher响应式流程"></a>user-watcher响应式流程</h4><ul>
+<li><p>user定义的watch在initState时通过$watch创建并放入<code>vm._watchers</code>,  renderWatcher在<code>vm.$mount</code>创建, watcher创建晚于defineReactivity这样, 在get属性的时候就能访问属性的getters收集依赖</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">initState</span> (<span class="params">vm</span>) </span>&#123;</div><div class="line">  <span class="comment">// props data computed reactivity</span></div><div class="line">  <span class="keyword">if</span> (opts.watch &amp;&amp; opts.watch !== nativeWatch) &#123;</div><div class="line">    initWatch(vm, opts.watch); <span class="comment">// =&gt; createWatcher(vm, key, handler); =&gt; vm.$watch(expOrFn, handler, options) =&gt; var watcher = new Watcher(vm, expOrFn, cb, options);</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>user watcher在创建后访问getter, 此时Dep.target是user watcher, expOrFun</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">get: <span class="function"><span class="keyword">function</span> <span class="title">reactiveGetter</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> value = getter ? getter.call(obj) : val;</div><div class="line">  <span class="keyword">if</span> (Dep.target) &#123;</div><div class="line">    dep.depend();</div><div class="line">    <span class="keyword">if</span> (childOb) &#123;</div><div class="line">      childOb.dep.depend();</div><div class="line">      <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(value)) &#123;</div><div class="line">        dependArray(value);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> value</div><div class="line">&#125;</div><div class="line"></div><div class="line">Dep.prototype.depend = <span class="function"><span class="keyword">function</span> <span class="title">depend</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (Dep.target) &#123;</div><div class="line">    Dep.target.addDep(<span class="keyword">this</span>);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Watcher.prototype.addDep = <span class="function"><span class="keyword">function</span> <span class="title">addDep</span> (<span class="params">dep</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> id = dep.id;</div><div class="line">  <span class="keyword">if</span> (!<span class="keyword">this</span>.newDepIds.has(id)) &#123;</div><div class="line">    <span class="keyword">this</span>.newDepIds.add(id);</div><div class="line">    <span class="keyword">this</span>.newDeps.push(dep);</div><div class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>.depIds.has(id)) &#123;</div><div class="line">      dep.addSub(<span class="keyword">this</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"><span class="comment">// depend过后, user watcher会有如下数据, 的确是循环引用</span></div><div class="line">Dep.target.deps = [</div><div class="line">  dep : &#123;</div><div class="line">    <span class="attr">sub</span> : <span class="string">`user watcher`</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">dep</span> : &#123; <span class="comment">// "defineReactive person.name dep"</span></div><div class="line">    sub : <span class="string">`user watcher`</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">dep</span> : &#123; <span class="comment">// "defineReactive person dep"</span></div><div class="line">    sub : <span class="string">`user watcher`</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">dep</span> : &#123; <span class="comment">// "person.data observer dep"</span></div><div class="line">    sub : <span class="string">`user watcher`</span></div><div class="line">  &#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="依赖收集"><a href="#依赖收集" class="headerlink" title="依赖收集"></a>依赖收集</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">Dep</span> </span>&#123;</div><div class="line">  <span class="keyword">static</span> target: ?Watcher;</div><div class="line">  id: number;</div><div class="line">  subs: <span class="built_in">Array</span>&lt;Watcher&gt;;</div><div class="line"></div><div class="line">  <span class="keyword">constructor</span> () &#123;</div><div class="line">    <span class="keyword">this</span>.id = uid++</div><div class="line">    <span class="keyword">this</span>.subs = []</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  addSub (sub: Watcher) &#123;</div><div class="line">    <span class="keyword">this</span>.subs.push(sub)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  removeSub (sub: Watcher) &#123;</div><div class="line">    remove(<span class="keyword">this</span>.subs, sub)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  depend () &#123;</div><div class="line">    <span class="keyword">if</span> (Dep.target) &#123;</div><div class="line">      Dep.target.addDep(<span class="keyword">this</span>)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  notify () &#123;</div><div class="line">    <span class="comment">// stabilize the subscriber list first</span></div><div class="line">    <span class="keyword">const</span> subs = <span class="keyword">this</span>.subs.slice()</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = subs.length; i &lt; l; i++) &#123;</div><div class="line">      subs[i].update()</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Dep.target = <span class="literal">null</span>;</div><div class="line"><span class="keyword">var</span> targetStack = [];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">pushTarget</span> (<span class="params">_target</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (Dep.target) &#123; targetStack.push(Dep.target); &#125;</div><div class="line">  Dep.target = _target;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">popTarget</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  Dep.target = targetStack.pop();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Watcher的get 收集依赖后, 调用取消视图上不再依赖的dep.subs注册.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">Watcher.prototype.get = <span class="function"><span class="keyword">function</span> <span class="title">get</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  pushTarget(<span class="keyword">this</span>);</div><div class="line">  <span class="keyword">var</span> value;</div><div class="line">  <span class="keyword">var</span> vm = <span class="keyword">this</span>.vm;</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    value = <span class="keyword">this</span>.getter.call(vm, vm);</div><div class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.user) &#123;</div><div class="line">      handleError(e, vm, (<span class="string">"getter for watcher \""</span> + (<span class="keyword">this</span>.expression) + <span class="string">"\""</span>));</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="keyword">throw</span> e</div><div class="line">    &#125;</div><div class="line">  &#125; <span class="keyword">finally</span> &#123;</div><div class="line">    <span class="comment">// "touch" every property so they are all tracked as</span></div><div class="line">    <span class="comment">// dependencies for deep watching</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.deep) &#123;</div><div class="line">      traverse(value);</div><div class="line">    &#125;</div><div class="line">    popTarget();</div><div class="line">    <span class="keyword">this</span>.cleanupDeps();</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> value</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Watcher.prototype.cleanupDeps = <span class="function"><span class="keyword">function</span> <span class="title">cleanupDeps</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> <span class="keyword">this</span>$<span class="number">1</span> = <span class="keyword">this</span>;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> i = <span class="keyword">this</span>.deps.length;</div><div class="line">  <span class="keyword">while</span> (i--) &#123;</div><div class="line">    <span class="keyword">var</span> dep = <span class="keyword">this</span>$<span class="number">1.</span>deps[i];</div><div class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>$<span class="number">1.</span>newDepIds.has(dep.id)) &#123;</div><div class="line">      dep.removeSub(<span class="keyword">this</span>$<span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">var</span> tmp = <span class="keyword">this</span>.depIds;</div><div class="line">  <span class="keyword">this</span>.depIds = <span class="keyword">this</span>.newDepIds;</div><div class="line">  <span class="keyword">this</span>.newDepIds = tmp;</div><div class="line">  <span class="keyword">this</span>.newDepIds.clear();</div><div class="line">  tmp = <span class="keyword">this</span>.deps;</div><div class="line">  <span class="keyword">this</span>.deps = <span class="keyword">this</span>.newDeps;</div><div class="line">  <span class="keyword">this</span>.newDeps = tmp;</div><div class="line">  <span class="keyword">this</span>.newDeps.length = <span class="number">0</span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="派发更新"><a href="#派发更新" class="headerlink" title="派发更新"></a>派发更新</h3><ul>
+<li>让defineReactive里的dep执行notify, notify遍历subs watcher, 并调用update</li>
+<li>render watch的before钩子执行before update</li>
+<li>callUpdatedHooks(updatedQueue);执行updatedhook</li>
+<li>user cb调用条件<code>(value !== this.value || isObject(value) || this.deep)</code><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">Dep.prototype.notify = <span class="function"><span class="keyword">function</span> <span class="title">notify</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> subs = <span class="keyword">this</span>.subs.slice();</div><div class="line">  <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp; !config.async) &#123;</div><div class="line">    <span class="comment">// subs aren't sorted in scheduler if not running async</span></div><div class="line">    <span class="comment">// we need to sort them now to make sure they fire in correct</span></div><div class="line">    <span class="comment">// order</span></div><div class="line">    subs.sort(<span class="function"><span class="keyword">function</span> (<span class="params">a, b</span>) </span>&#123; <span class="keyword">return</span> a.id - b.id; &#125;);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, l = subs.length; i &lt; l; i++) &#123;</div><div class="line">    subs[i].update();</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 加入队列</span></div><div class="line">Watcher.prototype.update = <span class="function"><span class="keyword">function</span> <span class="title">update</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">/* istanbul ignore else */</span></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.lazy) &#123;</div><div class="line">    <span class="keyword">this</span>.dirty = <span class="literal">true</span>;</div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">this</span>.sync) &#123;</div><div class="line">    <span class="keyword">this</span>.run();</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    queueWatcher(<span class="keyword">this</span>);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">queueWatcher</span> (<span class="params">watcher</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> id = watcher.id;</div><div class="line">  <span class="keyword">if</span> (has[id] == <span class="literal">null</span>) &#123;</div><div class="line">    has[id] = <span class="literal">true</span>;</div><div class="line">    <span class="keyword">if</span> (!flushing) &#123;</div><div class="line">      queue.push(watcher);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="comment">// if already flushing, splice the watcher based on its id</span></div><div class="line">      <span class="comment">// if already past its id, it will be run next immediately.</span></div><div class="line">      <span class="keyword">var</span> i = queue.length - <span class="number">1</span>;</div><div class="line">      <span class="keyword">while</span> (i &gt; index &amp;&amp; queue[i].id &gt; watcher.id) &#123;</div><div class="line">        i--;</div><div class="line">      &#125;</div><div class="line">      queue.splice(i + <span class="number">1</span>, <span class="number">0</span>, watcher);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// queue the flush </span></div><div class="line">    <span class="keyword">if</span> (!waiting) &#123;</div><div class="line">      waiting = <span class="literal">true</span>;</div><div class="line">      <span class="comment">// 异步刷队列前可以不停加任务</span></div><div class="line">      nextTick(flushSchedulerQueue);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">flushSchedulerQueue</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  currentFlushTimestamp = getNow();</div><div class="line">  flushing = <span class="literal">true</span>;</div><div class="line">  <span class="keyword">var</span> watcher, id;</div><div class="line"></div><div class="line">  <span class="comment">// Sort queue before flush.</span></div><div class="line">  <span class="comment">// This ensures that:</span></div><div class="line">  <span class="comment">// 1. Components are updated from parent to child. (because parent is always</span></div><div class="line">  <span class="comment">//    created before the child)</span></div><div class="line">  <span class="comment">// 2. A component's user watchers are run before its render watcher (because</span></div><div class="line">  <span class="comment">//    user watchers are created before the render watcher)</span></div><div class="line">  <span class="comment">// 3. If a component is destroyed during a parent component's watcher run,</span></div><div class="line">  <span class="comment">//    its watchers can be skipped.</span></div><div class="line">  queue.sort(<span class="function"><span class="keyword">function</span> (<span class="params">a, b</span>) </span>&#123; <span class="keyword">return</span> a.id - b.id; &#125;);</div><div class="line"></div><div class="line">  <span class="comment">// do not cache length because more watchers might be pushed</span></div><div class="line">  <span class="comment">// as we run existing watchers</span></div><div class="line">  <span class="keyword">for</span> (index = <span class="number">0</span>; index &lt; queue.length; index++) &#123;</div><div class="line">    watcher = queue[index];</div><div class="line">    <span class="keyword">if</span> (watcher.before) &#123;</div><div class="line">      watcher.before();</div><div class="line">    &#125;</div><div class="line">    id = watcher.id;</div><div class="line">    has[id] = <span class="literal">null</span>;</div><div class="line">    watcher.run();</div><div class="line">    <span class="comment">// in dev build, check and stop circular updates.</span></div><div class="line">    <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp; has[id] != <span class="literal">null</span>) &#123;</div><div class="line">      circular[id] = (circular[id] || <span class="number">0</span>) + <span class="number">1</span>;</div><div class="line">      <span class="keyword">if</span> (circular[id] &gt; MAX_UPDATE_COUNT) &#123;</div><div class="line">        warn(</div><div class="line">          <span class="string">'You may have an infinite update loop '</span> + (</div><div class="line">            watcher.user</div><div class="line">              ? (<span class="string">"in watcher with expression \""</span> + (watcher.expression) + <span class="string">"\""</span>)</div><div class="line">              : <span class="string">"in a component render function."</span></div><div class="line">          ),</div><div class="line">          watcher.vm</div><div class="line">        );</div><div class="line">        <span class="keyword">break</span></div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// keep copies of post queues before resetting state</span></div><div class="line">  <span class="keyword">var</span> activatedQueue = activatedChildren.slice();</div><div class="line">  <span class="keyword">var</span> updatedQueue = queue.slice();</div><div class="line"></div><div class="line">  resetSchedulerState();</div><div class="line"></div><div class="line">  <span class="comment">// call component updated and activated hooks</span></div><div class="line">  callActivatedHooks(activatedQueue);</div><div class="line">  callUpdatedHooks(updatedQueue);</div><div class="line"></div><div class="line">  <span class="comment">// devtool hook</span></div><div class="line">  <span class="comment">/* istanbul ignore if */</span></div><div class="line">  <span class="keyword">if</span> (devtools &amp;&amp; config.devtools) &#123;</div><div class="line">    devtools.emit(<span class="string">'flush'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Watcher.prototype.run = <span class="function"><span class="keyword">function</span> <span class="title">run</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.active) &#123;</div><div class="line">    <span class="keyword">var</span> value = <span class="keyword">this</span>.get();</div><div class="line">    <span class="keyword">if</span> (</div><div class="line">      value !== <span class="keyword">this</span>.value ||</div><div class="line">      <span class="comment">// Deep watchers and watchers on Object/Arrays should fire even</span></div><div class="line">      <span class="comment">// when the value is the same, because the value may</span></div><div class="line">      <span class="comment">// have mutated.</span></div><div class="line">      isObject(value) ||</div><div class="line">      <span class="keyword">this</span>.deep</div><div class="line">    ) &#123;</div><div class="line">      <span class="comment">// set new value</span></div><div class="line">      <span class="keyword">var</span> oldValue = <span class="keyword">this</span>.value;</div><div class="line">      <span class="keyword">this</span>.value = value;</div><div class="line">      <span class="keyword">if</span> (<span class="keyword">this</span>.user) &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">          <span class="keyword">this</span>.cb.call(<span class="keyword">this</span>.vm, value, oldValue);</div><div class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">          handleError(e, <span class="keyword">this</span>.vm, (<span class="string">"callback for watcher \""</span> + (<span class="keyword">this</span>.expression) + <span class="string">"\""</span>));</div><div class="line">        &#125;</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">this</span>.cb.call(<span class="keyword">this</span>.vm, value, oldValue);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="vue-nextTick"><a href="#vue-nextTick" class="headerlink" title="vue-nextTick"></a>vue-nextTick</h3><ul>
+<li>默认micro task用messageChannel?</li>
+<li>$nextTick调用的先后,也就是cb执行顺序. 设置值会立即添加到队列.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> isUsingMicroTask = <span class="literal">false</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> callbacks = [];</div><div class="line"><span class="keyword">var</span> pending = <span class="literal">false</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">flushCallbacks</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  pending = <span class="literal">false</span>;</div><div class="line">  <span class="keyword">var</span> copies = callbacks.slice(<span class="number">0</span>);</div><div class="line">  callbacks.length = <span class="number">0</span>;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; copies.length; i++) &#123;</div><div class="line">    copies[i]();</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// Here we have async deferring wrappers using microtasks.</span></div><div class="line"><span class="comment">// In 2.5 we used (macro) tasks (in combination with microtasks).</span></div><div class="line"><span class="comment">// However, it has subtle problems when state is changed right before repaint</span></div><div class="line"><span class="comment">// (e.g. #6813, out-in transitions).</span></div><div class="line"><span class="comment">// Also, using (macro) tasks in event handler would cause some weird behaviors</span></div><div class="line"><span class="comment">// that cannot be circumvented (e.g. #7109, #7153, #7546, #7834, #8109).</span></div><div class="line"><span class="comment">// So we now use microtasks everywhere, again.</span></div><div class="line"><span class="comment">// A major drawback of this tradeoff is that there are some scenarios</span></div><div class="line"><span class="comment">// where microtasks have too high a priority and fire in between supposedly</span></div><div class="line"><span class="comment">// sequential events (e.g. #4521, #6690, which have workarounds)</span></div><div class="line"><span class="comment">// or even between bubbling of the same event (#6566).</span></div><div class="line"><span class="keyword">var</span> timerFunc;</div><div class="line"></div><div class="line"><span class="comment">// The nextTick behavior leverages the microtask queue, which can be accessed</span></div><div class="line"><span class="comment">// via either native Promise.then or MutationObserver.</span></div><div class="line"><span class="comment">// MutationObserver has wider support, however it is seriously bugged in</span></div><div class="line"><span class="comment">// UIWebView in iOS &gt;= 9.3.3 when triggered in touch event handlers. It</span></div><div class="line"><span class="comment">// completely stops working after triggering a few times... so, if native</span></div><div class="line"><span class="comment">// Promise is available, we will use it:</span></div><div class="line"><span class="comment">/* istanbul ignore next, $flow-disable-line */</span></div><div class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">Promise</span> !== <span class="string">'undefined'</span> &amp;&amp; isNative(<span class="built_in">Promise</span>)) &#123;</div><div class="line">  <span class="keyword">var</span> p = <span class="built_in">Promise</span>.resolve();</div><div class="line">  timerFunc = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    p.then(flushCallbacks);</div><div class="line">    <span class="comment">// In problematic UIWebViews, Promise.then doesn't completely break, but</span></div><div class="line">    <span class="comment">// it can get stuck in a weird state where callbacks are pushed into the</span></div><div class="line">    <span class="comment">// microtask queue but the queue isn't being flushed, until the browser</span></div><div class="line">    <span class="comment">// needs to do some other work, e.g. handle a timer. Therefore we can</span></div><div class="line">    <span class="comment">// "force" the microtask queue to be flushed by adding an empty timer.</span></div><div class="line">    <span class="keyword">if</span> (isIOS) &#123; setTimeout(noop); &#125;</div><div class="line">  &#125;;</div><div class="line">  isUsingMicroTask = <span class="literal">true</span>;</div><div class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (!isIE &amp;&amp; <span class="keyword">typeof</span> MutationObserver !== <span class="string">'undefined'</span> &amp;&amp; (</div><div class="line">  isNative(MutationObserver) ||</div><div class="line">  <span class="comment">// PhantomJS and iOS 7.x</span></div><div class="line">  MutationObserver.toString() === <span class="string">'[object MutationObserverConstructor]'</span></div><div class="line">)) &#123;</div><div class="line">  <span class="comment">// Use MutationObserver where native Promise is not available,</span></div><div class="line">  <span class="comment">// e.g. PhantomJS, iOS7, Android 4.4</span></div><div class="line">  <span class="comment">// (#6466 MutationObserver is unreliable in IE11)</span></div><div class="line">  <span class="keyword">var</span> counter = <span class="number">1</span>;</div><div class="line">  <span class="keyword">var</span> observer = <span class="keyword">new</span> MutationObserver(flushCallbacks);</div><div class="line">  <span class="keyword">var</span> textNode = <span class="built_in">document</span>.createTextNode(<span class="built_in">String</span>(counter));</div><div class="line">  observer.observe(textNode, &#123;</div><div class="line">    <span class="attr">characterData</span>: <span class="literal">true</span></div><div class="line">  &#125;);</div><div class="line">  timerFunc = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    counter = (counter + <span class="number">1</span>) % <span class="number">2</span>;</div><div class="line">    textNode.data = <span class="built_in">String</span>(counter);</div><div class="line">  &#125;;</div><div class="line">  isUsingMicroTask = <span class="literal">true</span>;</div><div class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> setImmediate !== <span class="string">'undefined'</span> &amp;&amp; isNative(setImmediate)) &#123;</div><div class="line">  <span class="comment">// Fallback to setImmediate.</span></div><div class="line">  <span class="comment">// Techinically it leverages the (macro) task queue,</span></div><div class="line">  <span class="comment">// but it is still a better choice than setTimeout.</span></div><div class="line">  timerFunc = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    setImmediate(flushCallbacks);</div><div class="line">  &#125;;</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  <span class="comment">// Fallback to setTimeout.</span></div><div class="line">  timerFunc = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    setTimeout(flushCallbacks, <span class="number">0</span>);</div><div class="line">  &#125;;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">nextTick</span> (<span class="params">cb, ctx</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> _resolve;</div><div class="line">  callbacks.push(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (cb) &#123;</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">        cb.call(ctx);</div><div class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">        handleError(e, ctx, <span class="string">'nextTick'</span>);</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (_resolve) &#123;</div><div class="line">      _resolve(ctx);</div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">  <span class="keyword">if</span> (!pending) &#123;</div><div class="line">    pending = <span class="literal">true</span>;</div><div class="line">    timerFunc();</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// $flow-disable-line</span></div><div class="line">  <span class="keyword">if</span> (!cb &amp;&amp; <span class="keyword">typeof</span> <span class="built_in">Promise</span> !== <span class="string">'undefined'</span>) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</div><div class="line">      _resolve = resolve;</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="手动设置响应式和数组响应式"><a href="#手动设置响应式和数组响应式" class="headerlink" title="手动设置响应式和数组响应式"></a>手动设置响应式和数组响应式</h3><ul>
+<li><code>{} []</code>上都会创建observer, object会对每个key</li>
+<li>setter里让watcher 添加到dep的subs里.</li>
+<li><p>observer里dep的作用, 为了set触发渲染watcher的重新渲染。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">set</span> (<span class="params">target, key, val</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> ob = (target).__ob__;</div><div class="line">  defineReactive(ob.value, key, val);</div><div class="line">  ob.dep.notify();</div><div class="line">  <span class="keyword">return</span> val</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">  <span class="keyword">var</span> childOb = !shallow &amp;&amp; observe(val); <span class="comment">// 子属性依赖创建observer</span></div><div class="line">  <span class="built_in">Object</span>.defineProperty(obj, key, &#123;</div><div class="line">    <span class="attr">enumerable</span>: <span class="literal">true</span>,</div><div class="line">    <span class="attr">configurable</span>: <span class="literal">true</span>,</div><div class="line">    <span class="attr">get</span>: <span class="function"><span class="keyword">function</span> <span class="title">reactiveGetter</span> (<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> value = getter ? getter.call(obj) : val;</div><div class="line">      <span class="keyword">if</span> (Dep.target) &#123;</div><div class="line">        dep.depend();</div><div class="line">        <span class="keyword">if</span> (childOb) &#123;</div><div class="line">          childOb.dep.depend(); <span class="comment">// 收集子属性依赖</span></div><div class="line">          <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(value)) &#123;</div><div class="line">            dependArray(value);</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> value</div><div class="line">    &#125;,</div></pre></td></tr></table></figure>
+</li>
+<li><p>数组响应式方法</p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">var</span> arrayProto = <span class="built_in">Array</span>.prototype;</div><div class="line"><span class="keyword">var</span> arrayMethods = <span class="built_in">Object</span>.create(arrayProto);</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">var</span> methodsToPatch = [</div><div class="line">  <span class="string">'push'</span>,</div><div class="line">  <span class="string">'pop'</span>,</div><div class="line">  <span class="string">'shift'</span>,</div><div class="line">  <span class="string">'unshift'</span>,</div><div class="line">  <span class="string">'splice'</span>,</div><div class="line">  <span class="string">'sort'</span>,</div><div class="line">  <span class="string">'reverse'</span></div><div class="line">];</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Intercept mutating methods and emit events</div><div class="line"> */</div><div class="line">methodsToPatch.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">method</span>) </span>&#123;</div><div class="line">  <span class="comment">// cache original method</span></div><div class="line">  <span class="keyword">var</span> original = arrayProto[method];</div><div class="line">  def(arrayMethods, method, <span class="function"><span class="keyword">function</span> <span class="title">mutator</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> args = [], len = <span class="built_in">arguments</span>.length;</div><div class="line">    <span class="keyword">while</span> ( len-- ) args[ len ] = <span class="built_in">arguments</span>[ len ];</div><div class="line"></div><div class="line">    <span class="keyword">var</span> result = original.apply(<span class="keyword">this</span>, args);</div><div class="line">    <span class="keyword">var</span> ob = <span class="keyword">this</span>.__ob__;</div><div class="line">    <span class="keyword">var</span> inserted;</div><div class="line">    <span class="keyword">switch</span> (method) &#123;</div><div class="line">      <span class="keyword">case</span> <span class="string">'push'</span>:</div><div class="line">      <span class="keyword">case</span> <span class="string">'unshift'</span>:</div><div class="line">        inserted = args;</div><div class="line">        <span class="keyword">break</span></div><div class="line">      <span class="keyword">case</span> <span class="string">'splice'</span>:</div><div class="line">        inserted = args.slice(<span class="number">2</span>);</div><div class="line">        <span class="keyword">break</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (inserted) &#123; ob.observeArray(inserted); &#125;</div><div class="line">    <span class="comment">// notify change</span></div><div class="line">    ob.dep.notify();</div><div class="line">    <span class="keyword">return</span> result</div><div class="line">  &#125;);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue源码-响应式/" rel="tag"># vue源码 响应式</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/23/2019-2019-03-23-vue组件化/" rel="next" title="vue 组件化">
+                <i class="fa fa-chevron-left"></i> vue 组件化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/31/2019-2019-03-31-snabbdom/" rel="prev" title="snabbdom, jsx学习">
+                snabbdom, jsx学习 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">浩齐</p>
+              <p class="site-description motion-element" itemprop="description">some kind of blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#anchors"><span class="nav-number">1.</span> <span class="nav-text">anchors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题外"><span class="nav-number">2.</span> <span class="nav-text">题外</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义响应式"><span class="nav-number">3.</span> <span class="nav-text">定义响应式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义响应式流程"><span class="nav-number">3.1.</span> <span class="nav-text">定义响应式流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#user-watcher响应式流程"><span class="nav-number">3.2.</span> <span class="nav-text">user-watcher响应式流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#依赖收集"><span class="nav-number">4.</span> <span class="nav-text">依赖收集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#派发更新"><span class="nav-number">5.</span> <span class="nav-text">派发更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vue-nextTick"><span class="nav-number">6.</span> <span class="nav-text">vue-nextTick</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动设置响应式和数组响应式"><span class="nav-number">7.</span> <span class="nav-text">手动设置响应式和数组响应式</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">浩齐</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

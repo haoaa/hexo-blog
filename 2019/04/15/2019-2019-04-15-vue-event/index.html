@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vue  vue-event," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="编译和生成代码
+parse的时候添加属性, generate的时候处理属性
+
+编译
+在编译标签时handleStartTag-&amp;gt;processElement-&amp;gt;processAttrs会去解析事件绑定属性
+addHandler在ast上添加事件属性nativeEvents/events, events[name] = newHandler
+
+1234567891011121314151">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue-event">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2019/04/15/2019-2019-04-15-vue-event/index.html">
+<meta property="og:site_name" content="Haoqi's blog-ish!">
+<meta property="og:description" content="编译和生成代码
+parse的时候添加属性, generate的时候处理属性
+
+编译
+在编译标签时handleStartTag-&amp;gt;processElement-&amp;gt;processAttrs会去解析事件绑定属性
+addHandler在ast上添加事件属性nativeEvents/events, events[name] = newHandler
+
+1234567891011121314151">
+<meta property="og:updated_time" content="2019-05-26T01:39:23.591Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue-event">
+<meta name="twitter:description" content="编译和生成代码
+parse的时候添加属性, generate的时候处理属性
+
+编译
+在编译标签时handleStartTag-&amp;gt;processElement-&amp;gt;processAttrs会去解析事件绑定属性
+addHandler在ast上添加事件属性nativeEvents/events, events[name] = newHandler
+
+1234567891011121314151">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2019/04/15/2019-2019-04-15-vue-event/"/>
+
+
+
+
+
+  <title>vue-event | Haoqi's blog-ish!</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <audio src="\assets\2019\Indian_Summer.mp3"></audio>
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Haoqi's blog-ish!</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">blah blah blah</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+
+<script>
+  let hasClick = 0 
+  document.querySelector('.site-subtitle').onclick = ()=>{
+    hasClick++
+    if(hasClick === 3) {
+      document.querySelector('audio').play()
+    }
+  }
+
+</script> </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/04/15/2019-2019-04-15-vue-event/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="浩齐">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoqi's blog-ish!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vue-event</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T11:04:16+08:00">
+                2019-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue-vue-event/" itemprop="url" rel="index">
+                    <span itemprop="name">vue  vue-event</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="编译和生成代码"><a href="#编译和生成代码" class="headerlink" title="编译和生成代码"></a>编译和生成代码</h2><ul>
+<li>parse的时候添加属性, generate的时候处理属性</li>
+</ul>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><ul>
+<li>在编译标签时<code>handleStartTag-&gt;processElement-&gt;processAttrs</code>会去解析事件绑定属性</li>
+<li><code>addHandler</code>在ast上添加事件属性nativeEvents/events, <code>events[name] = newHandler</code></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">parseModifiers</span> (<span class="params">name</span>) </span>&#123; <span class="comment">// .x.y =&gt; &#123;x: true, y: true&#125;</span></div><div class="line">  <span class="keyword">var</span> match = name.match(modifierRE);</div><div class="line">  <span class="keyword">if</span> (match) &#123;</div><div class="line">    <span class="keyword">var</span> ret = &#123;&#125;;</div><div class="line">    match.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">m</span>) </span>&#123; ret[m.slice(<span class="number">1</span>)] = <span class="literal">true</span>; &#125;);</div><div class="line">    <span class="keyword">return</span> ret</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">processAttrs</span> (<span class="params">el</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> list = el.attrsList;</div><div class="line">  <span class="keyword">var</span> i, l, name, rawName, value, modifiers, isProp;</div><div class="line">  <span class="keyword">for</span> (i = <span class="number">0</span>, l = list.length; i &lt; l; i++) &#123; <span class="comment">// 遍历属性</span></div><div class="line">    name = rawName = list[i].name;</div><div class="line">    value = list[i].value;</div><div class="line">    <span class="keyword">if</span> (dirRE.test(name)) &#123; <span class="comment">// /^v-|^@|^:/</span></div><div class="line">      <span class="comment">// mark element as dynamic</span></div><div class="line">      el.hasBindings = <span class="literal">true</span>;</div><div class="line">      <span class="comment">// modifiers</span></div><div class="line">      modifiers = parseModifiers(name);</div><div class="line">      <span class="keyword">if</span> (modifiers) &#123;</div><div class="line">        name = name.replace(modifierRE, <span class="string">''</span>);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">if</span> (bindRE.test(name)) &#123; </div><div class="line">        <span class="comment">// v-bind</span></div><div class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (onRE.test(name)) &#123; <span class="comment">// v-on</span></div><div class="line">        name = name.replace(onRE, <span class="string">''</span>);</div><div class="line">        addHandler(el, name, value, modifiers, <span class="literal">false</span>, warn$<span class="number">2</span>);</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="comment">// normal directives      </span></div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="comment">// literal attribute</span></div><div class="line">      addAttr(el, name, <span class="built_in">JSON</span>.stringify(value));</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">addHandler</span> (<span class="params">el, name, value, modifiers, important, warn</span>) </span>&#123;</div><div class="line">  <span class="comment">// check capture/once/passive modifier</span></div><div class="line">  <span class="keyword">if</span> (modifiers.xx) &#123;</div><div class="line">    <span class="keyword">delete</span> modifiers.xx;</div><div class="line">    name = <span class="string">'!'</span> + name; <span class="comment">// mark the event </span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// normalize click.right and click.middle </span></div><div class="line"></div><div class="line">  <span class="keyword">var</span> events;</div><div class="line">  <span class="keyword">if</span> (modifiers.native) &#123;</div><div class="line">    <span class="keyword">delete</span> modifiers.native;</div><div class="line">    events = el.nativeEvents || (el.nativeEvents = &#123;&#125;);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    events = el.events || (el.events = &#123;&#125;);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> newHandler = &#123;</div><div class="line">    <span class="attr">value</span>: value.trim()</div><div class="line">  &#125;;</div><div class="line">  newHandler.modifiers = modifiers;</div><div class="line">  </div><div class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(handlers)) &#123; <span class="comment">// 添加两次以上</span></div><div class="line">    important ? handlers.unshift(newHandler) : handlers.push(newHandler);</div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (handlers) &#123; <span class="comment">// 第二次添加</span></div><div class="line">    events[name] = important ? [newHandler, handlers] : [handlers, newHandler];</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    events[name] = newHandler; <span class="comment">// 第一次添加</span></div><div class="line">  &#125;  </div><div class="line">  el.plain = <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// el.nativeEvents = &#123;</span></div><div class="line"><span class="comment">//   click: &#123;</span></div><div class="line"><span class="comment">//     value: 'clickHandler',</span></div><div class="line"><span class="comment">//     modifiers: &#123;</span></div><div class="line"><span class="comment">//       prevent: true</span></div><div class="line"><span class="comment">//     &#125;</span></div><div class="line"><span class="comment">//   &#125;</span></div><div class="line"><span class="comment">// &#125;</span></div></pre></td></tr></table></figure>
+<h3 id="生成代码"><a href="#生成代码" class="headerlink" title="生成代码"></a>生成代码</h3><ul>
+<li>generate.genElement.genData.genHandlers<ul>
+<li>对Handler判断是表达式还是方法名, 方法名直接返回, 表达式外面套个function<code>function($event){(handler.value)}</code>, 并传入<code>$event</code></li>
+<li>有modifier通过modifierCode添加对应的代码后和上一步一起返回.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div></pre></td><td class="code"><pre><div class="line">function genHandlers ( // 遍历事件 拼接成字符串 nativeOn:&#123; xx: xxx, yy: yyy &#125;</div><div class="line">  events,</div><div class="line">  isNative,</div><div class="line">  warn</div><div class="line">) &#123;</div><div class="line">  var res = isNative ? 'nativeOn:&#123;' : 'on:&#123;';</div><div class="line">  for (var name in events) &#123;</div><div class="line">    res += "\"" + name + "\":" + (genHandler(name, events[name])) + ",";</div><div class="line">  &#125;</div><div class="line">  return res.slice(0, -1) + '&#125;'</div><div class="line">&#125;</div><div class="line"></div><div class="line">var modifierCode = &#123;</div><div class="line">  stop: '$event.stopPropagation();',</div><div class="line">  prevent: '$event.preventDefault();',</div><div class="line">  self: genGuard("$event.target !== $event.currentTarget"),</div><div class="line">  ctrl: genGuard("!$event.ctrlKey"),</div><div class="line">  shift: genGuard("!$event.shiftKey"),</div><div class="line">  alt: genGuard("!$event.altKey"),</div><div class="line">  meta: genGuard("!$event.metaKey"),</div><div class="line">  left: genGuard("'button' in $event &amp;&amp; $event.button !== 0"),</div><div class="line">  middle: genGuard("'button' in $event &amp;&amp; $event.button !== 1"),</div><div class="line">  right: genGuard("'button' in $event &amp;&amp; $event.button !== 2")</div><div class="line">&#125;;</div><div class="line"></div><div class="line"></div><div class="line">function genHandler (</div><div class="line">  name, // select</div><div class="line">  handler // &#123;value: "selectHandler"&#125;</div><div class="line">) &#123;</div><div class="line">  if (!handler) &#123;</div><div class="line">    return 'function()&#123;&#125;'</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  if (Array.isArray(handler)) &#123; // 处理多个事件回调</div><div class="line">    return ("[" + (handler.map(function (handler) &#123; return genHandler(name, handler); &#125;).join(',')) + "]")</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  var isMethodPath = simplePathRE.test(handler.value); // x.y x[1] x[a] x['a'] x["a"]</div><div class="line">  var isFunctionExpression = fnExpRE.test(handler.value); / () =&gt; or xx =&gt; or function(</div><div class="line"></div><div class="line">  if (!handler.modifiers) &#123; // 没有修饰器就返回</div><div class="line">    if (isMethodPath || isFunctionExpression) &#123;</div><div class="line">      return handler.value</div><div class="line">    &#125;</div><div class="line">    /* istanbul ignore if */</div><div class="line">    return ("function($event)&#123;" + (handler.value) + "&#125;") // inline statement</div><div class="line">  &#125; else &#123;  // 处理modifiers</div><div class="line">    var code = '';</div><div class="line">    var genModifierCode = '';</div><div class="line">    var keys = [];</div><div class="line">    for (var key in handler.modifiers) &#123;</div><div class="line">      if (modifierCode[key]) &#123;</div><div class="line">        genModifierCode += modifierCode[key];</div><div class="line">        // left/right</div><div class="line">        if (keyCodes[key]) &#123;</div><div class="line">          keys.push(key);</div><div class="line">        &#125;</div><div class="line">      &#125; else if (key === 'exact') &#123;</div><div class="line">        var modifiers = (handler.modifiers);</div><div class="line">        genModifierCode += genGuard(</div><div class="line">          ['ctrl', 'shift', 'alt', 'meta']</div><div class="line">            .filter(function (keyModifier) &#123; return !modifiers[keyModifier]; &#125;)</div><div class="line">            .map(function (keyModifier) &#123; return ("$event." + keyModifier + "Key"); &#125;)</div><div class="line">            .join('||')</div><div class="line">        );</div><div class="line">      &#125; else &#123;</div><div class="line">        keys.push(key);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    if (keys.length) &#123;</div><div class="line">      code += genKeyFilter(keys);</div><div class="line">    &#125;</div><div class="line">    // Make sure modifiers like prevent and stop get executed after key filtering</div><div class="line">    if (genModifierCode) &#123;</div><div class="line">      code += genModifierCode;</div><div class="line">    &#125;</div><div class="line">    var handlerCode = isMethodPath</div><div class="line">      ? ("return " + (handler.value) + "($event)")</div><div class="line">      : isFunctionExpression</div><div class="line">        ? ("return (" + (handler.value) + ")($event)") // 返回函数内部调用方法并传入$event</div><div class="line">        : handler.value;</div><div class="line">    /* istanbul ignore if */</div><div class="line">    return ("function($event)&#123;" + code + handlerCode + "&#125;") // function call expression</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">// &#123;</div><div class="line">//   on: &#123;"select": selectHandler&#125;,</div><div class="line">//   nativeOn: &#123;"click": function($event) &#123;</div><div class="line">//       $event.preventDefault();</div><div class="line">//       return clickHandler($event)</div><div class="line">//     &#125;</div><div class="line">//   &#125;</div><div class="line">// &#125;</div><div class="line">// &#123;</div><div class="line">//   on: &#123;"click": function($event) &#123;</div><div class="line">//       clickHandler($event)</div><div class="line">//     &#125;</div><div class="line">//   &#125;</div><div class="line">// &#125;</div></pre></td></tr></table></figure>
+<h2 id="dom事件"><a href="#dom事件" class="headerlink" title="dom事件"></a>dom事件</h2><ul>
+<li>create / update hook事件绑定更新</li>
+<li>event hooks 安装和调用<ul>
+<li>modules在<code>src/platforms/web/runtime/modules</code>.</li>
+<li>events的create和update都是调用<code>updateDOMListeners</code>, create时oldVnode是空</li>
+<li>invokeCreateHooks调用create,  patchVnode里调用update hook<ul>
+<li>invokeCreateHooks在<code>createElm, initComponent</code>中调用,vue实例化和初始化组件时<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> events = &#123;</div><div class="line">  <span class="attr">create</span>: updateDOMListeners,</div><div class="line">  <span class="attr">update</span>: updateDOMListeners</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> platformModules = [</div><div class="line">  attrs,  klass,  events,  domProps,  style,  transition</div><div class="line">]</div><div class="line"><span class="keyword">var</span> modules = platformModules.concat(baseModules);</div><div class="line"></div><div class="line"><span class="keyword">var</span> patch = createPatchFunction(&#123; <span class="attr">nodeOps</span>: nodeOps, <span class="attr">modules</span>: modules &#125;);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPatchFunction</span> (<span class="params">backend</span>) </span>&#123; <span class="comment">// hooks在创建patch方法混入</span></div><div class="line">  <span class="keyword">var</span> i, j;</div><div class="line">  <span class="keyword">var</span> cbs = &#123;&#125;; <span class="comment">// 平台module和basemodule都保存在cbs, 组件update的时候调用</span></div><div class="line"></div><div class="line">  <span class="keyword">var</span> modules = backend.modules;</div><div class="line"></div><div class="line">  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; hooks.length; ++i) &#123;</div><div class="line">    cbs[hooks[i]] = [];</div><div class="line">    <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; modules.length; ++j) &#123;</div><div class="line">      <span class="keyword">if</span> (isDef(modules[j][hooks[i]])) &#123;</div><div class="line">        cbs[hooks[i]].push(modules[j][hooks[i]]);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createElm</span> (<span class="params"></span></span></div><div class="line">  vnode, insertedVnodeQueue, parentElm,)</div><div class="line">&#123;</div><div class="line">  createChildren(vnode, children, insertedVnodeQueue);</div><div class="line">  <span class="keyword">if</span> (isDef(data)) &#123;</div><div class="line">    invokeCreateHooks(vnode, insertedVnodeQueue); <span class="comment">// new vue时调用</span></div><div class="line">  &#125;</div><div class="line">  insert(parentElm, vnode.elm, refElm);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">initComponent</span> (<span class="params">vnode, insertedVnodeQueue</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (isDef(vnode.data.pendingInsert)) &#123;</div><div class="line">    insertedVnodeQueue.push.apply(insertedVnodeQueue, vnode.data.pendingInsert);</div><div class="line">    vnode.data.pendingInsert = <span class="literal">null</span>;</div><div class="line">  &#125;</div><div class="line">  vnode.elm = vnode.componentInstance.$el;</div><div class="line">  <span class="keyword">if</span> (isPatchable(vnode)) &#123;</div><div class="line">    invokeCreateHooks(vnode, insertedVnodeQueue); <span class="comment">// 创建组件时调用</span></div><div class="line">    setScope(vnode);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="comment">// empty component root.</span></div><div class="line">    <span class="comment">// skip all element-related modules except for ref (#3455)</span></div><div class="line">    registerRef(vnode);</div><div class="line">    <span class="comment">// make sure to invoke the insert hook</span></div><div class="line">    insertedVnodeQueue.push(vnode);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>调用hook </li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">invokeCreateHooks</span> (<span class="params">vnode, insertedVnodeQueue</span>) </span>&#123;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i$<span class="number">1</span> = <span class="number">0</span>; i$<span class="number">1</span> &lt; cbs.create.length; ++i$<span class="number">1</span>) &#123;</div><div class="line">    cbs.create[i$<span class="number">1</span>](emptyNode, vnode);</div><div class="line">  &#125;</div><div class="line">  i = vnode.data.hook; <span class="comment">// Reuse variable</span></div><div class="line">  <span class="keyword">if</span> (isDef(i)) &#123;</div><div class="line">    <span class="keyword">if</span> (isDef(i.create)) &#123; i.create(emptyNode, vnode); &#125;  <span class="comment">// create</span></div><div class="line">    <span class="keyword">if</span> (isDef(i.insert)) &#123; insertedVnodeQueue.push(vnode); &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">patchVnode</span> (<span class="params">oldVnode, vnode, insertedVnodeQueue, removeOnly</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> i;</div><div class="line">    <span class="keyword">var</span> data = vnode.data;</div><div class="line">    <span class="keyword">if</span> (isDef(data) &amp;&amp; isDef(i = data.hook) &amp;&amp; isDef(i = i.prepatch)) &#123; <span class="comment">// data上vnode的hook怎么挂的 ? prepatch</span></div><div class="line">      i(oldVnode, vnode);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> oldCh = oldVnode.children;</div><div class="line">    <span class="keyword">var</span> ch = vnode.children;</div><div class="line">    <span class="keyword">if</span> (isDef(data) &amp;&amp; isPatchable(vnode)) &#123;    </div><div class="line">      <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; cbs.update.length; ++i) &#123; cbs.update[i](oldVnode, vnode); &#125; <span class="comment">// update</span></div><div class="line">      <span class="keyword">if</span> (isDef(i = data.hook) &amp;&amp; isDef(i = i.update)) &#123; i(oldVnode, vnode); &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="dom事件绑定"><a href="#dom事件绑定" class="headerlink" title="dom事件绑定"></a>dom事件绑定</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateDOMListeners</span> (<span class="params">oldVnode, vnode</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (isUndef(oldVnode.data.on) &amp;&amp; isUndef(vnode.data.on)) &#123;</div><div class="line">    <span class="keyword">return</span></div><div class="line">  &#125;</div><div class="line">  <span class="keyword">var</span> on = vnode.data.on || &#123;&#125;;</div><div class="line">  <span class="keyword">var</span> oldOn = oldVnode.data.on || &#123;&#125;;</div><div class="line">  target$<span class="number">1</span> = vnode.elm;</div><div class="line">  normalizeEvents(on);  <span class="comment">// normalize v-model event</span></div><div class="line">  updateListeners(on, oldOn, add$<span class="number">1</span>, remove$<span class="number">2</span>, vnode.context);</div><div class="line">  target$<span class="number">1</span> = <span class="literal">undefined</span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">// 遍历data.on, 更新事件监听</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateListeners</span> (<span class="params"></span></span></div><div class="line">  on,</div><div class="line">  oldOn,</div><div class="line">  add,</div><div class="line">  remove$$<span class="number">1</span>,</div><div class="line">  vm</div><div class="line">) &#123;</div><div class="line">  <span class="keyword">var</span> name, def, cur, old, event;</div><div class="line">  <span class="keyword">for</span> (name <span class="keyword">in</span> on) &#123;</div><div class="line">    def = cur = on[name];</div><div class="line">    old = oldOn[name];</div><div class="line">    event = normalizeEvent(name); <span class="comment">// once, capture转成事件绑定的option</span></div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (isUndef(old)) &#123;</div><div class="line">      <span class="keyword">if</span> (isUndef(cur.fns)) &#123;</div><div class="line">        cur = on[name] = createFnInvoker(cur); <span class="comment">// 修改回调函数, update不需要重新绑定</span></div><div class="line">      &#125;</div><div class="line">      add(event.name, cur, event.once, event.capture, event.passive, event.params); <span class="comment">// add new</span></div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cur !== old) &#123;</div><div class="line">      old.fns = cur;</div><div class="line">      on[name] = old;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">for</span> (name <span class="keyword">in</span> oldOn) &#123;</div><div class="line">    <span class="keyword">if</span> (isUndef(on[name])) &#123;</div><div class="line">      event = normalizeEvent(name);</div><div class="line">      remove$$<span class="number">1</span>(event.name, oldOn[name], event.capture); <span class="comment">// remove unused</span></div><div class="line">    &#125; </div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createFnInvoker</span> (<span class="params">fns</span>) </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">invoker</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> <span class="built_in">arguments</span>$<span class="number">1</span> = <span class="built_in">arguments</span>;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> fns = invoker.fns;</div><div class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(fns)) &#123;</div><div class="line">      <span class="keyword">var</span> cloned = fns.slice();</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; cloned.length; i++) &#123;</div><div class="line">        cloned[i].apply(<span class="literal">null</span>, <span class="built_in">arguments</span>$<span class="number">1</span>);</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="comment">// return handler return value for single handlers</span></div><div class="line">      <span class="keyword">return</span> fns.apply(<span class="literal">null</span>, <span class="built_in">arguments</span>)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  invoker.fns = fns;</div><div class="line">  <span class="keyword">return</span> invoker</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">add$1</span> (<span class="params">event, handler, once$$<span class="number">1</span>, capture, passive</span>) </span>&#123;</div><div class="line">  handler = withMacroTask(handler); <span class="comment">// 事件回调引起的state change nextTick通过macro task执行回调</span></div><div class="line">  <span class="keyword">if</span> (once$$<span class="number">1</span>) &#123; handler = createOnceHandler(handler, event, capture); &#125;</div><div class="line">  target$<span class="number">1.</span>addEventListener(</div><div class="line">    event,</div><div class="line">    handler,</div><div class="line">    supportsPassive</div><div class="line">      ? &#123; <span class="attr">capture</span>: capture, <span class="attr">passive</span>: passive &#125;</div><div class="line">      : capture</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">remove$2</span> (<span class="params"></span></span></div><div class="line">  event,</div><div class="line">  handler,</div><div class="line">  capture,</div><div class="line">  _target</div><div class="line">) &#123;</div><div class="line">  (_target || target$<span class="number">1</span>).removeEventListener(</div><div class="line">    event,</div><div class="line">    handler._withTask || handler,</div><div class="line">    capture</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Wrap a function so that if any code inside triggers state change,</div><div class="line"> * the changes are queued using a (macro) task instead of a microtask.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">withMacroTask</span> (<span class="params">fn</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> fn._withTask || (fn._withTask = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    useMacroTask = <span class="literal">true</span>;</div><div class="line">    <span class="keyword">var</span> res = fn.apply(<span class="literal">null</span>, <span class="built_in">arguments</span>);</div><div class="line">    useMacroTask = <span class="literal">false</span>;</div><div class="line">    <span class="keyword">return</span> res</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="自定义事件"><a href="#自定义事件" class="headerlink" title="自定义事件"></a>自定义事件</h2><ul>
+<li>父组件render的时候发现child是组件, 有非native listener就作为componentOptions传入new Vnode(组件占位符节点)<ul>
+<li>子组件初始化时调用<code>initInternalComponent</code> <code>initEvents</code>, 把<code>vm.$options._parentListeners</code>里的listener传给updateListeners做dom事件类似的更新监听.</li>
+<li>componentListener的add和remove方法调用<code>vm.$on $off</code>方法</li>
+<li>vm._events上有各类型的事件监听, 通过发布订阅模式实现事件回调</li>
+<li>子组件update的时候监听native listener.</li>
+</ul>
+</li>
+<li>父组件update的时候监听native listener.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createComponent</span> (<span class="params">Ctor, data, context, children, tag</span>) </span>&#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">  <span class="comment">// extract listeners, since these needs to be treated as</span></div><div class="line">  <span class="comment">// child component listeners instead of DOM listeners</span></div><div class="line">  <span class="keyword">var</span> listeners = data.on;</div><div class="line">  <span class="comment">// replace with listeners with .native modifier</span></div><div class="line">  <span class="comment">// so it gets processed during parent component patch.</span></div><div class="line">  data.on = data.nativeOn;</div><div class="line"></div><div class="line">  <span class="comment">// install component management hooks onto the placeholder node</span></div><div class="line">  installComponentHooks(data);</div><div class="line">  <span class="keyword">var</span> vnode = <span class="keyword">new</span> VNode(</div><div class="line">    (<span class="string">"vue-component-"</span> + (Ctor.cid) + (name ? (<span class="string">"-"</span> + name) : <span class="string">''</span>)),</div><div class="line">    data, <span class="literal">undefined</span>, <span class="literal">undefined</span>, <span class="literal">undefined</span>, context,</div><div class="line">    &#123; <span class="attr">Ctor</span>: Ctor, <span class="attr">propsData</span>: propsData, <span class="attr">listeners</span>: listeners, <span class="attr">tag</span>: tag, <span class="attr">children</span>: children &#125;,</div><div class="line">    asyncFactory</div><div class="line">  );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// patch子组件</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createComponentInstanceForVnode</span> (<span class="params">vnode, parent, parentElm, refElm</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> options = &#123;</div><div class="line">    <span class="attr">_isComponent</span>: <span class="literal">true</span>,</div><div class="line">    <span class="attr">parent</span>: parent,</div><div class="line">    <span class="attr">_parentVnode</span>: vnode, <span class="comment">// 占位符节点里有`listeners: listeners`</span></div><div class="line">    _parentElm: parentElm || <span class="literal">null</span>,</div><div class="line">    <span class="attr">_refElm</span>: refElm || <span class="literal">null</span></div><div class="line">  &#125;;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> vnode.componentOptions.Ctor(options)</div><div class="line">&#125;</div><div class="line"></div><div class="line">Vue.prototype._init = <span class="function"><span class="keyword">function</span> (<span class="params">options</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> vm = <span class="keyword">this</span>;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (options &amp;&amp; options._isComponent) &#123;</div><div class="line">    initInternalComponent(vm, options);</div><div class="line">  &#125; </div><div class="line">  </div><div class="line">  <span class="comment">// init xxx</span></div><div class="line">  initEvents(vm);</div><div class="line">  </div><div class="line">  <span class="keyword">if</span> (vm.$options.el) &#123;</div><div class="line">    vm.$mount(vm.$options.el);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// options就是上面createComponentInstanceForVnode的options</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">initInternalComponent</span> (<span class="params">vm, options</span>) </span>&#123;</div><div class="line">  vm.$options = <span class="built_in">Object</span>.create(vm.constructor.options);</div><div class="line">  <span class="comment">// ....</span></div><div class="line">  vm.$options._parentVnode = options._parentVnode;</div><div class="line">  </div><div class="line">  <span class="keyword">var</span> parentVnode = options._parentVnode;</div><div class="line">  </div><div class="line">  <span class="keyword">var</span> vnodeComponentOptions = parentVnode.componentOptions;</div><div class="line">  opts._parentListeners = vnodeComponentOptions.listeners;  </div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">initEvents</span> (<span class="params">vm</span>) </span>&#123;</div><div class="line">  vm._events = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</div><div class="line">  vm._hasHookEvent = <span class="literal">false</span>;</div><div class="line">  <span class="comment">// init parent attached events</span></div><div class="line">  <span class="keyword">var</span> listeners = vm.$options._parentListeners;<span class="comment">// &#123;select: invoker().fns&#125;</span></div><div class="line">  <span class="keyword">if</span> (listeners) &#123;</div><div class="line">    updateComponentListeners(vm, listeners);  </div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateComponentListeners</span> (<span class="params"></span></span></div><div class="line">  vm,</div><div class="line">  listeners,</div><div class="line">  oldListeners</div><div class="line">) &#123;</div><div class="line">  target = vm;</div><div class="line">  updateListeners(listeners, oldListeners || &#123;&#125;, add, remove$<span class="number">1</span>, vm);</div><div class="line">  target = <span class="literal">undefined</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">eventsMixin</span> (<span class="params">Vue</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> hookRE = <span class="regexp">/^hook:/</span>;</div><div class="line">  Vue.prototype.$on = <span class="function"><span class="keyword">function</span> (<span class="params">event, fn</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> <span class="keyword">this</span>$<span class="number">1</span> = <span class="keyword">this</span>;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> vm = <span class="keyword">this</span>;</div><div class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(event)) &#123;</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, l = event.length; i &lt; l; i++) &#123;</div><div class="line">        <span class="keyword">this</span>$<span class="number">1.</span>$on(event[i], fn);</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      (vm._events[event] || (vm._events[event] = [])).push(fn);</div><div class="line">      <span class="comment">// optimize hook:event cost by using a boolean flag marked at registration</span></div><div class="line">      <span class="comment">// instead of a hash lookup</span></div><div class="line">      <span class="keyword">if</span> (hookRE.test(event)) &#123;</div><div class="line">        vm._hasHookEvent = <span class="literal">true</span>;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> vm</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  Vue.prototype.$once = <span class="function"><span class="keyword">function</span> (<span class="params">event, fn</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> vm = <span class="keyword">this</span>;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">on</span> (<span class="params"></span>) </span>&#123;</div><div class="line">      vm.$off(event, on);</div><div class="line">      fn.apply(vm, <span class="built_in">arguments</span>);</div><div class="line">    &#125;</div><div class="line">    on.fn = fn;</div><div class="line">    vm.$on(event, on);</div><div class="line">    <span class="keyword">return</span> vm</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  Vue.prototype.$off = <span class="function"><span class="keyword">function</span> (<span class="params">event, fn</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> <span class="keyword">this</span>$<span class="number">1</span> = <span class="keyword">this</span>;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> vm = <span class="keyword">this</span>;</div><div class="line">    <span class="comment">// all</span></div><div class="line">    <span class="keyword">if</span> (!<span class="built_in">arguments</span>.length) &#123;</div><div class="line">      vm._events = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</div><div class="line">      <span class="keyword">return</span> vm</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// array of events</span></div><div class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(event)) &#123;</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, l = event.length; i &lt; l; i++) &#123;</div><div class="line">        <span class="keyword">this</span>$<span class="number">1.</span>$off(event[i], fn);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> vm</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// specific event</span></div><div class="line">    <span class="keyword">var</span> cbs = vm._events[event];</div><div class="line">    <span class="keyword">if</span> (!cbs) &#123;</div><div class="line">      <span class="keyword">return</span> vm</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (!fn) &#123;</div><div class="line">      vm._events[event] = <span class="literal">null</span>;</div><div class="line">      <span class="keyword">return</span> vm</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (fn) &#123;</div><div class="line">      <span class="comment">// specific handler</span></div><div class="line">      <span class="keyword">var</span> cb;</div><div class="line">      <span class="keyword">var</span> i$<span class="number">1</span> = cbs.length;</div><div class="line">      <span class="keyword">while</span> (i$<span class="number">1</span>--) &#123;</div><div class="line">        cb = cbs[i$<span class="number">1</span>];</div><div class="line">        <span class="keyword">if</span> (cb === fn || cb.fn === fn) &#123;</div><div class="line">          cbs.splice(i$<span class="number">1</span>, <span class="number">1</span>);</div><div class="line">          <span class="keyword">break</span></div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> vm</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  Vue.prototype.$emit = <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> vm = <span class="keyword">this</span>;</div><div class="line">    <span class="keyword">var</span> cbs = vm._events[event]; <span class="comment">// cbs是父组件定义但, 子组件实例化的时候作为选项传入了</span></div><div class="line">    <span class="keyword">if</span> (cbs) &#123;</div><div class="line">      cbs = cbs.length &gt; <span class="number">1</span> ? toArray(cbs) : cbs;</div><div class="line">      <span class="keyword">var</span> args = toArray(<span class="built_in">arguments</span>, <span class="number">1</span>);</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, l = cbs.length; i &lt; l; i++) &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">          cbs[i].apply(vm, args);</div><div class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">          handleError(e, vm, (<span class="string">"event handler for \""</span> + event + <span class="string">"\""</span>));</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> vm</div><div class="line">  &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue-vue-event/" rel="tag"># vue  vue-event</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/06/2019-2019-04-06-vue-template-compile/" rel="next" title="vue-template-compile">
+                <i class="fa fa-chevron-left"></i> vue-template-compile
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/18/2019-2019-05-18-vue-model/" rel="prev" title="vue-model">
+                vue-model <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">浩齐</p>
+              <p class="site-description motion-element" itemprop="description">some kind of blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#编译和生成代码"><span class="nav-number">1.</span> <span class="nav-text">编译和生成代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编译"><span class="nav-number">1.1.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成代码"><span class="nav-number">1.2.</span> <span class="nav-text">生成代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dom事件"><span class="nav-number">2.</span> <span class="nav-text">dom事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#dom事件绑定"><span class="nav-number">2.1.</span> <span class="nav-text">dom事件绑定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义事件"><span class="nav-number">3.</span> <span class="nav-text">自定义事件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">浩齐</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

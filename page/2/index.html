@@ -148,6 +148,7 @@
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
+  <audio src="\assets\2019\Indian_Summer.mp3"></audio>
   <div class="site-meta ">
     
 
@@ -208,7 +209,17 @@
 
 
 
- </div>
+
+<script>
+  let hasClick = 0 
+  document.querySelector('.site-subtitle').onclick = ()=>{
+    hasClick++
+    if(hasClick === 3) {
+      document.querySelector('audio').play()
+    }
+  }
+
+</script> </div>
     </header>
 
     <main id="main" class="main">
@@ -231,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/01/12/201701-2017-01-12-work-tips-day1/">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/04/01/2019-2019-04-01-vue-computed-watch/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="浩齐">
@@ -250,7 +261,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/01/12/201701-2017-01-12-work-tips-day1/" itemprop="url">html-css-review</a></h1>
+                <a class="post-title-link" href="/2019/04/01/2019-2019-04-01-vue-computed-watch/" itemprop="url">vue computed watch</a></h1>
         
 
         <div class="post-meta">
@@ -262,8 +273,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-12T15:43:48+08:00">
-                2017-01-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-01T08:35:17+08:00">
+                2019-04-01
               </time>
             
 
@@ -285,19 +296,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/html/" itemprop="url" rel="index">
-                    <span itemprop="name">html</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/html/css/" itemprop="url" rel="index">
-                    <span itemprop="name">css</span>
+                  <a href="/categories/vue计算属性/" itemprop="url" rel="index">
+                    <span itemprop="name">vue计算属性</span>
                   </a>
                 </span>
 
@@ -334,26 +334,44 @@
 
       
         
-          
-            <h2 id="Meta标签介绍"><a href="#Meta标签介绍" class="headerlink" title="Meta标签介绍"></a>Meta标签介绍</h2><h3 id="meta-的属性有两种：name和http-equiv。-name属性主要用于描述网页，对应于content（网页内容）"><a href="#meta-的属性有两种：name和http-equiv。-name属性主要用于描述网页，对应于content（网页内容）" class="headerlink" title="meta 的属性有两种：name和http-equiv。 name属性主要用于描述网页，对应于content（网页内容）"></a>meta 的属性有两种：name和http-equiv。 name属性主要用于描述网页，对应于content（网页内容）</h3><ol>
-<li><meta name="Generator" contect="">用以说明生成工具（如Microsoft FrontPage 4.0）等； </li>
-<li><meta name="KEYWords" contect="">向搜索引擎说明你的网页的关键词； </li>
-<li><meta name="DEscription" contect="">告诉搜索引擎你的站点的主要内容； </li>
-<li><meta name="Author" contect="你的姓名">告诉搜索引擎你的站点的制作的作者； </li>
-<li><meta name="Robots" contect="all|none|index|noindex|follow|nofollow"> 
-
-</li>
-</ol>
-<h4 id="其中的属性说明如下："><a href="#其中的属性说明如下：" class="headerlink" title="其中的属性说明如下："></a>其中的属性说明如下：</h4><ul>
-<li>设定为all：文件将被检索，且页面上的链接可以被查询； </li>
-<li>设定为none：文件将不被检索，且页面上的链接不可以被查询； </li>
-<li>设定为index：文件将被检索； </li>
-<li>设定为follow：页面上的链接可以被查询； </li>
-<li>设定为noindex：文件将不被检索，但页面上的链接可以被查询； </li>
-<li>设定为nofollow：文件将不被检索，页面上的链接可以被查询。 </li>
+          <h3 id="anchors"><a href="#anchors" class="headerlink" title="anchors"></a>anchors</h3><ul>
+<li><a href="#定义computedwatcher">定义computedwatcher</a><ul>
+<li><a href="#computedwatcher定义流程">computedwatcher定义流程</a></li>
+<li><a href="#computedwatcher更新流程">computedwatcher更新流程</a></li>
 </ul>
-<h3 id="http-equiv属性"><a href="#http-equiv属性" class="headerlink" title="http-equiv属性"></a>http-equiv属性</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span>   <span class="attr">contect</span>=<span class="string">"text/html"</span>;     <span class="attr">charset</span>=<span class="string">gb_2312</span>"&gt;</span> </div><div class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Refresh"</span> <span class="attr">content</span>=<span class="string">"5;url=http://www.w3school.com.cn"</span> /&gt;</span></div></pre></td></tr></table></figure>
-          
+</li>
+<li><a href="#userwatcher">userwatcher</a><ul>
+<li><a href="#watcher创建">watcher创建</a></li>
+<li><a href="#watcher四个options">watcher四个options</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="题外"><a href="#题外" class="headerlink" title="题外"></a>题外</h3><ul>
+<li><p>watcher定义后会立即执行一次getter(不是cb) <code>this.value = this.lazy ? undefined : this.get();</code></p>
+</li>
+<li><p>defineReactive为在模型上的每个属性, 创建dep. 谁get那个属性就把target watcher添加到dep.subs里去. </p>
+</li>
+<li><code>render watcher</code>执行一次get后, 让不再引用的的属性的dep取消订阅自己.</li>
+</ul>
+<h3 id="定义computedwatcher"><a href="#定义computedwatcher" class="headerlink" title="定义computedwatcher"></a>定义computedwatcher</h3><h4 id="computedwatcher定义流程"><a href="#computedwatcher定义流程" class="headerlink" title="computedwatcher定义流程"></a>computedwatcher定义流程</h4><ul>
+<li>vm实例上定义<code>_computedWatchers</code>-</li>
+<li>创建watcher(传入选项<code>{ lazy: true }</code>), 创建watcher 时不调用get</li>
+<li>非组件实例getter将通过defineProperty挂在vm上, 组件的defineComputed, extend构造函数的时候就执行了, computed的get被挂到了vm.prototypes上进行复用</li>
+<li>computed watcher的get在render vnode的时候通过get属性触发.<ul>
+<li>先调用<code>watcher.evaluate</code>, 调用定义的computed.xx.getter, 让相关属性的dep添加这个computed watcher</li>
+<li>再调用<code>watcher.depend</code>, 让相关属性的dep添加<code>render watcher</code></li>
+<li>watcher在内部依赖的属性更新时触发, watcher在调用get后会触发<code>render watcher</code>的的get执行.</li>
+</ul>
+</li>
+<li><code>v2.5.17</code>中的值不变不重新渲染,也只是昙花一现</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/04/01/2019-2019-04-01-vue-computed-watch/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -400,7 +418,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/01/12/201701-2017-01-12-less-day1/">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/03/31/2019-2019-03-31-snabbdom/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="浩齐">
@@ -419,7 +437,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/01/12/201701-2017-01-12-less-day1/" itemprop="url">less-day1</a></h1>
+                <a class="post-title-link" href="/2019/03/31/2019-2019-03-31-snabbdom/" itemprop="url">snabbdom, jsx学习</a></h1>
         
 
         <div class="post-meta">
@@ -431,8 +449,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-12T09:12:26+08:00">
-                2017-01-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-31T11:04:16+08:00">
+                2019-03-31
               </time>
             
 
@@ -454,8 +472,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CSS-pre-processor-less/" itemprop="url" rel="index">
-                    <span itemprop="name">CSS pre-processor - less</span>
+                  <a href="/categories/virtual-dom-snabbdom/" itemprop="url" rel="index">
+                    <span itemprop="name">virtual-dom snabbdom</span>
                   </a>
                 </span>
 
@@ -492,366 +510,686 @@
 
       
         
-          
-            <h2 id="less-overview"><a href="#less-overview" class="headerlink" title="less overview"></a>less overview</h2><h3 id="variables"><a href="#variables" class="headerlink" title="variables"></a>variables</h3><ul>
-<li>Variables</li>
+          <h2 id="createVnode"><a href="#createVnode" class="headerlink" title="createVnode"></a>createVnode</h2><ul>
+<li>snabbdom创建vnode比较简单, 就是遍历创建对象</li>
+<li>相当于Vue里的 vm.$createElement(自己写render的时候调用,alwaysNormalize是true)或vm._c<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">h</span>(<span class="params">sel, data, children</span>) </span>&#123;</div><div class="line">    <span class="comment">// option adapter</span></div><div class="line">    <span class="comment">// ...</span></div><div class="line">    <span class="keyword">if</span> (is.array(children)) &#123;</div><div class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; children.length; ++i) &#123;</div><div class="line">            <span class="keyword">if</span> (is.primitive(children[i]))</div><div class="line">                children[i] = vnode_1.vnode(<span class="literal">undefined</span>, <span class="literal">undefined</span>, <span class="literal">undefined</span>, children[i]);</div><div class="line">        &#125;</div><div class="line">    &#125; </div><div class="line">    <span class="keyword">return</span> vnode_1.vnode(sel, data, children, text, <span class="literal">undefined</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">vnode</span>(<span class="params">sel, data, children, text, elm</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> key = data === <span class="literal">undefined</span> ? <span class="literal">undefined</span> : data.key;</div><div class="line">    <span class="keyword">return</span> &#123; <span class="attr">sel</span>: sel, <span class="attr">data</span>: data, <span class="attr">children</span>: children,</div><div class="line">        <span class="attr">text</span>: text, <span class="attr">elm</span>: elm, <span class="attr">key</span>: key &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
 </ul>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="variable">@nice-blue:</span> <span class="number">#5B83AD</span>;</div><div class="line"><span class="variable">@light-blue:</span> <span class="variable">@nice-blue</span> + <span class="number">#111</span>;</div><div class="line"><span class="variable">@bd-bold :</span> <span class="number">4px</span> solid <span class="variable">@nice-blue</span>;</div><div class="line"></div><div class="line"><span class="selector-id">#header</span> &#123;</div><div class="line">  <span class="attribute">color</span>: <span class="variable">@light-blue</span>;</div><div class="line">  <span class="attribute">border</span>: <span class="variable">@bd-bold</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>output </p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-id">#header</span> &#123;</div><div class="line">  <span class="attribute">color</span>: <span class="number">#6c94be</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/31/2019-2019-03-31-snabbdom/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/03/28/2019-2019-03-28-vue-reactivity/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="浩齐">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoqi's blog-ish!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/28/2019-2019-03-28-vue-reactivity/" itemprop="url">vue reactivity</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-28T21:11:55+08:00">
+                2019-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue源码-响应式/" itemprop="url" rel="index">
+                    <span itemprop="name">vue源码 响应式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="anchors"><a href="#anchors" class="headerlink" title="anchors"></a>anchors</h3><ul>
+<li><a href="#定义响应式">定义响应式</a><ul>
+<li><a href="#定义响应式流程">定义响应式流程</a></li>
+<li><a href="#user-watcher响应式流程">user-watcher响应式流程</a></li>
+</ul>
+</li>
+<li><a href="#依赖收集">依赖收集</a></li>
+<li><a href="#派发更新">派发更新</a></li>
+<li><a href="#vue-nextTick">vue-nextTick</a></li>
+<li><a href="#手动设置响应式和数组响应式">手动设置响应式和数组响应式</a></li>
+</ul>
+<h3 id="题外"><a href="#题外" class="headerlink" title="题外"></a>题外</h3><ul>
+<li>watcher定义后会立即执行一次getter(不是cb) <code>this.value = this.lazy ? undefined : this.get();</code></li>
+<li>Observe里面有dep, defineReactivity里也有dep.</li>
+<li>defineReactive为在模型上的每个属性, 创建dep. 谁get那个属性就把target watcher添加到dep.subs里去. </li>
+<li>render watcher执行一次get后, 让不再引用的的属性的dep取消订阅自己.</li>
+</ul>
+<h3 id="定义响应式"><a href="#定义响应式" class="headerlink" title="定义响应式"></a>定义响应式</h3><h4 id="定义响应式流程"><a href="#定义响应式流程" class="headerlink" title="定义响应式流程"></a>定义响应式流程</h4><ul>
+<li>遍历属性对象, 通过getter定义代理到vm上</li>
+<li>为属性对象添加observer, <code>data.__ob__ = new Observer(data)</code></li>
+<li>关系为data有dep, dep里有watcher, watcher里有dep.循环依赖?</li>
+<li>defineReactive内部又new dep去notify和depend, 那observer里的dep有什么用?<ul>
+<li><code>childOb.dep.depend();</code>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/28/2019-2019-03-28-vue-reactivity/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/03/23/2019-2019-03-23-vue组件化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="浩齐">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoqi's blog-ish!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/23/2019-2019-03-23-vue组件化/" itemprop="url">vue 组件化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-23T11:04:16+08:00">
+                2019-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue源码-组件化/" itemprop="url" rel="index">
+                    <span itemprop="name">vue源码 组件化</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="anchors"><a href="#anchors" class="headerlink" title="anchors"></a>anchors</h3><ul>
+<li><a href="#render组件时创建vnode是个深度遍历过程">render组件时创建vnode是个深度遍历过程</a><ul>
+<li><a href="#创建组件占位符vnode">创建组件占位符vnode</a></li>
+<li><a href="#关联父子关系vnode和vm">关联父子关系vnode, vm</a></li>
+<li><a href="#子组件递归patch相关代码">子组件递归patch相关代码</a></li>
+</ul>
+</li>
+<li><a href="#merge-option">merge-option</a></li>
+<li><a href="#生命周期">生命周期</a></li>
+<li><a href="#异步组件">异步组件</a></li>
+</ul>
+<h3 id="题外"><a href="#题外" class="headerlink" title="题外"></a>题外</h3><ul>
+<li>组件在render的时候就调用了那些响应式属性的getter了,也就收集了依赖.</li>
+<li>哪个vm调用update,就是activeInstance, vm.$vnode是占位vnode, vm._vnode的渲染vnode</li>
+<li>new组件的Vue之前做option合并, 原型继承返回新constructor</li>
+<li>merge(Vue.options, vm.options)</li>
+<li>声明的component都是Vue的孙子构造函数, 在什么时候new呢? <code>createComponentInstanceForVnode</code>里执行了<code>return new vnode.componentOptions.Ctor(options)</code></li>
+<li>挂载点就是父vm里template出现的位置</li>
+</ul>
+<h3 id="render组件时创建vnode是个深度遍历过程"><a href="#render组件时创建vnode是个深度遍历过程" class="headerlink" title="render组件时创建vnode是个深度遍历过程"></a>render组件时创建vnode是个深度遍历过程</h3><h4 id="创建组件占位符vnode"><a href="#创建组件占位符vnode" class="headerlink" title="创建组件占位符vnode"></a>创建组件占位符vnode</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createComponent</span> (<span class="params"></div><div class="line">  Ctor, <span class="regexp">//</span> 组件的constructor</div><div class="line">  data,</div><div class="line">  context, <span class="regexp">//</span> 父vm</div><div class="line">  children,</div><div class="line">  tag</div><div class="line"></span>) </span>&#123; </div><div class="line">  <span class="keyword">var</span> baseCtor = context.$options._base;</div><div class="line"></div><div class="line">  <span class="comment">// plain options object: turn it into a constructor</span></div><div class="line">  <span class="keyword">if</span> (isObject(Ctor)) &#123;</div><div class="line">    Ctor = baseCtor.extend(Ctor);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> Ctor !== <span class="string">'function'</span>) &#123;</div><div class="line">    <span class="keyword">return</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// async component mixin, v-model省略</span></div><div class="line"></div><div class="line">  <span class="comment">// install component management hooks onto the placeholder node</span></div><div class="line">  installComponentHooks(data);</div><div class="line">  </div><div class="line"></div><div class="line">  <span class="comment">// return a placeholder vnode</span></div><div class="line">  <span class="keyword">var</span> name = Ctor.options.name || tag;</div><div class="line">  <span class="keyword">var</span> vnode = <span class="keyword">new</span> VNode(</div><div class="line">    (<span class="string">"vue-component-"</span> + (Ctor.cid) + (name ? (<span class="string">"-"</span> + name) : <span class="string">''</span>)),</div><div class="line">    data, <span class="literal">undefined</span>, <span class="literal">undefined</span>, <span class="literal">undefined</span>, context,</div><div class="line">    &#123; <span class="attr">Ctor</span>: Ctor, <span class="attr">propsData</span>: propsData, <span class="attr">listeners</span>: listeners, <span class="attr">tag</span>: tag, <span class="attr">children</span>: children &#125;,</div><div class="line">    asyncFactory</div><div class="line">  );</div><div class="line"></div><div class="line">  <span class="keyword">return</span> vnode</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/23/2019-2019-03-23-vue组件化/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/03/03/2019-2019-03-03-事件循环/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="浩齐">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoqi's blog-ish!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/03/2019-2019-03-03-事件循环/" itemprop="url">事件循环</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-03T11:04:16+08:00">
+                2019-03-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/interview-event-loop/" itemprop="url" rel="index">
+                    <span itemprop="name">interview event-loop</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>事件循环在浏览器和node环境机制不同, 一个是h5规范的实现, 一个集成libuv库的功能. 理解事件循环对js异步非阻塞的理解有会有所帮助.<br>在浏览器里每个web worker都有自己的事件循环系统.</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><ul>
+<li><a href="https://juejin.im/post/5c1cd35c6fb9a049aa6f0f69#heading-42"> js只有一个线程：避免DOM渲染冲突.</a><ul>
+<li>浏览器需要渲染DOM</li>
+<li>JS可以修改DOM结构</li>
+<li>JS执行的时候，浏览器DOM渲染会暂停</li>
+<li>两端JS也不能同时执行(都修改DOM就冲突了)</li>
+<li>webworker支持多线程，但是不能访问DOM</li>
+</ul>
+</li>
+<li>js运行时包含call stack(回调要执行了就放入栈里), heap, task queue.<br><img src='/assets/2019/js-model.png' /></li>
+<li>事件队列,分为<ul>
+<li>micro taskqueue:  Promise的then， MutationObserver, process.nextTick</li>
+<li>macro taskqueue:  setInterval, setTimeout, setImmediate(ie), MessageChannel, dispatching event(js执行node.click()方法不算)</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/03/2019-2019-03-03-事件循环/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/02/27/2019-2019-02-27-webpack-under-the-hood/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="浩齐">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoqi's blog-ish!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/27/2019-2019-02-27-webpack-under-the-hood/" itemprop="url">webpack under-the-hood</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-27T15:54:32+08:00">
+                2019-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/webpack-optimization-webpack3/" itemprop="url" rel="index">
+                    <span itemprop="name">webpack optimization webpack3</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="webpack优化"><a href="#webpack优化" class="headerlink" title="webpack优化"></a>webpack优化</h2><h3 id="webpack构建流程"><a href="#webpack构建流程" class="headerlink" title="webpack构建流程"></a>webpack构建流程</h3><ul>
+<li>初始化：启动构建，读取与合并配置参数，加载 Plugin，实例化 Compiler。</li>
+<li>编译：从 Entry 发出，针对每个 Module 串行调用对应的 Loader 去翻译文件内容，再找到该 Module 依赖的 Module，递归地进行编译处理。</li>
+<li><p>输出：对编译后的 Module 组合成 Chunk，把 Chunk 转换成文件，输出到本地。</p>
+</li>
+<li><p>_addModuleChain，其完成的第二件事构建模块又可以分为三部分：</p>
 <ul>
-<li>mixin</li>
+<li>调用loader处理模块之间的依赖</li>
+<li>将loader处理后的文件通过<a href="https://github.com/ternjs/acorn">acorn</a>抽象成抽象语法树AST</li>
+<li>遍历AST，构建该模块的所有依赖</li>
 </ul>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.bordered</span> &#123;</div><div class="line">  <span class="attribute">border-top</span>: dotted <span class="number">1px</span> black;</div><div class="line">  <span class="attribute">border-bottom</span>: solid <span class="number">2px</span> black;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-id">#menu</span> <span class="selector-tag">a</span> &#123;</div><div class="line">  <span class="attribute">color</span>: <span class="number">#111</span>;</div><div class="line">  <span class="selector-class">.bordered</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.post</span> <span class="selector-tag">a</span> &#123;</div><div class="line">  <span class="attribute">color</span>: red;</div><div class="line">  <span class="selector-class">.bordered</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="/assets/2019/webpack-flow.png" /></p>
+<h3 id="流程细节"><a href="#流程细节" class="headerlink" title="流程细节"></a>流程细节</h3><h4 id="1-参数处理"><a href="#1-参数处理" class="headerlink" title="1. 参数处理"></a>1. 参数处理</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// bin/webpack.js入口</span></div><div class="line"><span class="built_in">require</span>(<span class="string">"./config-yargs"</span>)(yargs);</div><div class="line"></div><div class="line">yargs.parse(process.argv.slice(<span class="number">2</span>), (err, argv, output) =&gt; &#123;</div><div class="line">  <span class="comment">// ....</span></div><div class="line">  <span class="keyword">var</span> options = <span class="built_in">require</span>(<span class="string">"./convert-argv"</span>)(yargs, argv);  </div><div class="line">  <span class="keyword">var</span> webpack = <span class="built_in">require</span>(<span class="string">"../lib/webpack.js"</span>); <span class="comment">// node_modules/webpack/bin/webpack.js:329</span></div><div class="line">  compiler = webpack(options);</div><div class="line">  <span class="keyword">if</span>(firstOptions.watch || options.watch) &#123;</div><div class="line">    compiler.watch(watchOptions, compilerCallback);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    compiler.run(compilerCallback);</div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// lib/webpack.js入口</span></div><div class="line"><span class="comment">// `lib/webpack(options, (err, stats) =&gt; &#123;&#125;)` 在node后面执行, 没有cb就只是创建compiler.  有cb就会顺带执行compiler.run</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">webpack</span>(<span class="params">options, callback</span>) </span>&#123;</div><div class="line">  <span class="keyword">new</span> WebpackOptionsDefaulter().process(options);</div><div class="line">  compiler = <span class="keyword">new</span> Compiler();</div><div class="line">  compiler.context = options.context;</div><div class="line">  compiler.options = options;</div><div class="line">  <span class="keyword">new</span> NodeEnvironmentPlugin().apply(compiler);</div><div class="line">  <span class="keyword">if</span>(options.plugins &amp;&amp; <span class="built_in">Array</span>.isArray(options.plugins)) &#123;</div><div class="line">    compiler.apply.apply(compiler, options.plugins);</div><div class="line">  &#125;</div><div class="line">  compiler.applyPlugins(<span class="string">"environment"</span>);</div><div class="line">  <span class="comment">// node_modules/webpack/lib/webpack.js:36</span></div><div class="line">  compiler.applyPlugins(<span class="string">"after-environment"</span>);</div><div class="line">  compiler.options = <span class="keyword">new</span> WebpackOptionsApply().process(options, compiler);</div><div class="line">  </div><div class="line">  <span class="comment">// ...</span></div><div class="line">  <span class="keyword">if</span>(callback) &#123;</div><div class="line">    <span class="keyword">if</span>(options.watch === <span class="literal">true</span>) &#123;</div><div class="line">      <span class="keyword">return</span> compiler.watch(watchOptions, callback);</div><div class="line">    &#125;</div><div class="line">    compiler.run(callback);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> compiler;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <ul>
-<li><p>Nested Rules (tlnr)</p>
-</li>
-<li><p>Nested Directives and Bubbling</p>
+<li>WebpackOptionsApply.process根据选项apply对应的插件,如library/externals/devtool, 包括entry-option, 后面会调用addEntry<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// webpack3写法</span></div><div class="line"><span class="comment">//node_modules/webpack/lib/WebpackOptionsApply.js:234</span></div><div class="line">compiler.apply(<span class="keyword">new</span> EntryOptionPlugin());</div><div class="line">compiler.applyPluginsBailResult(<span class="string">"entry-option"</span>, options.context, options.entry);</div><div class="line"></div><div class="line"><span class="comment">// webpack4写法</span></div><div class="line"><span class="comment">//node_modules/webpack/lib/WebpackOptionsApply.js:306</span></div><div class="line"><span class="keyword">new</span> EntryOptionPlugin().apply(compiler);</div><div class="line">compiler.hooks.entryOption.call(options.context, options.entry);</div></pre></td></tr></table></figure>
 </li>
 </ul>
-<p>Directives such as media or keyframe can be nested in the same way as selectors.<br>Directive is placed on top and relative order against other elements inside the same ruleset remains unchanged. This is called bubbling.</p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.screen-color</span> &#123;</div><div class="line">  <span class="keyword">@media</span> screen &#123;</div><div class="line">    <span class="attribute">color</span>: green;</div><div class="line">    <span class="keyword">@media</span> (<span class="attribute">min-width</span>: <span class="number">768px</span>) &#123;</div><div class="line">      <span class="attribute">color</span>: red;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">@media</span> tv &#123;</div><div class="line">    <span class="attribute">color</span>: black;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">@<span class="keyword">media</span> screen &#123;</div><div class="line">  <span class="selector-class">.screen-color</span> &#123;</div><div class="line">    <span class="attribute">color</span>: green;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">@<span class="keyword">media</span> screen and (min-width: <span class="number">768px</span>) &#123;</div><div class="line">  <span class="selector-class">.screen-color</span> &#123;</div><div class="line">    <span class="attribute">color</span>: red;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">@<span class="keyword">media</span> tv &#123;</div><div class="line">  <span class="selector-class">.screen-color</span> &#123;</div><div class="line">    <span class="attribute">color</span>: black;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="mixin在引用时可以不加卡号-mix"><a href="#mixin在引用时可以不加卡号-mix" class="headerlink" title="mixin在引用时可以不加卡号,.mix;"></a>mixin在引用时可以不加卡号,<code>.mix;</code></h3><hr>
-<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><ul>
-<li><a href="http://www.cnblogs.com/fsjohnhuang/p/4187675.html#a3" target="_blank" rel="external">http://www.cnblogs.com/fsjohnhuang/p/4187675.html</a></li>
+<h4 id="2-run-触发compile"><a href="#2-run-触发compile" class="headerlink" title="2. run 触发compile"></a>2. run 触发compile</h4><ul>
+<li>在run的过程中，会触发了一些钩子：<code>beforeRun-&gt;run-&gt;beforeCompile-&gt;compile-&gt;make-&gt;seal</code></li>
 </ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/01/11/201701-2017-01-11-angular-day13/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="浩齐">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haoqi's blog-ish!">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/11/201701-2017-01-11-angular-day13/" itemprop="url">angular-day13-$route</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-11T22:26:53+08:00">
-                2017-01-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/" itemprop="url" rel="index">
-                    <span itemprop="name">fe-framework</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/angular/" itemprop="url" rel="index">
-                    <span itemprop="name">angular</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="basic-usage"><a href="#basic-usage" class="headerlink" title="basic usage"></a>basic usage</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> app = angular.module(<span class="string">'myapp'</span>, [<span class="string">'ngRoute'</span>]);</div><div class="line">   </div><div class="line"> app.config([<span class="string">'$routeProvider'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$routeProvider</span>)</span>&#123;</div><div class="line">     $routeProvider.when(<span class="string">'/first-msg'</span>,&#123;</div><div class="line">         <span class="attr">templateUrl</span>: <span class="string">'temp1.html'</span>,</div><div class="line">         <span class="attr">controller</span>: <span class="string">'ctrl'</span></div><div class="line">     &#125;)</div><div class="line">     .when(<span class="string">'/second-msg'</span>,&#123;</div><div class="line">         <span class="attr">templateUrl</span>: <span class="string">'temp2.html'</span>,</div><div class="line">         <span class="attr">controller</span>: <span class="string">'ctrl'</span>,</div><div class="line">         <span class="attr">caseInsensitiveMatch</span>: <span class="literal">true</span></div><div class="line">     &#125;)</div><div class="line">     .when(<span class="string">'/'</span>,&#123;</div><div class="line">         <span class="attr">redirectTo</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">             <span class="keyword">return</span> <span class="string">'/first-msg'</span></div><div class="line">         &#125;</div><div class="line">     &#125;)</div><div class="line">     .otherwise(&#123;</div><div class="line">         <span class="attr">template</span>: <span class="string">'your lost!'</span></div><div class="line">     &#125;)</div><div class="line"> &#125;]);</div></pre></td></tr></table></figure>
-<h2 id="routeParams"><a href="#routeParams" class="headerlink" title="routeParams"></a>routeParams</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> app = angular.module(<span class="string">'myapp'</span>, [<span class="string">'ngRoute'</span>]);</div><div class="line">   </div><div class="line"> app.config([<span class="string">'$routeProvider'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$routeProvider</span>)</span>&#123;</div><div class="line">       $routeProvider.when(<span class="string">'/sum/:a/:b?'</span>,&#123;</div><div class="line">           <span class="attr">templateUrl</span>: <span class="string">'temp1.html'</span>,</div><div class="line">           <span class="attr">controller</span>: <span class="string">'ctrl'</span></div><div class="line">       &#125;) </div><div class="line">       .when(<span class="string">'/dosum/:a?/:b?'</span>,&#123; <span class="comment">//optional parameter</span></div><div class="line">           templateUrl: <span class="string">'temp3.html'</span>,</div><div class="line">           <span class="attr">controller</span>: <span class="string">'ctrl2'</span></div><div class="line">       &#125;) </div><div class="line">       .otherwise(&#123;</div><div class="line">           <span class="attr">template</span>: <span class="string">'your lost!'</span></div><div class="line">       &#125;)</div><div class="line">   &#125;]);</div><div class="line">app.controller(<span class="string">'ctrl'</span>, [<span class="string">'$scope'</span>,<span class="string">'$routeParams'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope,$routeParams</span>) </span>&#123;</div><div class="line">	$scope.a= $routeParams.a <span class="number">-0</span> + $routeParams.b *<span class="number">1</span></div><div class="line">&#125;])</div><div class="line">.controller(<span class="string">'ctrl2'</span>, [<span class="string">'$scope'</span>,<span class="string">'$routeParams'</span>,<span class="string">'$interpolate'</span>,<span class="string">'$location'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope,$routeParams,$interpolate,$location</span>) </span>&#123;</div><div class="line">	$scope.a =<span class="number">0</span>;</div><div class="line">	$scope.b =<span class="number">0</span>;</div><div class="line"></div><div class="line">       $scope.dosum =<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">           <span class="keyword">var</span> url = $interpolate(<span class="string">'/dosum/&#123;&#123;a&#125;&#125;/&#123;&#123;b&#125;&#125;'</span>)($scope);</div><div class="line">           $location.path(url);</div><div class="line">       &#125;</div><div class="line">&#125;])</div></pre></td></tr></table></figure>
-<p>temp3.html<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">do sum</div><div class="line">a: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">ng-model</span>=<span class="string">'a'</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">b: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">ng-model</span>=<span class="string">'b'</span>&gt;</span> <span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"dosum()"</span>&gt;</span>dosum<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<h2 id="route"><a href="#route" class="headerlink" title="$route"></a>$route</h2><ul>
-<li>$route.reload();</li>
-<li>$route.updateParams({a:$scope.a, b:$scope.b});</li>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// node_modules/webpack/lib/Compiler.js:270</span></div><div class="line"><span class="comment">// 方法继承自Tapable.prototype.applyPluginsAsync</span></div><div class="line"><span class="keyword">this</span>.applyPluginsAsync(<span class="string">"before-run"</span>, <span class="keyword">this</span>, err =&gt; &#123;</div><div class="line">  <span class="keyword">if</span>(err) <span class="keyword">return</span> callback(err);</div><div class="line"></div><div class="line">  <span class="keyword">this</span>.applyPluginsAsync(<span class="string">"run"</span>, <span class="keyword">this</span>, err =&gt; &#123;</div><div class="line">    <span class="keyword">if</span>(err) <span class="keyword">return</span> callback(err);</div><div class="line"></div><div class="line">    <span class="keyword">this</span>.readRecords(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</div><div class="line">      <span class="keyword">if</span>(err) <span class="keyword">return</span> callback(err);</div><div class="line"></div><div class="line">      <span class="keyword">this</span>.compile(onCompiled);</div><div class="line">    &#125;);</div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<ul>
+<li>当 Webpack 以开发模式运行时，每当检测到文件变化，一次新的 Compilation 将被创建。 <ul>
+<li>compiler.watch监视依赖文件的修改</li>
 </ul>
-<h2 id="routeEvent"><a href="#routeEvent" class="headerlink" title="routeEvent"></a>routeEvent</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">app.run([<span class="string">'$rootScope'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$rootScope</span>)</span>&#123;</div><div class="line">    $routeScope.on(<span class="string">'$routeChangeStart'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">e,cur,pre</span>)</span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'routeChangeStart'</span>);</div><div class="line">    &#125;);</div><div class="line">    $routeScope.on(<span class="string">'$routeChangeSuccess'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">e,cur,pre</span>)</span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'routeChangeSuccess'</span>);</div><div class="line">    &#125;);</div><div class="line">    </div><div class="line">&#125;]);</div></pre></td></tr></table></figure>
-<h3 id="locationChangeStart-locationChangeSuccess"><a href="#locationChangeStart-locationChangeSuccess" class="headerlink" title="$locationChangeStart, $locationChangeSuccess"></a>$locationChangeStart, $locationChangeSuccess</h3><h2 id="Resolve"><a href="#Resolve" class="headerlink" title="Resolve"></a>Resolve</h2><table>
-<thead>
-<tr>
-<th>No resolving</th>
-<th>Resolving</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>jump to the route first</td>
-<td>get data first</td>
-</tr>
-<tr>
-<td>get data later</td>
-<td>then jump to route and pass data</td>
-</tr>
-</tbody>
-</table>
-<h3 id="demo"><a href="#demo" class="headerlink" title="demo"></a>demo</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">.when('/calc/add/:a/:b', &#123;</div><div class="line">    templateUrl : 'calcResult.htm',</div><div class="line">    controller: 'calcAddController',</div><div class="line">    resolve:&#123;</div><div class="line">        webServiceResult: function(dataService, $route)&#123;</div><div class="line">            var a = $route.params.a;</div><div class="line">            var b = $route.params.b;</div><div class="line">            return dataService.add(a,b);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line">## ui-router</div><div class="line"></div><div class="line">### basic usage</div><div class="line">```html</div><div class="line">&lt;div class="row" style="height:500px"&gt;</div><div class="line">    &lt;div class="col-sm-3 well" style="height:100%"&gt;</div><div class="line">        &lt;ul&gt;</div><div class="line">            &lt;li&gt;&lt;a href="#/first-msg"&gt;first-msg&lt;/a&gt;&lt;/li&gt;</div><div class="line">            &lt;li&gt;&lt;a href="#/second-msg"&gt;second-msg&lt;/a&gt;&lt;/li&gt;</div><div class="line">            &lt;li&gt;&lt;a ui-sref='root()'&gt;root&lt;/a&gt;&lt;/li&gt;</div><div class="line">            &lt;li&gt;&lt;a href="#/third-msg"&gt;third-msg&lt;/a&gt;&lt;/li&gt;</div><div class="line">        &lt;/ul&gt;    </div><div class="line">    &lt;/div&gt;</div><div class="line">    &lt;div ui-view class="col-sm-9 well" style="height:100%"&gt;</div><div class="line">        </div><div class="line">    &lt;/div&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">app.config([<span class="string">'$stateProvider'</span>, <span class="string">'$urlRouterProvider'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$stateProvider,$urlRouterProvider</span>)</span>&#123;</div><div class="line">        $stateProvider</div><div class="line">        .state(<span class="string">'firstMessage'</span>,&#123;</div><div class="line">            <span class="attr">url</span>: <span class="string">'/first-msg'</span>,</div><div class="line">            <span class="comment">// templateUrl: 'msg1.html',</span></div><div class="line">            template: <span class="string">'message 1\'s template b &#123;&#123;b&#125;&#125;'</span>,</div><div class="line">            <span class="attr">controller</span>: <span class="string">'msg1'</span></div><div class="line">        &#125;) </div><div class="line">        .state(<span class="string">'secondMessage'</span>,&#123;</div><div class="line">            <span class="attr">url</span>: <span class="string">'/second-msg'</span>,</div><div class="line">            <span class="attr">templateUrl</span>: <span class="string">'msg2.html'</span>,</div><div class="line">            <span class="attr">controller</span>: <span class="string">'msg2'</span></div><div class="line">        &#125;) </div><div class="line">        .state(<span class="string">'root'</span>,&#123;</div><div class="line">            <span class="attr">url</span>: <span class="string">'/'</span>,</div><div class="line">            <span class="attr">template</span> : <span class="string">'root template!'</span>,</div><div class="line">        &#125;) </div><div class="line">        <span class="comment">// .state('defaul',&#123;</span></div><div class="line">        <span class="comment">//     url: '*path',</span></div><div class="line">        <span class="comment">//     template: 'no route found!!',</span></div><div class="line">        <span class="comment">//     controller: 'msg2'</span></div><div class="line">        <span class="comment">// &#125;) </span></div><div class="line">        $urlRouterProvider.otherwise(<span class="string">'/'</span>)</div><div class="line">    &#125;]);</div><div class="line">    app.controller(<span class="string">'msg1'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope</span>) </span>&#123;</div><div class="line">		$scope.a=<span class="number">1</span>;        </div><div class="line">		$scope.b=<span class="number">2</span>;</div><div class="line">    &#125;]);</div><div class="line">	app.controller(<span class="string">'msg2'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope</span>) </span>&#123;</div><div class="line">		$scope.c=<span class="number">2</span>;</div><div class="line">		$scope.d=<span class="number">3</span>;</div><div class="line">    &#125;]);</div></pre></td></tr></table></figure>
-<h3 id="route-parameter"><a href="#route-parameter" class="headerlink" title="route parameter"></a>route parameter</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"bootstrap.min.css"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line">        .well&#123;</div><div class="line">            margin: 0;height: 100%;</div><div class="line">        &#125; </div><div class="line">        *&#123;</div><div class="line">            box-sizing: border-box;</div><div class="line">        &#125;</div><div class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"angular.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"angular-ui-router.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-app</span>=<span class="string">'myapp'</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span> <span class="attr">style</span>=<span class="string">"height:100px"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-sm-12 well"</span>&gt;</span></div><div class="line">            head</div><div class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span> <span class="attr">style</span>=<span class="string">"height:500px"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-sm-3 well"</span> <span class="attr">style</span>=<span class="string">"height:100%"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#/first-msg/3/6"</span>&gt;</span>first-msg #/first-msg/3/6<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#/second-msg/35/"</span>&gt;</span>second-msg<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">ui-sref</span>=<span class="string">'firstMessage(&#123;a:null,b:5&#125;)'</span>&gt;</span>first-msg<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">ui-sref-opt</span>=<span class="string">'&#123;inherit:false&#125;'</span> <span class="attr">ui-sref</span>=<span class="string">'firstMessage(&#123;a:20,b:null&#125;)'</span>&gt;</span>first-msg<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">ui-sref</span>=<span class="string">'secondMessage(&#123;a:22,b:33&#125;)'</span>&gt;</span>second-msg<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">ui-sref</span>=<span class="string">'root()'</span>&gt;</span>root<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line"></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#/third-msg?a=5"</span>&gt;</span>third-msg<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">ui-sref</span>=<span class="string">'thirdMessage(&#123;a:5,b:56&#125;)'</span>&gt;</span>third-msg 2<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">ui-sref</span>=<span class="string">'thirdMessage(&#123;a:5,b:[34,53,63]&#125;)'</span>&gt;</span>third-msg 3<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">                </div><div class="line">            <span class="tag">&lt;/<span class="name">ul</span>&gt;</span>    </div><div class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">ui-view</span> <span class="attr">class</span>=<span class="string">"col-sm-9 well"</span> <span class="attr">style</span>=<span class="string">"height:100%"</span>&gt;</span></div><div class="line">            </div><div class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="javascript"></span></div><div class="line">	<span class="keyword">var</span> app = angular.module(<span class="string">'myapp'</span>, [<span class="string">'ui.router'</span>]);</div><div class="line">    </div><div class="line">    app.config([<span class="string">'$stateProvider'</span>, <span class="string">'$urlRouterProvider'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$stateProvider,$urlRouterProvider</span>)</span>&#123;</div><div class="line">        $stateProvider</div><div class="line">        .state(<span class="string">'firstMessage'</span>,&#123;</div><div class="line">            <span class="attr">url</span>: <span class="string">'/first-msg/:a/:b'</span>,</div><div class="line">            <span class="comment">// url: '/first-msg/&#123;a:[0-9]+&#125;/&#123;b&#125;',</span></div><div class="line">            template: <span class="string">'message 1\'s template&lt;br/&gt; a: &#123;&#123;a&#125;&#125; b: &#123;&#123;b&#125;&#125;'</span>,</div><div class="line">            <span class="attr">controller</span>: <span class="string">'msg1'</span></div><div class="line">        &#125;) </div><div class="line">        .state(<span class="string">'secondMessage'</span>,&#123;</div><div class="line">            <span class="attr">url</span>: <span class="string">'/second-msg/:a/:b'</span>,</div><div class="line">            <span class="attr">template</span>: <span class="string">'secondMessage 2\'s template&lt;br/&gt; a: &#123;&#123;a&#125;&#125; b: &#123;&#123;b&#125;&#125;'</span>,            </div><div class="line">            <span class="attr">controller</span>: <span class="string">'msg1'</span>,</div><div class="line">            <span class="attr">params</span>:&#123; <span class="comment">//default params value</span></div><div class="line">                a:&#123;<span class="attr">value</span>:<span class="string">"1"</span>,<span class="attr">squash</span>:<span class="string">'-'</span>&#125;,</div><div class="line">                <span class="attr">b</span>:&#123;<span class="attr">value</span>: <span class="string">"2"</span>,<span class="attr">squash</span>:<span class="literal">true</span>&#125;</div><div class="line">            &#125;</div><div class="line">        &#125;) </div><div class="line">        .state(<span class="string">'thirdMessage'</span>,&#123;</div><div class="line">            <span class="attr">url</span>: <span class="string">'/third-msg?a&amp;b'</span>,</div><div class="line">            <span class="attr">template</span>: <span class="string">'thirdMessage 3\'s template&lt;br/&gt; a: &#123;&#123;a&#125;&#125; b: &#123;&#123;b&#125;&#125;'</span>,            </div><div class="line">            <span class="attr">controller</span>: <span class="string">'msg1'</span>,</div><div class="line">            <span class="attr">params</span>:&#123; <span class="comment">//default params value</span></div><div class="line">                a:&#123;<span class="attr">value</span>:<span class="string">"1"</span>,<span class="attr">squash</span>:<span class="string">'-'</span>&#125;,</div><div class="line">                <span class="attr">b</span>:&#123;<span class="attr">value</span>: <span class="string">"2"</span>,<span class="attr">squash</span>:<span class="literal">true</span>&#125;</div><div class="line">            &#125;</div><div class="line">        &#125;) </div><div class="line">        .state(<span class="string">'root'</span>,&#123;</div><div class="line">            <span class="attr">url</span>: <span class="string">'/'</span>,</div><div class="line">            <span class="attr">template</span> : <span class="string">'root template!'</span>,</div><div class="line">        &#125;)  </div><div class="line">        $urlRouterProvider.otherwise(<span class="string">'/'</span>)</div><div class="line">    &#125;]);</div><div class="line">    app.controller(<span class="string">'msg1'</span>, [<span class="string">'$scope'</span>,<span class="string">'$stateParams'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope,$stateParams</span>) </span>&#123;</div><div class="line">		$scope.a=$stateParams.a;        </div><div class="line">		$scope.b=$stateParams.b;</div><div class="line">    &#125;]);</div><div class="line">	app.controller(<span class="string">'msg2'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope</span>) </span>&#123;</div><div class="line">		$scope.c=<span class="number">2</span>;</div><div class="line">		$scope.d=<span class="number">3</span>;</div><div class="line">		$scope.update = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">			$scope.a[<span class="number">1</span>].id =$scope.a[<span class="number">1</span>].id  +<span class="number">2</span>;</div><div class="line">			$scope.a.push(&#123;<span class="string">'id'</span>:<span class="number">3</span>&#125;)</div><div class="line">		&#125;</div><div class="line">		$scope.$watchCollection(<span class="string">"a"</span>,<span class="function"><span class="keyword">function</span> (<span class="params">a,old</span>) </span>&#123;</div><div class="line">			<span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(a) + <span class="string">' &lt;= '</span> + <span class="built_in">JSON</span>.stringify(old));</div><div class="line">		&#125;);</div><div class="line">	&#125;]);</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/01/08/201701-2017-01-08-angular-day12/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="浩齐">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haoqi's blog-ish!">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/08/201701-2017-01-08-angular-day12/" itemprop="url">angular-day12-$transclude</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-08T13:49:48+08:00">
-                2017-01-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/" itemprop="url" rel="index">
-                    <span itemprop="name">fe-framework</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/angular/" itemprop="url" rel="index">
-                    <span itemprop="name">angular</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="transclusion"><a href="#transclusion" class="headerlink" title="transclusion"></a>transclusion</h2><h2 id="transclude-scope"><a href="#transclude-scope" class="headerlink" title="transclude scope"></a>transclude scope</h2><p><img src="/assets/2017/transclusion.jpg" alt=""></p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// node_modules/webpack/lib/Compiler.js:490</span></div><div class="line">compile(callback) &#123;</div><div class="line">  <span class="keyword">const</span> params = <span class="keyword">this</span>.newCompilationParams();</div><div class="line">  <span class="keyword">this</span>.applyPluginsAsync(<span class="string">"before-compile"</span>, params, err =&gt; &#123;</div><div class="line">    <span class="keyword">if</span>(err) <span class="keyword">return</span> callback(err);</div><div class="line"></div><div class="line">    <span class="keyword">this</span>.applyPlugins(<span class="string">"compile"</span>, params);</div><div class="line"></div><div class="line">    <span class="keyword">const</span> compilation = <span class="keyword">this</span>.newCompilation(params);</div><div class="line"></div><div class="line">    <span class="keyword">this</span>.applyPluginsParallel(<span class="string">"make"</span>, compilation, err =&gt; &#123;</div><div class="line">      <span class="keyword">if</span>(err) <span class="keyword">return</span> callback(err);</div><div class="line"></div><div class="line">      compilation.finish();</div><div class="line"></div><div class="line">      compilation.seal(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</div><div class="line">        <span class="keyword">if</span>(err) <span class="keyword">return</span> callback(err);</div><div class="line"></div><div class="line">        <span class="keyword">this</span>.applyPluginsAsync(<span class="string">"after-compile"</span>, compilation, err =&gt; &#123;</div><div class="line">          <span class="keyword">if</span>(err) <span class="keyword">return</span> callback(err);</div><div class="line"></div><div class="line">          <span class="keyword">return</span> callback(<span class="literal">null</span>, compilation);</div><div class="line">        &#125;);</div><div class="line">      &#125;);</div><div class="line">    &#125;);</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="3-参数处理"><a href="#3-参数处理" class="headerlink" title="3. 参数处理"></a>3. 参数处理</h4><h4 id="4-参数处理"><a href="#4-参数处理" class="headerlink" title="4. 参数处理"></a>4. 参数处理</h4><h4 id="5-参数处理"><a href="#5-参数处理" class="headerlink" title="5. 参数处理"></a>5. 参数处理</h4><h4 id="6-参数处理"><a href="#6-参数处理" class="headerlink" title="6. 参数处理"></a>6. 参数处理</h4>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/01/08/201701-2017-01-08-angular-day12/#more" rel="contents">
+            <a class="btn" href="/2019/02/27/2019-2019-02-27-webpack-under-the-hood/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -902,7 +1240,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/01/07/201701-2017-01-07-angular-day11/">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/02/22/2019-2019-02-22-fe-interview/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="浩齐">
@@ -921,7 +1259,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/01/07/201701-2017-01-07-angular-day11/" itemprop="url">angular-day11-shared/inherited-$scope</a></h1>
+                <a class="post-title-link" href="/2019/02/22/2019-2019-02-22-fe-interview/" itemprop="url">frontend interview</a></h1>
         
 
         <div class="post-meta">
@@ -933,8 +1271,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-07T14:06:04+08:00">
-                2017-01-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-22T11:04:43+08:00">
+                2019-02-22
               </time>
             
 
@@ -956,19 +1294,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/" itemprop="url" rel="index">
-                    <span itemprop="name">fe-framework</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/angular/" itemprop="url" rel="index">
-                    <span itemprop="name">angular</span>
+                  <a href="/categories/frontend-interview/" itemprop="url" rel="index">
+                    <span itemprop="name">frontend interview</span>
                   </a>
                 </span>
 
@@ -1005,500 +1332,261 @@
 
       
         
-          <h2 id="quick-note-parent-child-directive-context"><a href="#quick-note-parent-child-directive-context" class="headerlink" title="quick note (parent/child directive context)"></a>quick note (parent/child directive context)</h2><ol>
-<li>shared scope (child directive’s property scope=false) parent/child share the same scope</li>
-<li>inherited scope (child directive’s property scope=true) child’s own scope that inherite from parent, and the scope’s property can be overwrite</li>
-<li>isolate scope (child directive’s property scope is an object) . And that object has nothing to with parent’s scope </li>
+          <p><a href="#笔记">笔记年羹</a></p>
+<h2 id="前端基础"><a href="#前端基础" class="headerlink" title="前端基础"></a>前端基础</h2><ul>
+<li>JS 原型链机制的理解</li>
+<li><a href="https://juejin.im/post/58500a02128fe10069319d83#heading-1">作用域和this</a><ul>
+<li>代码在一个环境中执行时，会创建变量对象的一个作用域链</li>
+<li>每个函数都有自己的作用域(函数作用域, let引入块作用域), 作用域可以层层嵌套, 子作用域变量覆盖父级作用域</li>
+<li>声明提前: js函数里所有变量声明(var)都被提前至函数体顶部.</li>
+<li>es6: temporal dead zone, let代码段(if/for/switch)变量声明前引用会报ReferenceError</li>
+<li><a href="https://juejin.im/post/5c5d0b495188256282695206#heading-7">JS专题之严格模式</a></li>
+<li>this四种绑定<ul>
+<li>默认绑定全局window</li>
+<li>隐式绑定,最近的一个调用该函数的上下文对象(context object)<ul>
+<li>在函数上下文中，也就是在任何函数体内部，this 指代调用函数的那个对象。严格模式下,this禁止指向window</li>
+</ul>
+</li>
+<li>显式绑定(call/apply/bind), bind在定义函数时候就绑定this，call和apply在调用函数时候才绑定this<ul>
+<li><a href="https://github.com/Abiel1024/blog/issues/16">call、apply和bind的实现</a></li>
+</ul>
+</li>
+<li>new绑定<ul>
+<li>一个全新的对象会凭空创建（就是被构建）</li>
+<li>这个新构建的对象会被接入原形链（[[Prototype]]-linked）</li>
+<li>这个新构建的对象被设置为函数调用的this绑定</li>
+<li>除非函数返回一个它自己的其他 对象，这个被new调用的函数将 自动返回这个新构建的对象</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>闭包: 只有函数内部的子函数才能读取函数的局部变量. 闭包内的变量因为引用计数, 不会在函数调用完后清除.<ul>
+<li>闭包做对象缓存, 模块化代码. 闭包会使得函数中的变量都被保存在内存中.滥用导致内测泄露.</li>
+<li>调用 f.bind(someObject) 会创建一个与 f 具有相同函数体和作用域的函数，但是在这个新函数中，this 将永久地被绑定到了 bind 的第一个参数，无论这个函数是如何被</li>
+</ul>
+</li>
+<li><p>对象: </p>
+<ul>
+<li>基础类型<code>string,number,boolean,null,undefined,object</code>, build-in对象类型<code>String,Number,Boolean,Object,Function,Array,Date,RegExp,Error</code></li>
+<li>defineProperties: <ul>
+<li>[[Configurable]]：表示能否通过delete删除属性从而重新定义属性，能否修改属性的特性，或者能否把属性修改为数据属性。默认值为true。</li>
+<li>[[Enumerable]]：表示能否通过for…in…循环遍历到该属性，默认值为true。</li>
+<li>访问器属性 [[Get]]：在读取属性时调用的函数。默认值为undefined。</li>
+<li>访问器属性 [[Set]]：在写入属性时调用的函数。默认值为undefined。</li>
+<li>数据属性 [[Writable]]：表示能否修改属性的值，默认为true。</li>
+<li>数据属性 [[Value]]：该属性的数值。</li>
+</ul>
+</li>
+<li><code>...</code>,<code>assign</code>都是浅拷贝</li>
+</ul>
+</li>
+<li><p>设计模式：了解基本的前端设计模式，单例、适配器、工厂、观察者、迭代器、发布/订阅。</p>
+<ul>
+<li><a href="https://www.jianshu.com/p/11918dd0f694">es6实现工厂/单例模式</a></li>
+</ul>
+</li>
+<li><p>跨域的方式、同源策<br>略、为什么有同源策略、如何做安全防范：新=的- H5的跨域方式（cors、postmessage）。</p>
+</li>
+<li>安全，对攻击方式、安全的防范上的了解 。</li>
+<li>http、TCP 协议的知识，如：什么是无状态，http 状态码的分类。<ul>
+<li>CDN的域名不要和主站的域名一样，这样会防止访问CDN时还携带主站cookie的问题。</li>
+</ul>
+</li>
+<li>知晓 CSS 布局原理，什么是BFC，如何实现垂直居中，绝对定位相对位置。</li>
+<li>如何做自适应布局，怎么计算 REM</li>
+<li>websocket, WebRTC, EventSource 的区别</li>
+</ul>
+<h2 id="框架、组件化"><a href="#框架、组件化" class="headerlink" title="框架、组件化"></a>框架、组件化</h2><ul>
+<li>架构分层</li>
+<li>模块解耦：理解接口、事件通讯的两种方式。</li>
+<li>组件化趋势： shadow dom，react和vue 。</li>
+<li>Virtual DOM 的优势以及缺陷<ul>
+<li>减少dom的增删开支, 增加js计算消耗. </li>
+<li>未命中sameNode, 还是一样的dom增删消耗, 同级修改, 添加key.</li>
+<li>dom结构越庞大, 优化的效果越明显.</li>
+<li>snabbdom的怕patch算法和vue的一致.</li>
+</ul>
+</li>
+<li>实践中如何解耦 UI 状态和领域状态</li>
+<li>目录结构如何规划</li>
+</ul>
+<h2 id="前端构建方案"><a href="#前端构建方案" class="headerlink" title="前端构建方案"></a>前端构建方案</h2><ul>
+<li>工程化的理解以及解决的问题如 gulp。</li>
+<li>如何拆分 SPA 中的大型代码</li>
+<li>有没有写过 webpack loader/ plugin, 以及这个 loader 是为了解决什么问题</li>
+<li>做过什么打包优化, 分离全家桶, 脚本构建npm/yarn</li>
+<li>ts项目搭建</li>
+<li><h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2></li>
+<li><p>webview的优化：对静态资源缓存到native的原理和流程 ，- webview缓存、版本号管理、线下调试。</p>
+</li>
+<li>如何加快首屏加载速度，Server Render 的实践。</li>
+<li>网页渲染性能优化，layout, paint, compose 三步骤的理解。</li>
+<li>css 动画、SVG、canvas 的运用</li>
+<li>针对前端框架的性能优化，如 showComponentUpdate 的使用</li>
+<li>如何带领团队优化：制定量化指标，寻找性能瓶颈，集中优化。</li>
+<li>浏览器资源加载, 解析, 渲染. </li>
+<li><a href="/2019/03/03/2019-2019-03-03-事件循环">事件循环, 异步promise理解</a></li>
+<li><p>案例:</p>
+<ol>
+<li><a href="https://juejin.im/post/5b960fcae51d450e9d645c5f">Vue 应用性能优化指南</a>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/22/2019-2019-02-22-fe-interview/#espandi" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2018/02/05/2018-2018-02-05-vue-mechanism/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="浩齐">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoqi's blog-ish!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/05/2018-2018-02-05-vue-mechanism/" itemprop="url">vue-mechanism</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-05T11:37:09+08:00">
+                2018-02-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue/" itemprop="url" rel="index">
+                    <span itemprop="name">vue</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="vue-reactivity"><a href="#vue-reactivity" class="headerlink" title="vue reactivity"></a>vue reactivity</h2><h3 id="How-Changes-Are-Tracked"><a href="#How-Changes-Are-Tracked" class="headerlink" title="How Changes Are Tracked"></a>How Changes Are Tracked</h3><ul>
+<li>Walk through data properties and convert them to getter/setter using Object.defineProperty. </li>
+<li>Every component instance has a corresponding watcher instance, which records any properties “touched” during the component’s render as dependencies. Later on when a dependency’s setter is triggered, it notifies the watcher, which in turn causes the component to re-render.<br><img src='https://vuejs.org/images/data.png' /><h3 id="Add-properties-to-an-already-created-instance"><a href="#Add-properties-to-an-already-created-instance" class="headerlink" title="Add properties to an already created instance."></a>Add properties to an already created instance.</h3></li>
+</ul>
+<ol>
+<li><code>Vue.set(vm.someObject, &#39;b&#39;, 2)</code> or <code>this.$set(this.someObject, &#39;b&#39;, 2)</code></li>
+<li>this.someObject = Object.assign({}, this.someObject, { a: 1, b: 2 })</li>
 </ol>
-<h2 id="interpolate-parse-eval"><a href="#interpolate-parse-eval" class="headerlink" title="$interpolate, $parse, $eval"></a>$interpolate, $parse, $eval</h2><ul>
-<li>$eval 调用 $parse</li>
-<li>$eval&amp;$parse可修改数据, $Interpolate只读</li>
-<li>$interpolate解析包含表达式<code>\{\{ \}\}</code>的字符串, 可处理过滤器
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/01/07/201701-2017-01-07-angular-day11/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/01/06/201701-2017-01-06-angular-day10/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="浩齐">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haoqi's blog-ish!">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/06/201701-2017-01-06-angular-day10/" itemprop="url">angular-day10-$watch-$apply-$digest</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-06T20:41:51+08:00">
-                2017-01-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/" itemprop="url" rel="index">
-                    <span itemprop="name">fe-framework</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/angular/" itemprop="url" rel="index">
-                    <span itemprop="name">angular</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="watch-绑定就加监视-再就是-watch手工监视"><a href="#watch-绑定就加监视-再就是-watch手工监视" class="headerlink" title="$watch 绑定就加监视,再就是$watch手工监视"></a>$watch 绑定就加监视,再就是$watch手工监视</h2><h3 id="watch-with-true-deep-equality"><a href="#watch-with-true-deep-equality" class="headerlink" title="$watch with true(deep equality)"></a>$watch with true(deep equality)</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$scope.$watch(<span class="string">'obj'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">xx</span>)</span>&#123;</div><div class="line">    xxx</div><div class="line">&#125;,<span class="literal">true</span>);</div></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/01/06/201701-2017-01-06-angular-day10/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/01/03/201701-2017-01-03-angular-day9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="浩齐">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haoqi's blog-ish!">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/03/201701-2017-01-03-angular-day9/" itemprop="url">angular-day9-directive-scope-compile&link</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-03T22:31:16+08:00">
-                2017-01-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/" itemprop="url" rel="index">
-                    <span itemprop="name">fe-framework</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/angular/" itemprop="url" rel="index">
-                    <span itemprop="name">angular</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="ng-directive-amp-scope-amp-compile-amp-link"><a href="#ng-directive-amp-scope-amp-compile-amp-link" class="headerlink" title="ng-directive &amp; scope &amp; compile &amp; link"></a>ng-directive &amp; scope &amp; compile &amp; link</h2><h3 id="ng-if"><a href="#ng-if" class="headerlink" title="ng-if"></a>ng-if</h3><ul>
-<li>if false template will not render to dom</li>
-<li>create a scope for itself</li>
-<li>evaluation expression based on the scope</li>
-</ul>
-<h3 id="ng-show-hide"><a href="#ng-show-hide" class="headerlink" title="ng-show/hide"></a>ng-show/hide</h3><ul>
-<li>it won’t create scope for this directive</li>
-<li>evaluation expression based on parent’s scope
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/01/03/201701-2017-01-03-angular-day9/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2017/01/02/201701-2017-01-02-angular-day8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="浩齐">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haoqi's blog-ish!">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/02/201701-2017-01-02-angular-day8/" itemprop="url">angular-day8-service-provider-factory</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-02T12:54:16+08:00">
-                2017-01-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/" itemprop="url" rel="index">
-                    <span itemprop="name">fe-framework</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe-framework/angular/" itemprop="url" rel="index">
-                    <span itemprop="name">angular</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="service"><a href="#service" class="headerlink" title="service"></a>service</h2><blockquote>
-<p><code>$compile</code>包含<code>directive</code>所有属性的说明 <a href="https://docs.angularjs.org/api/ng/service/$compile">传送门</a></p>
-</blockquote>
-<h3 id="service-basic"><a href="#service-basic" class="headerlink" title="service basic"></a>service basic</h3><p><img src="/assets/2017/ng-service.jpg" alt=""></p>
-<h2 id=""><a href="#" class="headerlink" title=""></a>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/01/02/201701-2017-01-02-angular-day8/#more" rel="contents">
+            <a class="btn" href="/2018/02/05/2018-2018-02-05-vue-mechanism/#espandi" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1540,7 +1628,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1586,7 +1674,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1597,7 +1685,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -1608,7 +1696,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -1645,7 +1733,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

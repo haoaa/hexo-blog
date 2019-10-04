@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vue模板编译," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="anchors
+入口
+parse
+parse流程
+parseHTML
+startElement
+endElement
+text
+
+
+conerCases
+
+
+optimize
+codegen
+
+
+
+
+入口
+通过loader加载的vue文件都是已经编译过得.
+createCompilerCreator, 缓存了baseCompile(主要编译过程)
+createCompiler, 缓存了baseOp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue-template-compile">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2019/04/06/2019-2019-04-06-vue-template-compile/index.html">
+<meta property="og:site_name" content="Haoqi's blog-ish!">
+<meta property="og:description" content="anchors
+入口
+parse
+parse流程
+parseHTML
+startElement
+endElement
+text
+
+
+conerCases
+
+
+optimize
+codegen
+
+
+
+
+入口
+通过loader加载的vue文件都是已经编译过得.
+createCompilerCreator, 缓存了baseCompile(主要编译过程)
+createCompiler, 缓存了baseOp">
+<meta property="og:updated_time" content="2019-05-18T05:45:39.904Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue-template-compile">
+<meta name="twitter:description" content="anchors
+入口
+parse
+parse流程
+parseHTML
+startElement
+endElement
+text
+
+
+conerCases
+
+
+optimize
+codegen
+
+
+
+
+入口
+通过loader加载的vue文件都是已经编译过得.
+createCompilerCreator, 缓存了baseCompile(主要编译过程)
+createCompiler, 缓存了baseOp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2019/04/06/2019-2019-04-06-vue-template-compile/"/>
+
+
+
+
+
+  <title>vue-template-compile | Haoqi's blog-ish!</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <audio src="\assets\2019\Indian_Summer.mp3"></audio>
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Haoqi's blog-ish!</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">blah blah blah</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+
+<script>
+  let hasClick = 0 
+  document.querySelector('.site-subtitle').onclick = ()=>{
+    hasClick++
+    if(hasClick === 3) {
+      document.querySelector('audio').play()
+    }
+  }
+
+</script> </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/04/06/2019-2019-04-06-vue-template-compile/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="浩齐">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoqi's blog-ish!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vue-template-compile</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-06T08:35:17+08:00">
+                2019-04-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue模板编译/" itemprop="url" rel="index">
+                    <span itemprop="name">vue模板编译</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="anchors"><a href="#anchors" class="headerlink" title="anchors"></a>anchors</h3><ul>
+<li><a href="#入口">入口</a></li>
+<li><a href="#parse">parse</a><ul>
+<li><a href="#parse流程">parse流程</a></li>
+<li><a href="#parseHTML">parseHTML</a><ul>
+<li><a href="#startElement">startElement</a></li>
+<li><a href="#endElement">endElement</a></li>
+<li><a href="#text">text</a></li>
+</ul>
+</li>
+<li><a href="#conerCases">conerCases</a></li>
+</ul>
+</li>
+<li><a href="#optimize">optimize</a></li>
+<li><a href="#codegen">codegen</a><ul>
+<li></li>
+</ul>
+</li>
+</ul>
+<h3 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h3><ul>
+<li>通过loader加载的vue文件都是已经编译过得.</li>
+<li>createCompilerCreator, 缓存了baseCompile(主要编译过程)</li>
+<li>createCompiler, 缓存了baseOptions(平台差异选项); 内部compile方法在处理options(module,directive)后调用baseCompile</li>
+<li>createCompileToFunctionFn对传入option做处理, (缓存编译的render function), 调用createCompiler的内部compile方法, 为ast创建function, 处理编译错误信息等.<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ref$<span class="number">1</span> = createCompiler(baseOptions);</div><div class="line"><span class="keyword">var</span> compile = ref$<span class="number">1.</span>compile;</div><div class="line"><span class="keyword">var</span> compileToFunctions = ref$<span class="number">1.</span>compileToFunctions;</div><div class="line"></div><div class="line"><span class="keyword">var</span> ref = compileToFunctions(template, &#123;</div><div class="line">        <span class="attr">outputSourceRange</span>: process.env.NODE_ENV !== <span class="string">'production'</span>,</div><div class="line">        <span class="attr">shouldDecodeNewlines</span>: shouldDecodeNewlines,</div><div class="line">        <span class="attr">shouldDecodeNewlinesForHref</span>: shouldDecodeNewlinesForHref,</div><div class="line">        <span class="attr">delimiters</span>: options.delimiters,</div><div class="line">        <span class="attr">comments</span>: options.comments</div><div class="line">      &#125;, <span class="keyword">this</span>);</div><div class="line"><span class="keyword">var</span> render = ref.render;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<a id="more"></a>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> createCompiler = createCompilerCreator(<span class="function"><span class="keyword">function</span> <span class="title">baseCompile</span> (<span class="params"></span></span></div><div class="line">  template,</div><div class="line">  options</div><div class="line">) &#123;</div><div class="line">  <span class="comment">// ... parse gencode</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createCompilerCreator</span> (<span class="params">baseCompile</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">createCompiler</span> (<span class="params">baseOptions</span>) </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">compile</span> (<span class="params"></span></span></div><div class="line">      template,</div><div class="line">      options</div><div class="line">    ) &#123;</div><div class="line">      <span class="keyword">var</span> finalOptions = <span class="built_in">Object</span>.create(baseOptions);</div><div class="line">      <span class="keyword">var</span> errors = [];</div><div class="line">      <span class="keyword">var</span> tips = [];</div><div class="line">      <span class="keyword">if</span> (options) &#123;</div><div class="line">        <span class="comment">// option处理</span></div><div class="line">      &#125;</div><div class="line"></div><div class="line">      finalOptions.warn = warn;</div><div class="line"></div><div class="line">      <span class="keyword">var</span> compiled = baseCompile(template.trim(), finalOptions);</div><div class="line">      <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</div><div class="line">        detectErrors(compiled.ast, warn);</div><div class="line">      &#125;</div><div class="line">      compiled.errors = errors;</div><div class="line">      compiled.tips = tips;</div><div class="line">      <span class="keyword">return</span> compiled</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">      <span class="attr">compile</span>: compile,</div><div class="line">      <span class="attr">compileToFunctions</span>: createCompileToFunctionFn(compile)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createCompileToFunctionFn</span> (<span class="params">compile</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> cache = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">compileToFunctions</span> (<span class="params"></span></span></div><div class="line">    template,</div><div class="line">    options,</div><div class="line">    vm</div><div class="line">  ) &#123;</div><div class="line">    options = extend(&#123;&#125;, options);</div><div class="line">    <span class="keyword">var</span> warn$$<span class="number">1</span> = options.warn || warn;</div><div class="line">    <span class="keyword">delete</span> options.warn;</div><div class="line"></div><div class="line">    <span class="comment">// detect possible CSP restriction</span></div><div class="line"></div><div class="line">    <span class="comment">// check cache</span></div><div class="line">    <span class="keyword">var</span> key = options.delimiters</div><div class="line">      ? <span class="built_in">String</span>(options.delimiters) + template</div><div class="line">      : template;</div><div class="line">    <span class="keyword">if</span> (cache[key]) &#123;</div><div class="line">      <span class="keyword">return</span> cache[key]</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// compile</span></div><div class="line">    <span class="keyword">var</span> compiled = compile(template, options);</div><div class="line"></div><div class="line">    <span class="comment">// check compilation errors/tips</span></div><div class="line">    <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// turn code into functions</span></div><div class="line">    <span class="keyword">var</span> res = &#123;&#125;;</div><div class="line">    <span class="keyword">var</span> fnGenErrors = [];</div><div class="line">    res.render = createFunction(compiled.render, fnGenErrors);</div><div class="line">    res.staticRenderFns = compiled.staticRenderFns.map(<span class="function"><span class="keyword">function</span> (<span class="params">code</span>) </span>&#123;</div><div class="line">      <span class="keyword">return</span> createFunction(code, fnGenErrors)</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    <span class="keyword">return</span> (cache[key] = res)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="parse"><a href="#parse" class="headerlink" title="parse"></a>parse</h3><h4 id="parse流程"><a href="#parse流程" class="headerlink" title="parse流程"></a>parse流程</h4><ul>
+<li>通过正则表达式读取标签,属性, 文本注释等信息</li>
+<li>开始/结束标签通过栈配对.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">parse</span> (<span class="params"> template, options </span>): <span class="title">ASTElement</span> | <span class="title">void</span> </span>&#123;</div><div class="line">  <span class="comment">// 选项处理</span></div><div class="line">  warn$<span class="number">2</span> = options.warn || baseWarn;</div><div class="line">  platformIsPreTag = options.isPreTag || no;</div><div class="line">  platformMustUseProp = options.mustUseProp || no;</div><div class="line">  platformGetTagNamespace = options.getTagNamespace || no;</div><div class="line"></div><div class="line">  transforms = pluckModuleFunction(options.modules, <span class="string">'transformNode'</span>);</div><div class="line">  preTransforms = pluckModuleFunction(options.modules, <span class="string">'preTransformNode'</span>);</div><div class="line">  postTransforms = pluckModuleFunction(options.modules, <span class="string">'postTransformNode'</span>);</div><div class="line"></div><div class="line">  delimiters = options.delimiters;</div><div class="line">  <span class="keyword">var</span> stack = []; <span class="comment">// 保存节点层级关系</span></div><div class="line">  <span class="keyword">var</span> currentParent; <span class="comment">// 父子关联</span></div><div class="line">  parseHTML(template, &#123;</div><div class="line">    <span class="attr">warn</span>: warn$<span class="number">2</span>,</div><div class="line">    <span class="attr">expectHTML</span>: options.expectHTML,</div><div class="line">    <span class="attr">isUnaryTag</span>: options.isUnaryTag,</div><div class="line">    <span class="attr">canBeLeftOpenTag</span>: options.canBeLeftOpenTag,</div><div class="line">    <span class="attr">shouldDecodeNewlines</span>: options.shouldDecodeNewlines,</div><div class="line">    <span class="attr">shouldDecodeNewlinesForHref</span>: options.shouldDecodeNewlinesForHref,</div><div class="line">    <span class="attr">shouldKeepComment</span>: options.comments,</div><div class="line">    <span class="comment">// 对应字符处理的方法从option传入</span></div><div class="line">    start (tag, attrs, unary) &#123;</div><div class="line">      <span class="keyword">let</span> element = createASTElement(tag, attrs, currentParent)</div><div class="line">      <span class="comment">// 处理 for/if等指令逻辑</span></div><div class="line">      <span class="keyword">if</span> (!element.processed) &#123;</div><div class="line">        <span class="comment">// structural directives</span></div><div class="line">        processFor(element);</div><div class="line">        processIf(element);</div><div class="line">        processOnce(element);</div><div class="line">        <span class="comment">// element-scope stuff</span></div><div class="line">        processElement(element, options);</div><div class="line">      &#125;</div><div class="line">      <span class="comment">// 处理父子关联 element.parent = currentParent; </span></div><div class="line">    &#125;,</div><div class="line"></div><div class="line">    end () &#123;</div><div class="line">      <span class="keyword">var</span> element = stack[stack.length - <span class="number">1</span>];</div><div class="line">      <span class="comment">// pop stack</span></div><div class="line">      stack.length -= <span class="number">1</span>;</div><div class="line">      currentParent = stack[stack.length - <span class="number">1</span>];</div><div class="line">      closeElement()</div><div class="line">    &#125;,</div><div class="line"></div><div class="line">    chars (text: string) &#123;</div><div class="line">      <span class="comment">// 添加文本ast 节点</span></div><div class="line">    &#125;,</div><div class="line">    comment (text: string) &#123;</div><div class="line">      currentParent.children.push(&#123;</div><div class="line">        <span class="attr">type</span>: <span class="number">3</span>,</div><div class="line">        <span class="attr">text</span>: text,</div><div class="line">        <span class="attr">isComment</span>: <span class="literal">true</span></div><div class="line">      &#125;);</div><div class="line">    &#125;</div><div class="line">  &#125;)</div><div class="line">  <span class="keyword">return</span> astRootElement</div><div class="line">&#125;</div><div class="line"></div><div class="line">&lt;img src=<span class="string">"/assets/2019/vue-template-parse.png"</span> /&gt;</div></pre></td></tr></table></figure>
+<h4 id="parseHTML"><a href="#parseHTML" class="headerlink" title="parseHTML"></a>parseHTML</h4><ul>
+<li>从头到尾按正则匹配出开始,结束标签, 文本注释等 </li>
+<li>ast node type: 1:元素节点 2:expression text node 3:plain text node</li>
+<li>parse-&gt;stack用ast node层级关系缓存, parseHTML-&gt;stack用ast node层级关系缓存<ul>
+<li>一个读数标签属性, 一个构建ast. 都是类似层级结构</li>
+<li>handleStartTag <code>stack.push({ tag: tagName, lowerCasedTag: tagName.toLowerCase(), attrs: attrs });</code></li>
+<li>start <code>stack.push(element);</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> attribute = <span class="regexp">/^\s*([^\s"'&lt;&gt;\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=&lt;&gt;`]+)))?/</span>; <span class="comment">// 属性xx=yy</span></div><div class="line"><span class="keyword">var</span> ncname = <span class="string">'[a-zA-Z_][\\w\\-\\.]*'</span>;</div><div class="line"><span class="keyword">var</span> qnameCapture = <span class="string">"((?:"</span> + ncname + <span class="string">"\\:)?"</span> + ncname + <span class="string">")"</span>;</div><div class="line"><span class="keyword">var</span> startTagOpen = <span class="keyword">new</span> <span class="built_in">RegExp</span>((<span class="string">"^&lt;"</span> + qnameCapture));</div><div class="line"><span class="keyword">var</span> startTagClose = <span class="regexp">/^\s*(\/?)&gt;/</span>;</div><div class="line"><span class="keyword">var</span> endTag = <span class="keyword">new</span> <span class="built_in">RegExp</span>((<span class="string">"^&lt;\\/"</span> + qnameCapture + <span class="string">"[^&gt;]*&gt;"</span>));</div><div class="line"><span class="keyword">var</span> doctype = <span class="regexp">/^&lt;!DOCTYPE [^&gt;]+&gt;/i</span>;</div><div class="line"><span class="keyword">var</span> comment = <span class="regexp">/^&lt;!\--/</span>;</div><div class="line"><span class="keyword">var</span> conditionalComment = <span class="regexp">/^&lt;!\[/</span>;</div><div class="line"><span class="string">``</span><span class="string">`  </span></div><div class="line">`<span class="string">``</span>js</div><div class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">parseHTML</span> (<span class="params">html, options</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> stack = [];</div><div class="line">  <span class="keyword">let</span> lastTag</div><div class="line">  <span class="keyword">while</span> (html) &#123;</div><div class="line">    <span class="keyword">if</span> (!lastTag || !isPlainTextElement(lastTag))&#123;</div><div class="line">      <span class="keyword">let</span> textEnd = html.indexOf(<span class="string">'&lt;'</span>)</div><div class="line">      <span class="keyword">if</span> (textEnd === <span class="number">0</span>) &#123;</div><div class="line">         <span class="keyword">if</span>(matchComment) &#123; <span class="comment">// 匹配到各类型的节点进行相应的处理</span></div><div class="line">           advance(commentLength) </div><div class="line">           <span class="keyword">continue</span></div><div class="line">         &#125;</div><div class="line">         <span class="keyword">if</span>(matchDoctype) &#123;</div><div class="line">           advance(doctypeLength)</div><div class="line">           <span class="keyword">continue</span></div><div class="line">         &#125;</div><div class="line">         <span class="keyword">if</span>(matchEndTag) &#123;</div><div class="line">           advance(endTagLength)</div><div class="line">           parseEndTag()</div><div class="line">           <span class="keyword">continue</span></div><div class="line">         &#125;</div><div class="line">         parseStartTag()</div><div class="line">         <span class="keyword">if</span>(matchStartTag) &#123;</div><div class="line">           handleStartTag()</div><div class="line">           <span class="keyword">continue</span></div><div class="line">         &#125;</div><div class="line">      &#125;</div><div class="line">      handleText()</div><div class="line">      advance(textLength)</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">       handlePlainTextElement()</div><div class="line">       parseEndTag()</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// Clean up any remaining tags</span></div><div class="line">  parseEndTag();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="startElement"><a href="#startElement" class="headerlink" title="startElement"></a>startElement</h5><ul>
+<li><code>parseStartTag</code>通过正则获取属性,标签等信息, 开始标签的结尾index.</li>
+<li><code>handleStartTag</code>处理自闭合标签, attrs转为<code>{name, value}</code>格式, 记录lastTag, 调用<code>options.start</code></li>
+<li><code>options.start</code>创建ast节点, 往ast上添加所有属性的, 处理层级关系<ul>
+<li>preTransforms处理<code>src/platforms/web/compiler/modules</code>里module的<code>preTransforms</code>、<code>transforms</code>处理在<code>processElement</code>里</li>
+<li>处理for,if,once指令</li>
+<li>处理层级关系<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">currentParent = element</div><div class="line">stack.push(element)</div><div class="line">currentParent = element</div><div class="line">stack.push(element)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Start tag:</span></div><div class="line"><span class="keyword">var</span> startTagMatch = parseStartTag();</div><div class="line"><span class="keyword">if</span> (startTagMatch) &#123;</div><div class="line">  handleStartTag(startTagMatch);</div><div class="line">  <span class="keyword">continue</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">parseStartTag</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> start = html.match(startTagOpen);</div><div class="line">    <span class="keyword">if</span> (start) &#123;</div><div class="line">      <span class="keyword">var</span> match = &#123;</div><div class="line">        <span class="attr">tagName</span>: start[<span class="number">1</span>],</div><div class="line">        <span class="attr">attrs</span>: [],</div><div class="line">        <span class="attr">start</span>: index</div><div class="line">      &#125;;</div><div class="line">      advance(start[<span class="number">0</span>].length);</div><div class="line">      <span class="keyword">var</span> end, attr;</div><div class="line">      <span class="keyword">while</span> (!(end = html.match(startTagClose)) &amp;&amp; (attr = html.match(attribute))) &#123;</div><div class="line">        advance(attr[<span class="number">0</span>].length);</div><div class="line">        match.attrs.push(attr);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">if</span> (end) &#123;</div><div class="line">        match.unarySlash = end[<span class="number">1</span>];</div><div class="line">        advance(end[<span class="number">0</span>].length);</div><div class="line">        match.end = index;</div><div class="line">        <span class="keyword">return</span> match</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">handleStartTag</span> (<span class="params">match</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> tagName = match.tagName;</div><div class="line">    <span class="keyword">var</span> unarySlash = match.unarySlash;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> unary = isUnaryTag$$<span class="number">1</span>(tagName) || !!unarySlash;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> l = match.attrs.length;</div><div class="line">    <span class="keyword">var</span> attrs = <span class="keyword">new</span> <span class="built_in">Array</span>(l);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; l; i++) &#123;</div><div class="line">      <span class="keyword">var</span> args = match.attrs[i];</div><div class="line">      <span class="keyword">var</span> value = args[<span class="number">3</span>] || args[<span class="number">4</span>] || args[<span class="number">5</span>] || <span class="string">''</span>;</div><div class="line">      attrs[i] = &#123;</div><div class="line">        <span class="attr">name</span>: args[<span class="number">1</span>],</div><div class="line">        <span class="attr">value</span>: value</div><div class="line">      &#125;;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (!unary) &#123;</div><div class="line">      <span class="comment">// parseHTML的stack</span></div><div class="line">      stack.push(&#123; <span class="attr">tag</span>: tagName, <span class="attr">lowerCasedTag</span>: tagName.toLowerCase(), <span class="attr">attrs</span>: attrs &#125;);</div><div class="line">      lastTag = tagName;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (options.start) &#123;</div><div class="line">      options.start(tagName, attrs, unary, match.start, match.end);</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">start</span> (<span class="params">tag, attrs, unary</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> element = createASTElement(tag, attrs, currentParent);</div><div class="line"></div><div class="line">  <span class="comment">// apply pre-transforms</span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; preTransforms.length; i++) &#123;</div><div class="line">    element = preTransforms[i](element, options) || element;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (!element.processed) &#123;</div><div class="line">    <span class="comment">// structural directives</span></div><div class="line">    processFor(element);</div><div class="line">    processIf(element);</div><div class="line">    processOnce(element);</div><div class="line">    <span class="comment">// element-scope stuff</span></div><div class="line">    processElement(element, options);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// tree management</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// v-if处理</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">processIf</span> (<span class="params">el</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> exp = getAndRemoveAttr(el, <span class="string">'v-if'</span>); <span class="comment">// 留attrsMap的映射关系</span></div><div class="line">  <span class="keyword">if</span> (exp) &#123;</div><div class="line">    el.if = exp;</div><div class="line">    addIfCondition(el, &#123;</div><div class="line">      <span class="attr">exp</span>: exp,</div><div class="line">      <span class="attr">block</span>: el</div><div class="line">    &#125;);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">if</span> (getAndRemoveAttr(el, <span class="string">'v-else'</span>) != <span class="literal">null</span>) &#123;</div><div class="line">      el.else = <span class="literal">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> elseif = getAndRemoveAttr(el, <span class="string">'v-else-if'</span>);</div><div class="line">    <span class="keyword">if</span> (elseif) &#123;</div><div class="line">      el.elseif = elseif;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">addIfCondition</span> (<span class="params">el, condition</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (!el.ifConditions) &#123;</div><div class="line">    el.ifConditions = [];</div><div class="line">  &#125;</div><div class="line">  el.ifConditions.push(condition);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 其他属性的处理</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">processElement</span> (<span class="params">element, options</span>) </span>&#123;</div><div class="line">  processKey(element);</div><div class="line"></div><div class="line">  <span class="comment">// determine whether this is a plain element after</span></div><div class="line">  <span class="comment">// removing structural attributes</span></div><div class="line">  element.plain = !element.key &amp;&amp; !element.attrsList.length;</div><div class="line"></div><div class="line">  processRef(element);</div><div class="line">  processSlot(element);</div><div class="line">  processComponent(element);</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; transforms.length; i++) &#123;</div><div class="line">    element = transforms[i](element, options) || element; <span class="comment">// static class/style处理</span></div><div class="line">  &#125;</div><div class="line">  processAttrs(element); <span class="comment">// 剩余属性处理(modifier等)</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// tree management</span></div><div class="line"><span class="keyword">if</span> (!root) &#123;</div><div class="line">  root = element;</div><div class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (!stack.length) &#123;</div><div class="line">  <span class="comment">// allow root elements with v-if, v-else-if and v-else</span></div><div class="line">&#125;</div><div class="line"><span class="keyword">if</span> (currentParent &amp;&amp; !element.forbidden) &#123;</div><div class="line">  <span class="keyword">if</span> (element.elseif || element.else) &#123;</div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (element.slotScope) &#123; <span class="comment">// scoped slot</span></div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    currentParent.children.push(element);</div><div class="line">    element.parent = currentParent;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">if</span> (!unary) &#123;</div><div class="line">  currentParent = element;</div><div class="line">  stack.push(element);</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  closeElement(element);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="endElement"><a href="#endElement" class="headerlink" title="endElement"></a>endElement</h5><ul>
+<li>通过stack找到闭合标签对应的开始标签的ast节点, 调用<code>options.end</code><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 匹配后调用parseEndTag处理</span></div><div class="line"><span class="keyword">const</span> endTagMatch = html.match(endTag)</div><div class="line"><span class="keyword">if</span> (endTagMatch) &#123;</div><div class="line">  <span class="keyword">const</span> curIndex = index</div><div class="line">  advance(endTagMatch[<span class="number">0</span>].length)</div><div class="line">  parseEndTag(endTagMatch[<span class="number">1</span>], curIndex, index)</div><div class="line">  <span class="keyword">continue</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">parseEndTag</span> (<span class="params">tagName, start, end</span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> pos, lowerCasedTagName</div><div class="line">  <span class="keyword">if</span> (start == <span class="literal">null</span>) start = index</div><div class="line">  <span class="keyword">if</span> (end == <span class="literal">null</span>) end = index</div><div class="line">  <span class="comment">// 找到最近的开始标签</span></div><div class="line">  <span class="keyword">if</span> (tagName) &#123;</div><div class="line">    <span class="keyword">for</span> (pos = stack.length - <span class="number">1</span>; pos &gt;= <span class="number">0</span>; pos--) &#123;</div><div class="line">      <span class="keyword">if</span> (stack[pos].lowerCasedTag === lowerCasedTagName) &#123;</div><div class="line">        <span class="keyword">break</span></div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    pos = <span class="number">0</span></div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="keyword">if</span> (pos &gt;= <span class="number">0</span>) &#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = stack.length - <span class="number">1</span>; i &gt;= pos; i--) &#123;</div><div class="line">      <span class="keyword">if</span> (options.end) &#123;</div><div class="line">        options.end(stack[i].tag, start, end)</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    stack.length = pos</div><div class="line">    lastTag = pos &amp;&amp; stack[pos - <span class="number">1</span>].tag</div><div class="line">  &#125; </div><div class="line">  <span class="comment">// br p标签处理</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">end</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// remove trailing whitespace</span></div><div class="line">  <span class="keyword">var</span> element = stack[stack.length - <span class="number">1</span>];</div><div class="line">  <span class="keyword">var</span> lastNode = element.children[element.children.length - <span class="number">1</span>];</div><div class="line">  <span class="keyword">if</span> (lastNode &amp;&amp; lastNode.type === <span class="number">3</span> &amp;&amp; lastNode.text === <span class="string">' '</span> &amp;&amp; !inPre) &#123;</div><div class="line">    element.children.pop();</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// pop stack</span></div><div class="line">  stack.length -= <span class="number">1</span>;</div><div class="line">  currentParent = stack[stack.length - <span class="number">1</span>];</div><div class="line">  closeElement(element); <span class="comment">//没干啥</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="text"><a href="#text" class="headerlink" title="text"></a>text</h5><ul>
+<li>截取文本, 创建(表达式/普通)文本节点</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> text, rest, next</div><div class="line"><span class="keyword">if</span> (textEnd &gt;= <span class="number">0</span>) &#123;</div><div class="line">  rest = html.slice(textEnd)</div><div class="line">  <span class="keyword">while</span> (</div><div class="line">    !endTag.test(rest) &amp;&amp; <span class="comment">// 剩下的字符有没有结束标签, 不是注释, 就追加文本到text</span></div><div class="line">    !startTagOpen.test(rest) &amp;&amp;</div><div class="line">    !comment.test(rest) &amp;&amp;</div><div class="line">    !conditionalComment.test(rest)</div><div class="line">  ) &#123;</div><div class="line">    next = rest.indexOf(<span class="string">'&lt;'</span>, <span class="number">1</span>)</div><div class="line">    <span class="keyword">if</span> (next &lt; <span class="number">0</span>) <span class="keyword">break</span></div><div class="line">    textEnd += next</div><div class="line">    rest = html.slice(textEnd)</div><div class="line">  &#125;</div><div class="line">  text = html.substring(<span class="number">0</span>, textEnd)</div><div class="line">  advance(textEnd)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span> (textEnd &lt; <span class="number">0</span>) &#123;  <span class="comment">//template 解析完毕</span></div><div class="line">  text = html</div><div class="line">  html = <span class="string">''</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span> (options.chars &amp;&amp; text) &#123;</div><div class="line">  options.chars(text)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">chars</span> (<span class="params">text</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (!currentParent) &#123;</div><div class="line">    <span class="comment">// template不能是纯文本, 开头不能有文本</span></div><div class="line">    <span class="keyword">return</span></div><div class="line">  &#125;  </div><div class="line">  <span class="keyword">var</span> children = currentParent.children;</div><div class="line">  text = inPre || text.trim()</div><div class="line">    ? isTextTag(currentParent) ? text : decodeHTMLCached(text)</div><div class="line">    <span class="comment">// only preserve whitespace if its not right after a starting tag</span></div><div class="line">    : preserveWhitespace &amp;&amp; children.length ? <span class="string">' '</span> : <span class="string">''</span>;</div><div class="line">  <span class="keyword">if</span> (text) &#123;</div><div class="line">    <span class="keyword">var</span> res;</div><div class="line">    <span class="keyword">if</span> (!inVPre &amp;&amp; text !== <span class="string">' '</span> &amp;&amp; (res = parseText(text, delimiters))) &#123;</div><div class="line">      children.push(&#123;</div><div class="line">        <span class="attr">type</span>: <span class="number">2</span>,</div><div class="line">        <span class="attr">expression</span>: res.expression,</div><div class="line">        <span class="attr">tokens</span>: res.tokens,</div><div class="line">        <span class="attr">text</span>: text</div><div class="line">      &#125;);</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (text !== <span class="string">' '</span> || !children.length || children[children.length - <span class="number">1</span>].text !== <span class="string">' '</span>) &#123;</div><div class="line">      children.push(&#123;</div><div class="line">        <span class="attr">type</span>: <span class="number">3</span>,</div><div class="line">        <span class="attr">text</span>: text</div><div class="line">      &#125;);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 处理expression text node, 分文本token和标签token, 返回拼接的vnode创建表达式和绑定标签</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">parseText</span> (<span class="params"></span></span></div><div class="line">  text,</div><div class="line">  delimiters</div><div class="line">) &#123;</div><div class="line">  <span class="keyword">var</span> tagRE = delimiters ? buildRegex(delimiters) : defaultTagRE;</div><div class="line">  <span class="keyword">if</span> (!tagRE.test(text)) &#123;</div><div class="line">    <span class="keyword">return</span></div><div class="line">  &#125;</div><div class="line">  <span class="keyword">var</span> tokens = [];</div><div class="line">  <span class="keyword">var</span> rawTokens = [];</div><div class="line">  <span class="keyword">var</span> lastIndex = tagRE.lastIndex = <span class="number">0</span>;</div><div class="line">  <span class="keyword">var</span> match, index, tokenValue;</div><div class="line">  <span class="keyword">while</span> ((match = tagRE.exec(text))) &#123;</div><div class="line">    index = match.index;</div><div class="line">    <span class="comment">// push text token</span></div><div class="line">    <span class="keyword">if</span> (index &gt; lastIndex) &#123;</div><div class="line">      rawTokens.push(tokenValue = text.slice(lastIndex, index));</div><div class="line">      tokens.push(<span class="built_in">JSON</span>.stringify(tokenValue));</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// tag token</span></div><div class="line">    <span class="keyword">var</span> exp = parseFilters(match[<span class="number">1</span>].trim());</div><div class="line">    tokens.push((<span class="string">"_s("</span> + exp + <span class="string">")"</span>));</div><div class="line">    rawTokens.push(&#123; <span class="string">'@binding'</span>: exp &#125;);</div><div class="line">    lastIndex = index + match[<span class="number">0</span>].length;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">if</span> (lastIndex &lt; text.length) &#123;</div><div class="line">    rawTokens.push(tokenValue = text.slice(lastIndex));</div><div class="line">    tokens.push(<span class="built_in">JSON</span>.stringify(tokenValue));</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">expression</span>: tokens.join(<span class="string">'+'</span>), <span class="comment">// '_s(item)+":"+_s(index)', _s创建文本vnode</span></div><div class="line">    tokens: rawTokens  <span class="comment">// [&#123;'@binding':'item'&#125;,':',&#123;'@binding':'index'&#125;]</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="conerCases"><a href="#conerCases" class="headerlink" title="conerCases"></a>conerCases</h4><ul>
+<li><a href="http://www.5icool.org/a/201308/a2081.html" target="_blank" rel="external">h5元素嵌套规则</a></li>
+<li>块级元素不能放在<p>里面, <code>&lt;p&gt;&lt;div&gt;&lt;/div&gt;&lt;/p&gt;</code> =&gt; <code>&lt;p&gt;&lt;/p&gt;&lt;div&gt;&lt;/div&gt;&lt;p&gt;&lt;/p&gt;</code><ul>
+<li>lastTag是p, div不是phrasing tag, 就插入结束标签, 调用<code>parseEndTag(lastTag);</code>把p从stack移除<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleStartTag</span> (<span class="params">match</span>) </span>&#123;</div><div class="line">   <span class="keyword">var</span> tagName = match.tagName;</div><div class="line">   <span class="keyword">var</span> unarySlash = match.unarySlash;</div><div class="line"></div><div class="line">   <span class="keyword">if</span> (expectHTML) &#123;</div><div class="line">     <span class="keyword">if</span> (lastTag === <span class="string">'p'</span> &amp;&amp; isNonPhrasingTag(tagName)) &#123;</div><div class="line">       parseEndTag(lastTag);</div><div class="line">     &#125;</div><div class="line">     <span class="keyword">if</span> (canBeLeftOpenTag$$<span class="number">1</span>(tagName) &amp;&amp; lastTag === tagName) &#123;</div><div class="line">       parseEndTag(tagName); <span class="comment">// p里嵌套p也是一样的处理</span></div><div class="line">     &#125;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="keyword">var</span> unary = isUnaryTag$$<span class="number">1</span>(tagName) || !!unarySlash;</div><div class="line"></div><div class="line">   <span class="keyword">if</span> (!unary) &#123;</div><div class="line">     stack.push(&#123; <span class="attr">tag</span>: tagName, <span class="attr">lowerCasedTag</span>: tagName.toLowerCase(), <span class="attr">attrs</span>: attrs &#125;);</div><div class="line">     lastTag = tagName;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="keyword">if</span> (options.start) &#123;</div><div class="line">     options.start(tagName, attrs, unary, match.start, match.end);</div><div class="line">     <span class="comment">//  if (!unary) &#123;</span></div><div class="line">     <span class="comment">//   currentParent = element;</span></div><div class="line">     <span class="comment">//   stack.push(element);</span></div><div class="line">     <span class="comment">// &#125;</span></div><div class="line">   &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</p></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">parseEndTag</span> (<span class="params">tagName, start, end</span>) </span>&#123;</div><div class="line">   <span class="keyword">var</span> pos, lowerCasedTagName;</div><div class="line"></div><div class="line">   <span class="comment">// Find the closest opened tag of the same type</span></div><div class="line">   <span class="keyword">if</span> (tagName) &#123;</div><div class="line">   &#125; <span class="keyword">else</span> &#123;</div><div class="line">     <span class="comment">// If no tag name is provided, clean shop</span></div><div class="line">     pos = <span class="number">0</span>;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="keyword">if</span> (pos &gt;= <span class="number">0</span>) &#123;</div><div class="line">     <span class="comment">// Close all the open elements, up the stack</span></div><div class="line">     <span class="keyword">for</span> (<span class="keyword">var</span> i = stack.length - <span class="number">1</span>; i &gt;= pos; i--) &#123;</div><div class="line">       <span class="keyword">if</span> (options.end) &#123;</div><div class="line">         options.end(stack[i].tag, start, end); <span class="comment">// &lt;p&gt; 闭合p开始标签</span></div><div class="line">       &#125;</div><div class="line">     &#125;</div><div class="line"></div><div class="line">     <span class="comment">// Remove the open elements from the stack</span></div><div class="line">     stack.length = pos;</div><div class="line">     lastTag = pos &amp;&amp; stack[pos - <span class="number">1</span>].tag;</div><div class="line">   &#125; <span class="keyword">else</span> <span class="keyword">if</span> (lowerCasedTagName === <span class="string">'br'</span>) &#123;</div><div class="line">     <span class="keyword">if</span> (options.start) &#123;</div><div class="line">       options.start(tagName, [], <span class="literal">true</span>, start, end);</div><div class="line">     &#125;</div><div class="line">   &#125; <span class="keyword">else</span> <span class="keyword">if</span> (lowerCasedTagName === <span class="string">'p'</span>) &#123; <span class="comment">// &lt;/p&gt; 闭合p结束标签</span></div><div class="line">     <span class="keyword">if</span> (options.start) &#123;</div><div class="line">       options.start(tagName, [], <span class="literal">false</span>, start, end);</div><div class="line">     &#125;</div><div class="line">     <span class="keyword">if</span> (options.end) &#123;</div><div class="line">       options.end(tagName, start, end);</div><div class="line">     &#125;</div><div class="line">   &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<h3 id="optimize"><a href="#optimize" class="headerlink" title="optimize"></a>optimize</h3><ul>
+<li>ast优化, 标记静态节点, 静态子树. 避免不会变化的节点重新渲染. <ul>
+<li>提取未常量</li>
+<li>跳过patch</li>
+</ul>
+</li>
+<li>静态节点, 有一个子节点不是静态, 这个节点也就不是静态. 此节点有ifCondition也需要所有的判断是静态的<ul>
+<li>判断规则<code>isStatic</code>: 如果是表达式，就是非静态；如果是纯文本，就是静态；…</li>
+</ul>
+</li>
+<li>静态子树  <ul>
+<li>至少一个非文本静态节点</li>
+<li>所有子节点和当前节点标记了静态</li>
+<li>深度遍历<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Goal of the optimizer: walk the generated template AST tree</div><div class="line"> * and detect sub-trees that are purely static, i.e. parts of</div><div class="line"> * the DOM that never needs to change.</div><div class="line"> *</div><div class="line"> * Once we detect these sub-trees, we can:</div><div class="line"> *</div><div class="line"> * 1. Hoist them into constants, so that we no longer need to</div><div class="line"> *    create fresh nodes for them on each re-render;</div><div class="line"> * 2. Completely skip them in the patching process.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">optimize</span> (<span class="params">root, options</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (!root) &#123; <span class="keyword">return</span> &#125;</div><div class="line">  isStaticKey = genStaticKeysCached(options.staticKeys || <span class="string">''</span>);</div><div class="line">  isPlatformReservedTag = options.isReservedTag || no;</div><div class="line">  <span class="comment">// first pass: mark all non-static nodes.</span></div><div class="line">  markStatic$<span class="number">1</span>(root);</div><div class="line">  <span class="comment">// second pass: mark static roots.</span></div><div class="line">  markStaticRoots(root, <span class="literal">false</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">genStaticKeys$1</span> (<span class="params">keys</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> makeMap(</div><div class="line">    <span class="string">'type,tag,attrsList,attrsMap,plain,parent,children,attrs'</span> +</div><div class="line">    (keys ? <span class="string">','</span> + keys : <span class="string">''</span>)</div><div class="line">  )</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">markStatic$1</span> (<span class="params">node</span>) </span>&#123;</div><div class="line">  node.static = isStatic(node);</div><div class="line">  <span class="keyword">if</span> (node.type === <span class="number">1</span>) &#123;</div><div class="line">    <span class="comment">// do not make component slot content static. this avoids</span></div><div class="line">    <span class="comment">// 1. components not able to mutate slot nodes</span></div><div class="line">    <span class="comment">// 2. static slot content fails for hot-reloading</span></div><div class="line">    <span class="keyword">if</span> (</div><div class="line">      !isPlatformReservedTag(node.tag) &amp;&amp;</div><div class="line">      node.tag !== <span class="string">'slot'</span> &amp;&amp;</div><div class="line">      node.attrsMap[<span class="string">'inline-template'</span>] == <span class="literal">null</span></div><div class="line">    ) &#123;</div><div class="line">      <span class="keyword">return</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, l = node.children.length; i &lt; l; i++) &#123;</div><div class="line">      <span class="keyword">var</span> child = node.children[i];</div><div class="line">      markStatic$<span class="number">1</span>(child);</div><div class="line">      <span class="keyword">if</span> (!child.static) &#123;</div><div class="line">        node.static = <span class="literal">false</span>;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (node.ifConditions) &#123;</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i$<span class="number">1</span> = <span class="number">1</span>, l$<span class="number">1</span> = node.ifConditions.length; i$<span class="number">1</span> &lt; l$<span class="number">1</span>; i$<span class="number">1</span>++) &#123;</div><div class="line">        <span class="keyword">var</span> block = node.ifConditions[i$<span class="number">1</span>].block;</div><div class="line">        markStatic$<span class="number">1</span>(block);</div><div class="line">        <span class="keyword">if</span> (!block.static) &#123;</div><div class="line">          node.static = <span class="literal">false</span>;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isStatic</span> (<span class="params">node</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (node.type === <span class="number">2</span>) &#123; <span class="comment">// expression</span></div><div class="line">    <span class="keyword">return</span> <span class="literal">false</span></div><div class="line">  &#125;</div><div class="line">  <span class="keyword">if</span> (node.type === <span class="number">3</span>) &#123; <span class="comment">// text</span></div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> !!(node.pre || (</div><div class="line">    !node.hasBindings &amp;&amp; <span class="comment">// no dynamic bindings</span></div><div class="line">    !node.if &amp;&amp; !node.for &amp;&amp; <span class="comment">// not v-if or v-for or v-else</span></div><div class="line">    !isBuiltInTag(node.tag) &amp;&amp; <span class="comment">// not a built-in</span></div><div class="line">    isPlatformReservedTag(node.tag) &amp;&amp; <span class="comment">// not a component</span></div><div class="line">    !isDirectChildOfTemplateFor(node) &amp;&amp;</div><div class="line">    <span class="built_in">Object</span>.keys(node).every(isStaticKey)</div><div class="line">  ))</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">markStaticRoots</span> (<span class="params">node, isInFor</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (node.type === <span class="number">1</span>) &#123;</div><div class="line">    <span class="keyword">if</span> (node.static || node.once) &#123;</div><div class="line">      node.staticInFor = isInFor;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// For a node to qualify as a static root, it should have children that</span></div><div class="line">    <span class="comment">// are not just static text. Otherwise the cost of hoisting out will</span></div><div class="line">    <span class="comment">// outweigh the benefits and it's better off to just always render it fresh.</span></div><div class="line">    <span class="keyword">if</span> (node.static &amp;&amp; node.children.length &amp;&amp; !(</div><div class="line">      node.children.length === <span class="number">1</span> &amp;&amp;</div><div class="line">      node.children[<span class="number">0</span>].type === <span class="number">3</span></div><div class="line">    )) &#123;</div><div class="line">      node.staticRoot = <span class="literal">true</span>;</div><div class="line">      <span class="keyword">return</span></div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      node.staticRoot = <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (node.children) &#123;</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, l = node.children.length; i &lt; l; i++) &#123;</div><div class="line">        markStaticRoots(node.children[i], isInFor || !!node.for);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (node.ifConditions) &#123;</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i$<span class="number">1</span> = <span class="number">1</span>, l$<span class="number">1</span> = node.ifConditions.length; i$<span class="number">1</span> &lt; l$<span class="number">1</span>; i$<span class="number">1</span>++) &#123;</div><div class="line">        markStaticRoots(node.ifConditions[i$<span class="number">1</span>].block, isInFor);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="codegen"><a href="#codegen" class="headerlink" title="codegen"></a>codegen</h3><ul>
+<li>gencode创建vnode相关的util方法在<code>function installRenderHelpers (target){}</code></li>
+<li>通过深度遍历VST创建render函数字符串.<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">generate</span> (<span class="params"></span></span></div><div class="line">  ast,</div><div class="line">  options</div><div class="line">) &#123;</div><div class="line">  <span class="keyword">var</span> state = <span class="keyword">new</span> CodegenState(options);</div><div class="line">  <span class="keyword">var</span> code = ast ? genElement(ast, state) : <span class="string">'_c("div")'</span>;</div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">render</span>: (<span class="string">"with(this)&#123;return "</span> + code + <span class="string">"&#125;"</span>),</div><div class="line">    <span class="attr">staticRenderFns</span>: state.staticRenderFns</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">genElement</span> (<span class="params">el, state</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (el.parent) &#123;</div><div class="line">    el.pre = el.pre || el.parent.pre;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (el.staticRoot &amp;&amp; !el.staticProcessed) &#123;</div><div class="line">    <span class="keyword">return</span> genStatic(el, state)</div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (el.once &amp;&amp; !el.onceProcessed) &#123;</div><div class="line">    <span class="keyword">return</span> genOnce(el, state)</div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (el.for &amp;&amp; !el.forProcessed) &#123;</div><div class="line">    <span class="keyword">return</span> genFor(el, state)</div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (el.if &amp;&amp; !el.ifProcessed) &#123;</div><div class="line">    <span class="keyword">return</span> genIf(el, state)</div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (el.tag === <span class="string">'template'</span> &amp;&amp; !el.slotTarget &amp;&amp; !state.pre) &#123;</div><div class="line">    <span class="keyword">return</span> genChildren(el, state) || <span class="string">'void 0'</span></div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (el.tag === <span class="string">'slot'</span>) &#123;</div><div class="line">    <span class="keyword">return</span> genSlot(el, state)</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="comment">// component or element</span></div><div class="line">    <span class="keyword">var</span> code;</div><div class="line">    <span class="keyword">if</span> (el.component) &#123;</div><div class="line">      code = genComponent(el.component, el, state);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="keyword">var</span> data;</div><div class="line">      <span class="keyword">if</span> (!el.plain || (el.pre &amp;&amp; state.maybeComponent(el))) &#123;</div><div class="line">        data = genData$<span class="number">2</span>(el, state);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="keyword">var</span> children = el.inlineTemplate ? <span class="literal">null</span> : genChildren(el, state, <span class="literal">true</span>);</div><div class="line">      code = <span class="string">"_c('"</span> + (el.tag) + <span class="string">"'"</span> + (data ? (<span class="string">","</span> + data) : <span class="string">''</span>) + (children ? (<span class="string">","</span> + children) : <span class="string">''</span>) + <span class="string">")"</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// module transforms</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; state.transforms.length; i++) &#123;</div><div class="line">      code = state.transforms[i](el, code);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> code</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="v-if-v-for-generate-code"><a href="#v-if-v-for-generate-code" class="headerlink" title="v-if/v-for generate code"></a>v-if/v-for generate code</h4><ul>
+<li>v-if 创建的模式就是`(condition) ? genElement(condition.block) : genIfConditions(剩余的condition)’</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">genIf</span> (<span class="params"></span></span></div><div class="line">  el,</div><div class="line">  state,</div><div class="line">  altGen,</div><div class="line">  altEmpty</div><div class="line">) &#123;</div><div class="line">  el.ifProcessed = <span class="literal">true</span>; <span class="comment">// avoid recursion</span></div><div class="line">  <span class="keyword">return</span> genIfConditions(el.ifConditions.slice(), state, altGen, altEmpty)</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">genIfConditions</span> (<span class="params"></span></span></div><div class="line">  conditions,</div><div class="line">  state,</div><div class="line">  altGen,</div><div class="line">  altEmpty</div><div class="line">) &#123;</div><div class="line">  <span class="keyword">if</span> (!conditions.length) &#123;</div><div class="line">    <span class="keyword">return</span> altEmpty || <span class="string">'_e()'</span></div><div class="line">  &#125;</div><div class="line"> <span class="keyword">return</span> (<span class="string">"("</span> + (condition.exp) + <span class="string">")?"</span> + (genElement(condition.block)) + <span class="string">":"</span> + (genIfConditions(conditions, state, altGen, altEmpty)))</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><code>genElement(condition.block)</code>部分代码执行如下:</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="keyword">var</span> data;</div><div class="line">  <span class="keyword">if</span> (!el.plain || (el.pre &amp;&amp; state.maybeComponent(el))) &#123;</div><div class="line">    data = genData$<span class="number">2</span>(el, state); <span class="comment">// genData处理所有的属性</span></div><div class="line">  &#125;</div><div class="line">  <span class="keyword">var</span> children = el.inlineTemplate ? <span class="literal">null</span> : genChildren(el, state, <span class="literal">true</span>);</div><div class="line">  code = <span class="string">"_c('"</span> + (el.tag) + <span class="string">"'"</span> + (data ? (<span class="string">","</span> + data) : <span class="string">''</span>) + (children ? (<span class="string">","</span> + children) : <span class="string">''</span>) + <span class="string">")"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>genData处理if部分代码</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// module data generation functions</span></div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; state.dataGenFns.length; i++) &#123;</div><div class="line">  data += state.dataGenFns[i](el); <span class="comment">// class style处理 如"&#123;staticClass:"list",class:bindClass,"</span></div><div class="line">&#125;</div><div class="line">data = data.replace(<span class="regexp">/,$/</span>, <span class="string">''</span>) + <span class="string">'&#125;'</span>;</div><div class="line"><span class="keyword">return</span> data</div></pre></td></tr></table></figure>
+<ul>
+<li><p>处理子节点, 处理v-for和其他子节点</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">genChildren</span> (<span class="params"></span></span></div><div class="line">  el,</div><div class="line">  state,</div><div class="line">  checkSkip,</div><div class="line">  altGenElement,</div><div class="line">  altGenNode</div><div class="line">) &#123;</div><div class="line">  <span class="keyword">var</span> children = el.children;</div><div class="line">  <span class="keyword">if</span> (children.length) &#123;</div><div class="line">    <span class="keyword">var</span> el$<span class="number">1</span> = children[<span class="number">0</span>];</div><div class="line">    <span class="comment">// optimize single v-for</span></div><div class="line">    <span class="keyword">if</span> (children.length === <span class="number">1</span> &amp;&amp;</div><div class="line">      el$<span class="number">1.</span><span class="keyword">for</span> &amp;&amp;</div><div class="line">      el$<span class="number">1.</span>tag !== <span class="string">'template'</span> &amp;&amp;</div><div class="line">      el$<span class="number">1.</span>tag !== <span class="string">'slot'</span></div><div class="line">    ) &#123;</div><div class="line">      <span class="keyword">var</span> normalizationType = checkSkip</div><div class="line">        ? state.maybeComponent(el$<span class="number">1</span>) ? <span class="string">",1"</span> : <span class="string">",0"</span></div><div class="line">        : <span class="string">""</span>;</div><div class="line">      <span class="keyword">return</span> (<span class="string">""</span> + ((altGenElement || genElement)(el$<span class="number">1</span>, state)) + normalizationType)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> normalizationType$<span class="number">1</span> = checkSkip</div><div class="line">      ? getNormalizationType(children, state.maybeComponent)</div><div class="line">      : <span class="number">0</span>;</div><div class="line">    <span class="keyword">var</span> gen = altGenNode || genNode;</div><div class="line">    <span class="keyword">return</span> (<span class="string">"["</span> + (children.map(<span class="function"><span class="keyword">function</span> (<span class="params">c</span>) </span>&#123; <span class="keyword">return</span> gen(c, state); &#125;).join(<span class="string">','</span>)) + <span class="string">"]"</span> + (normalizationType$<span class="number">1</span> ? (<span class="string">","</span> + normalizationType$<span class="number">1</span>) : <span class="string">''</span>))</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>v-for 创建的模式就是<code>_l(data, function(item, index){return genElement)(el,state) })?</code>, 之后又是<code>genData, genChildren</code></p>
+<ul>
+<li>genChildren会调用<code>genNode</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">genFor</span> (<span class="params"></span></span></div><div class="line">  el,</div><div class="line">  state,</div><div class="line">  altGen,</div><div class="line">  altHelper</div><div class="line">) &#123;</div><div class="line">  <span class="keyword">var</span> exp = el.for;</div><div class="line">  <span class="keyword">var</span> alias = el.alias;</div><div class="line">  <span class="keyword">var</span> iterator1 = el.iterator1 ? (<span class="string">","</span> + (el.iterator1)) : <span class="string">''</span>;</div><div class="line">  <span class="keyword">var</span> iterator2 = el.iterator2 ? (<span class="string">","</span> + (el.iterator2)) : <span class="string">''</span>;</div><div class="line"></div><div class="line">  el.forProcessed = <span class="literal">true</span>; <span class="comment">// avoid recursion</span></div><div class="line">  <span class="keyword">return</span> (altHelper || <span class="string">'_l'</span>) + <span class="string">"(("</span> + exp + <span class="string">"),"</span> +</div><div class="line">    <span class="string">"function("</span> + alias + iterator1 + iterator2 + <span class="string">")&#123;"</span> +</div><div class="line">      <span class="string">"return "</span> + ((altGen || genElement)(el, state)) +</div><div class="line">    <span class="string">'&#125;)'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">genNode</span> (<span class="params">node, state</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (node.type === <span class="number">1</span>) &#123;</div><div class="line">    <span class="keyword">return</span> genElement(node, state)</div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (node.type === <span class="number">3</span> &amp;&amp; node.isComment) &#123;</div><div class="line">    <span class="keyword">return</span> genComment(node)</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">return</span> genText(node)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">genText</span> (<span class="params">text</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> (<span class="string">"_v("</span> + (text.type === <span class="number">2</span></div><div class="line">    ? text.expression <span class="comment">// no need for () because already wrapped in _s()</span></div><div class="line">    : transformSpecialNewlines(<span class="built_in">JSON</span>.stringify(text.text))) + <span class="string">")"</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">genComment</span> (<span class="params">comment</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> (<span class="string">"_e("</span> + (<span class="built_in">JSON</span>.stringify(comment.text)) + <span class="string">")"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue模板编译/" rel="tag"># vue模板编译</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/05/2019-2019-04-05-vue-comp-update/" rel="next" title="vue components update">
+                <i class="fa fa-chevron-left"></i> vue components update
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/15/2019-2019-04-15-vue-event/" rel="prev" title="vue-event">
+                vue-event <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">浩齐</p>
+              <p class="site-description motion-element" itemprop="description">some kind of blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#anchors"><span class="nav-number">1.</span> <span class="nav-text">anchors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#入口"><span class="nav-number">2.</span> <span class="nav-text">入口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#parse"><span class="nav-number">3.</span> <span class="nav-text">parse</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#parse流程"><span class="nav-number">3.1.</span> <span class="nav-text">parse流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#parseHTML"><span class="nav-number">3.2.</span> <span class="nav-text">parseHTML</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#startElement"><span class="nav-number">3.2.1.</span> <span class="nav-text">startElement</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#endElement"><span class="nav-number">3.2.2.</span> <span class="nav-text">endElement</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#text"><span class="nav-number">3.2.3.</span> <span class="nav-text">text</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#conerCases"><span class="nav-number">3.3.</span> <span class="nav-text">conerCases</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#optimize"><span class="nav-number">4.</span> <span class="nav-text">optimize</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#codegen"><span class="nav-number">5.</span> <span class="nav-text">codegen</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#v-if-v-for-generate-code"><span class="nav-number">5.1.</span> <span class="nav-text">v-if/v-for generate code</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">浩齐</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

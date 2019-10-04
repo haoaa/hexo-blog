@@ -147,6 +147,7 @@
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
+  <audio src="\assets\2019\Indian_Summer.mp3"></audio>
   <div class="site-meta ">
     
 
@@ -207,7 +208,17 @@
 
 
 
- </div>
+
+<script>
+  let hasClick = 0 
+  document.querySelector('.site-subtitle').onclick = ()=>{
+    hasClick++
+    if(hasClick === 3) {
+      document.querySelector('audio').play()
+    }
+  }
+
+</script> </div>
     </header>
 
     <main id="main" class="main">
@@ -226,10 +237,9 @@
       <span class="archive-page-counter">
         
         
+         
         
-          
-        
-        嗯..! 目前共计 30 篇日志。 继续努力。
+        OK! 目前共计 44 篇日志。 继续努力。
       </span>
 
       
@@ -253,9 +263,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2017/05/13/201705-2017-05-14-vue-elm-01/" itemprop="url">
+            <a class="post-title-link" href="/2017/05/13/201705-2017-05-13-vue-01-1/" itemprop="url">
               
-                <span itemprop="name">vue-elm-devServer-config</span>
+                <span itemprop="name">vue-unit-e2e-test</span>
               
             </a>
         
@@ -290,9 +300,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2017/05/13/201705-2017-05-13-vue-01-1/" itemprop="url">
+            <a class="post-title-link" href="/2017/05/13/201705-2017-05-14-vue-elm-01/" itemprop="url">
               
-                <span itemprop="name">vue-unit-e2e-test</span>
+                <span itemprop="name">vue-elm-devServer-config</span>
               
             </a>
         
@@ -401,7 +411,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -412,7 +422,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -423,7 +433,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -460,7 +470,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

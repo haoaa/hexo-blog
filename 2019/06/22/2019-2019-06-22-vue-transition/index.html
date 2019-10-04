@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vue transition," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="digest
+transition是抽象组件, 提供动画运行过程的各种回调. 
+
+render函数做了什么
+获取包裹的vnode child, 给vnode添加key属性用于后续节点操作
+获取非keep-alive子节点
+获取transition指令上所有的props到child上
+compile完 render, 创建子组件vnode后, 开始渲染子组件
+oldRawChild, oldChil">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue-transition">
+<meta property="og:url" content="https://haoaa.github.io/hexo/2019/06/22/2019-2019-06-22-vue-transition/index.html">
+<meta property="og:site_name" content="Haoqi's blog-ish!">
+<meta property="og:description" content="digest
+transition是抽象组件, 提供动画运行过程的各种回调. 
+
+render函数做了什么
+获取包裹的vnode child, 给vnode添加key属性用于后续节点操作
+获取非keep-alive子节点
+获取transition指令上所有的props到child上
+compile完 render, 创建子组件vnode后, 开始渲染子组件
+oldRawChild, oldChil">
+<meta property="og:updated_time" content="2019-10-04T06:54:49.947Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue-transition">
+<meta name="twitter:description" content="digest
+transition是抽象组件, 提供动画运行过程的各种回调. 
+
+render函数做了什么
+获取包裹的vnode child, 给vnode添加key属性用于后续节点操作
+获取非keep-alive子节点
+获取transition指令上所有的props到child上
+compile完 render, 创建子组件vnode后, 开始渲染子组件
+oldRawChild, oldChil">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://haoaa.github.io/hexo/2019/06/22/2019-2019-06-22-vue-transition/"/>
+
+
+
+
+
+  <title>vue-transition | Haoqi's blog-ish!</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <audio src="\assets\2019\Indian_Summer.mp3"></audio>
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Haoqi's blog-ish!</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">blah blah blah</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+
+<script>
+  let hasClick = 0 
+  document.querySelector('.site-subtitle').onclick = ()=>{
+    hasClick++
+    if(hasClick === 3) {
+      document.querySelector('audio').play()
+    }
+  }
+
+</script> </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haoaa.github.io/hexo/2019/06/22/2019-2019-06-22-vue-transition/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="浩齐">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haoqi's blog-ish!">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vue-transition</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-22T11:04:16+08:00">
+                2019-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue-transition/" itemprop="url" rel="index">
+                    <span itemprop="name">vue transition</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="digest"><a href="#digest" class="headerlink" title="digest"></a>digest</h2><ul>
+<li>transition是抽象组件, 提供动画运行过程的各种回调. </li>
+</ul>
+<h3 id="render函数做了什么"><a href="#render函数做了什么" class="headerlink" title="render函数做了什么"></a>render函数做了什么</h3><ul>
+<li>获取包裹的vnode child, 给vnode添加key属性用于后续节点操作</li>
+<li>获取非keep-alive子节点</li>
+<li>获取transition指令上所有的props到child上</li>
+<li>compile完 render, 创建子组件vnode后, 开始渲染子组件</li>
+<li><code>oldRawChild, oldChild</code>状态改变时纪录上个状态<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// props提供以下props</span></div><div class="line"><span class="keyword">var</span> transitionProps = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="built_in">String</span>,</div><div class="line">  <span class="attr">appear</span>: <span class="built_in">Boolean</span>,</div><div class="line">  <span class="attr">css</span>: <span class="built_in">Boolean</span>,</div><div class="line">  <span class="attr">mode</span>: <span class="built_in">String</span>,</div><div class="line">  <span class="attr">type</span>: <span class="built_in">String</span>,</div><div class="line">  <span class="attr">enterClass</span>: <span class="built_in">String</span>,</div><div class="line">  <span class="attr">leaveClass</span>: <span class="built_in">String</span>,</div><div class="line">  <span class="attr">enterToClass</span>: <span class="built_in">String</span>,</div><div class="line">  <span class="attr">leaveToClass</span>: <span class="built_in">String</span>,</div><div class="line">  <span class="attr">enterActiveClass</span>: <span class="built_in">String</span>,</div><div class="line">  <span class="attr">leaveActiveClass</span>: <span class="built_in">String</span>,</div><div class="line">  <span class="attr">appearClass</span>: <span class="built_in">String</span>,</div><div class="line">  <span class="attr">appearActiveClass</span>: <span class="built_in">String</span>,</div><div class="line">  <span class="attr">appearToClass</span>: <span class="built_in">String</span>,</div><div class="line">  <span class="attr">duration</span>: [<span class="built_in">Number</span>, <span class="built_in">String</span>, <span class="built_in">Object</span>]</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// in case the child is also an abstract component, e.g. &lt;keep-alive&gt;</span></div><div class="line"><span class="comment">// we want to recursively retrieve the real component to be rendered</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getRealChild</span> (<span class="params">vnode</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> compOptions = vnode &amp;&amp; vnode.componentOptions;</div><div class="line">  <span class="keyword">if</span> (compOptions &amp;&amp; compOptions.Ctor.options.abstract) &#123;</div><div class="line">    <span class="keyword">return</span> getRealChild(getFirstComponentChild(compOptions.children))</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">return</span> vnode</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">extractTransitionData</span> (<span class="params">comp</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> data = &#123;&#125;;</div><div class="line">  <span class="keyword">var</span> options = comp.$options;</div><div class="line">  <span class="comment">// props</span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> options.propsData) &#123;</div><div class="line">    data[key] = comp[key];</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// events.</span></div><div class="line">  <span class="comment">// extract listeners and pass them directly to the transition methods</span></div><div class="line">  <span class="keyword">var</span> listeners = options._parentListeners;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> key$<span class="number">1</span> <span class="keyword">in</span> listeners) &#123;</div><div class="line">    data[camelize(key$<span class="number">1</span>)] = listeners[key$<span class="number">1</span>];</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> data</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span> (<span class="params">h</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> <span class="keyword">this</span>$<span class="number">1</span> = <span class="keyword">this</span>;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> children = <span class="keyword">this</span>.$slots.default;</div><div class="line">  <span class="keyword">if</span> (!children) &#123;</div><div class="line">    <span class="keyword">return</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// filter out text nodes (possible whitespaces)</span></div><div class="line">  children = children.filter(<span class="function"><span class="keyword">function</span> (<span class="params">c</span>) </span>&#123; <span class="keyword">return</span> c.tag || isAsyncPlaceholder(c); &#125;);</div><div class="line">  <span class="comment">/* istanbul ignore if */</span></div><div class="line">  <span class="keyword">if</span> (!children.length) &#123;</div><div class="line">    <span class="keyword">return</span></div><div class="line">  &#125;</div><div class="line">  <span class="keyword">var</span> mode = <span class="keyword">this</span>.mode;</div><div class="line">  <span class="keyword">var</span> rawChild = children[<span class="number">0</span>];</div><div class="line"></div><div class="line">  <span class="comment">// if this is a component root node and the component's</span></div><div class="line">  <span class="comment">// parent container node also has transition, skip.</span></div><div class="line">  <span class="keyword">if</span> (hasParentTransition(<span class="keyword">this</span>.$vnode)) &#123;</div><div class="line">    <span class="keyword">return</span> rawChild</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// apply transition data to child</span></div><div class="line">  <span class="comment">// use getRealChild() to ignore abstract components e.g. keep-alive</span></div><div class="line">  <span class="keyword">var</span> child = getRealChild(rawChild);</div><div class="line">  <span class="comment">/* istanbul ignore if */</span></div><div class="line">  <span class="keyword">if</span> (!child) &#123;</div><div class="line">    <span class="keyword">return</span> rawChild</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>._leaving) &#123;</div><div class="line">    <span class="keyword">return</span> placeholder(h, rawChild)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// ensure a key that is unique to the vnode type and to this transition</span></div><div class="line">  <span class="comment">// component instance. This key will be used to remove pending leaving nodes</span></div><div class="line">  <span class="comment">// during entering.</span></div><div class="line">  <span class="keyword">var</span> id = <span class="string">"__transition-"</span> + (<span class="keyword">this</span>._uid) + <span class="string">"-"</span>;</div><div class="line">  child.key = child.key == <span class="literal">null</span></div><div class="line">    ? child.isComment</div><div class="line">      ? id + <span class="string">'comment'</span></div><div class="line">      : id + child.tag</div><div class="line">    : isPrimitive(child.key)</div><div class="line">      ? (<span class="built_in">String</span>(child.key).indexOf(id) === <span class="number">0</span> ? child.key : id + child.key)</div><div class="line">      : child.key;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> data = (child.data || (child.data = &#123;&#125;)).transition = extractTransitionData(<span class="keyword">this</span>);</div><div class="line">  <span class="keyword">var</span> oldRawChild = <span class="keyword">this</span>._vnode;</div><div class="line">  <span class="keyword">var</span> oldChild = getRealChild(oldRawChild);</div><div class="line"></div><div class="line">  <span class="comment">// mark v-show</span></div><div class="line">  <span class="comment">// so that the transition module can hand over the control to the directive</span></div><div class="line">  <span class="keyword">if</span> (child.data.directives &amp;&amp; child.data.directives.some(<span class="function"><span class="keyword">function</span> (<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> d.name === <span class="string">'show'</span>; &#125;)) &#123;</div><div class="line">    child.data.show = <span class="literal">true</span>;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (</div><div class="line">    oldChild &amp;&amp;</div><div class="line">    oldChild.data &amp;&amp;</div><div class="line">    !isSameChild(child, oldChild) &amp;&amp;</div><div class="line">    !isAsyncPlaceholder(oldChild) &amp;&amp;</div><div class="line">    <span class="comment">// #6687 component root is a comment node</span></div><div class="line">    !(oldChild.componentInstance &amp;&amp; oldChild.componentInstance._vnode.isComment)</div><div class="line">  ) &#123;</div><div class="line">    <span class="comment">// replace old child transition data with fresh one</span></div><div class="line">    <span class="comment">// important for dynamic transitions!</span></div><div class="line">    <span class="keyword">var</span> oldData = oldChild.data.transition = extend(&#123;&#125;, data);</div><div class="line">    <span class="comment">// handle transition mode</span></div><div class="line">    <span class="keyword">if</span> (mode === <span class="string">'out-in'</span>) &#123;</div><div class="line">      <span class="comment">// return placeholder node and queue update when leave finishes</span></div><div class="line">      <span class="keyword">this</span>._leaving = <span class="literal">true</span>;</div><div class="line">      mergeVNodeHook(oldData, <span class="string">'afterLeave'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">this</span>$<span class="number">1.</span>_leaving = <span class="literal">false</span>;</div><div class="line">        <span class="keyword">this</span>$<span class="number">1.</span>$forceUpdate();</div><div class="line">      &#125;);</div><div class="line">      <span class="keyword">return</span> placeholder(h, rawChild)</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mode === <span class="string">'in-out'</span>) &#123;</div><div class="line">      <span class="keyword">if</span> (isAsyncPlaceholder(child)) &#123;</div><div class="line">        <span class="keyword">return</span> oldRawChild</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">var</span> delayedLeave;</div><div class="line">      <span class="keyword">var</span> performLeave = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; delayedLeave(); &#125;;</div><div class="line">      mergeVNodeHook(data, <span class="string">'afterEnter'</span>, performLeave);</div><div class="line">      mergeVNodeHook(data, <span class="string">'enterCancelled'</span>, performLeave);</div><div class="line">      mergeVNodeHook(oldData, <span class="string">'delayLeave'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">leave</span>) </span>&#123; delayedLeave = leave; &#125;);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> rawChild</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="transition-module"><a href="#transition-module" class="headerlink" title="transition module"></a>transition module</h3><ul>
+<li>enter回调<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">_enter</span> (<span class="params">_, vnode</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (vnode.data.show !== <span class="literal">true</span>) &#123;</div><div class="line">    enter(vnode);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> transition = inBrowser ? &#123;</div><div class="line">  <span class="attr">create</span>: _enter,</div><div class="line">  <span class="attr">activate</span>: _enter,</div><div class="line">  <span class="attr">remove</span>: <span class="function"><span class="keyword">function</span> <span class="title">remove$$1</span> (<span class="params">vnode, rm</span>) </span>&#123;</div><div class="line">    <span class="comment">/* istanbul ignore else */</span></div><div class="line">    <span class="keyword">if</span> (vnode.data.show !== <span class="literal">true</span>) &#123;</div><div class="line">      leave(vnode, rm);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      rm();</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125; : &#123;&#125;;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="string">``</span><span class="string">`</span></div><div class="line">`<span class="string">``</span>js</div></pre></td></tr></table></figure>
+<a id="more"></a>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue-transition/" rel="tag"># vue transition</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/26/2019-2019-06-01-vue-keepalive/" rel="next" title="vue-keep-alive">
+                <i class="fa fa-chevron-left"></i> vue-keep-alive
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/03/2019-2019-10-3-vuex/" rel="prev" title="vuex">
+                vuex <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">浩齐</p>
+              <p class="site-description motion-element" itemprop="description">some kind of blog</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#digest"><span class="nav-number">1.</span> <span class="nav-text">digest</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#render函数做了什么"><span class="nav-number">1.1.</span> <span class="nav-text">render函数做了什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#transition-module"><span class="nav-number">1.2.</span> <span class="nav-text">transition module</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">浩齐</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
